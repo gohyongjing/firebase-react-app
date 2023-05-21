@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import  useFirebase from "../hooks/useFirebase"
 import { PATH_DASHBOARD, PATH_LOG_IN } from "../app/AppRoutes";
+import usePromise from "../hooks/usePromise";
 
 /**
  * Format Firebase Auth error into user friendly messages.
@@ -21,6 +22,8 @@ import { PATH_DASHBOARD, PATH_LOG_IN } from "../app/AppRoutes";
  */
 function formatAuthError(code: string) {
   switch(code) {
+    case '':
+      return '';
     case 'auth/invalid-email':
       return 'Email address given is not valid. Please enter a valid email.';
     case 'auth/user-disabled':
@@ -43,10 +46,11 @@ function formatAuthError(code: string) {
 interface AuthContext {
   user: User | null;
   userCredential: UserCredential | null;
+  authLoading: boolean;
   authError: string;
-  signUp: (email: string, password: string) => Promise<void>;
-  logIn: (email: string, password: string) => Promise<void>;
-  logOut: () => Promise<void>;
+  signUp: (email: string, password: string) => void;
+  logIn: (email: string, password: string) => void;
+  logOut: () => void;
 }
 
 const ERR_NO_FIREBASE_AUTH = 'An error has occured. Please inform an administrator of the following:\n'
@@ -54,10 +58,11 @@ const ERR_NO_FIREBASE_AUTH = 'An error has occured. Please inform an administrat
 const emptyAuthContext: AuthContext = {
   user: null,
   userCredential: null,
+  authLoading: false,
   authError: ERR_NO_FIREBASE_AUTH,
-  signUp: () => Promise.reject(ERR_NO_FIREBASE_AUTH),
-  logIn: () => Promise.reject(ERR_NO_FIREBASE_AUTH),
-  logOut: () => Promise.reject(ERR_NO_FIREBASE_AUTH)
+  signUp: () => {},
+  logIn: () => {},
+  logOut: () => {}
 }
 
 const AuthContextComponent = createContext(emptyAuthContext);
@@ -88,40 +93,26 @@ interface ContextProviderProps {
 
 function AuthContextProvider({ children=null }: ContextProviderProps) {
   const { auth } = useFirebase();
+  const [userCredential, updateUserCrediential, authLoading, authError]
+    = usePromise<UserCredential | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [userCredential, setUserCredential] = useState<UserCredential | null>(null);
-  const [authError, setAuthError] = useState('');
-
-  function handleAuthError(e: {code: string}) {
-    setAuthError(formatAuthError(e.code))
-  }
-
-  function cleanUp() {
-    setUserCredential(null);
-    setAuthError('');
-  }
 
   function signUp(email: string, password: string) {
-    cleanUp();
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUserCredential(userCredential);
-      })
-      .catch(handleAuthError);
+    updateUserCrediential(
+      () => createUserWithEmailAndPassword(auth, email, password)
+    );
   }
 
   function logIn(email: string, password: string) {
-    cleanUp();
-    return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUserCredential(userCredential);
-      })
-      .catch(handleAuthError);
+    updateUserCrediential(
+      () => signInWithEmailAndPassword(auth, email, password)
+    );
   }
 
   function logOut() {
-    cleanUp();
-    return signOut(auth)
+    updateUserCrediential(
+      () => signOut(auth).then(() => null)
+    );
   }
 
   useEffect(() => {
@@ -134,7 +125,8 @@ function AuthContextProvider({ children=null }: ContextProviderProps) {
   const value = {
     user,
     userCredential,
-    authError,
+    authLoading,
+    authError: formatAuthError(authError.code),
     signUp,
     logIn,
     logOut,
