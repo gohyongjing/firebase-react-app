@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useAuthContext } from "../contexts/useAuthContext";
-import { PATH_LOG_IN, PATH_SIGN_UP } from "../app/App";
+import { PATH_LOG_IN, PATH_SIGN_UP } from "../app/AppRoutes";
 
 export default function LogIn() {
   const { authError, logIn } = useAuthContext();

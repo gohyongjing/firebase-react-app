@@ -9,7 +9,7 @@ import {
   UserCredential
 } from "firebase/auth";
 import  useFirebase from "../hooks/useFirebase"
-import { PATH_DASHBOARD, PATH_LOG_IN } from "../app/App";
+import { PATH_DASHBOARD, PATH_LOG_IN } from "../app/AppRoutes";
 
 /**
  * Format Firebase Auth error into user friendly messages.
@@ -66,23 +66,27 @@ function useAuthContext() {
   return useContext(AuthContextComponent);
 }
 
-interface Props {
-  children: JSX.Element;
+interface RouteElementProps {
+  children?: JSX.Element | null;
 }
 
-function RequireAuth({ children }: Props) {
+function RequireAuth({ children=null }: RouteElementProps) {
   const { user } = useAuthContext();
 
   return user ? children : <Navigate replace to={PATH_LOG_IN}/>;
 }
 
-function RequireNoAuth({ children }: Props) {
+function RequireNoAuth({ children=null }: RouteElementProps) {
   const { user } = useAuthContext();
 
   return user ? <Navigate replace to={PATH_DASHBOARD}/> : children;
 }
 
-function AuthContextProvider({ children }: Props) {
+interface ContextProviderProps {
+  children?: React.ReactNode;
+}
+
+function AuthContextProvider({ children=null }: ContextProviderProps) {
   const { auth } = useFirebase();
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
