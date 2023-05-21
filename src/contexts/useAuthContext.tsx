@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -60,7 +60,7 @@ const emptyAuthContext: AuthContext = {
   logOut: () => Promise.reject(ERR_NO_FIREBASE_AUTH)
 }
 
-const AuthContextComponent = createContext<AuthContext>(emptyAuthContext);
+const AuthContextComponent = createContext(emptyAuthContext);
 
 function useAuthContext() {
   return useContext(AuthContextComponent);
@@ -88,7 +88,6 @@ interface ContextProviderProps {
 
 function AuthContextProvider({ children=null }: ContextProviderProps) {
   const { auth } = useFirebase();
-  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [userCredential, setUserCredential] = useState<UserCredential | null>(null);
   const [authError, setAuthError] = useState('');
@@ -107,7 +106,6 @@ function AuthContextProvider({ children=null }: ContextProviderProps) {
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUserCredential(userCredential);
-        navigate(PATH_DASHBOARD);
       })
       .catch(handleAuthError);
   }
@@ -117,7 +115,6 @@ function AuthContextProvider({ children=null }: ContextProviderProps) {
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUserCredential(userCredential);
-        navigate(PATH_DASHBOARD);
       })
       .catch(handleAuthError);
   }
@@ -131,7 +128,7 @@ function AuthContextProvider({ children=null }: ContextProviderProps) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
-    return () => unsubscribe();
+    return unsubscribe;
   }, [auth]);
 
   const value = {
