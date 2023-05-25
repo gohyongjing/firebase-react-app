@@ -3,7 +3,7 @@ import { useAuthContext } from "../contexts/useAuthContext";
 import { PATH_LOG_IN, PATH_SIGN_UP } from "../app/AppRoutes";
 
 export default function SignUp() {
-  const { authError, signUp } = useAuthContext();
+  const { authErrorMessage, signUp } = useAuthContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,7 +16,7 @@ export default function SignUp() {
     <div>
       <a href={PATH_LOG_IN}>log In</a>
       <a href={PATH_SIGN_UP}>Sign Up</a>
-      <div>{authError}</div>
+      <div>{authErrorMessage}</div>
       <form onSubmit={handleSubmit}>
         <input
           type="email"

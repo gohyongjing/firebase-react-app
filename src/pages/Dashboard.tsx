@@ -2,16 +2,16 @@ import { MouseEvent } from "react";
 import { useAuthContext } from "../contexts/useAuthContext";
 
 export default function Dashboard() {
-  const { user, authError, logOut } = useAuthContext();
+  const { user, authErrorMessage, signOut } = useAuthContext();
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    return logOut();
+    return signOut();
   }
   return (
     <>
       {JSON.stringify(user)}
-      {authError}
+      {authErrorMessage}
       <button onClick={handleClick}>Log Out</button>
     </>
   );

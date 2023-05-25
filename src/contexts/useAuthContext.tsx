@@ -1,16 +1,23 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { createContext, useContext, useSyncExternalStore, useRef, useCallback, MutableRefObject } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
   User,
-  UserCredential
+  UserCredential,
+  getAuth
 } from "firebase/auth";
-import  useFirebase from "../hooks/useFirebase"
-import { PATH_DASHBOARD, PATH_LOG_IN } from "../app/AppRoutes";
+import firebaseApp from "../app/firebaseApp"
 import usePromise from "../hooks/usePromise";
+import { hasKey } from "../utility/utility";
+
+function getErrorCode(error: unknown) {
+  if (hasKey(error, 'code')) {
+    return (typeof error.code === 'string') ? error.code : '';
+  }
+  return '';
+}
 
 /**
  * Format Firebase Auth error into user friendly messages.
@@ -20,7 +27,7 @@ import usePromise from "../hooks/usePromise";
  * @param error Authentication error due to signInWithEmailAndPassword
  *    or createUserWithEmailAndPassword.
  */
-function formatAuthError(code: string) {
+function formatAuthErrorMessage(code: string) {
   switch(code) {
     case '':
       return '';
@@ -43,93 +50,91 @@ function formatAuthError(code: string) {
   }
 }
 
+const auth = getAuth(firebaseApp);
+
 interface AuthContext {
   user: User | null;
-  userCredential: UserCredential | null;
-  authLoading: boolean;
-  authError: string;
-  signUp: (email: string, password: string) => void;
-  logIn: (email: string, password: string) => void;
-  logOut: () => void;
+  isAuthLoadingRef: MutableRefObject<boolean>;
+  authErrorMessage: string;
+  signUp: (email: string, password: string) => Promise<UserCredential | null>;
+  signIn: (email: string, password: string) => Promise<UserCredential | null>;
+  signOut: () => Promise<void | null>;
 }
 
 const ERR_NO_FIREBASE_AUTH = 'An error has occured. Please inform an administrator of the following:\n'
   + 'AuthContext used outside AuthContextProvider';
 const emptyAuthContext: AuthContext = {
   user: null,
-  userCredential: null,
-  authLoading: false,
-  authError: ERR_NO_FIREBASE_AUTH,
-  signUp: () => {},
-  logIn: () => {},
-  logOut: () => {}
+  isAuthLoadingRef: { current: false },
+  authErrorMessage: ERR_NO_FIREBASE_AUTH,
+  signUp: () => Promise.reject(ERR_NO_FIREBASE_AUTH),
+  signIn: () => Promise.reject(ERR_NO_FIREBASE_AUTH),
+  signOut: () => Promise.reject(ERR_NO_FIREBASE_AUTH)
 }
 
 const AuthContextComponent = createContext(emptyAuthContext);
 
-function useAuthContext() {
+export function useAuthContext() {
   return useContext(AuthContextComponent);
 }
 
-interface RouteElementProps {
-  children?: JSX.Element | null;
-}
-
-function RequireAuth({ children=null }: RouteElementProps) {
-  const { user } = useAuthContext();
-
-  return user ? children : <Navigate replace to={PATH_LOG_IN}/>;
-}
-
-function RequireNoAuth({ children=null }: RouteElementProps) {
-  const { user } = useAuthContext();
-
-  return user ? <Navigate replace to={PATH_DASHBOARD}/> : children;
-}
-
-interface ContextProviderProps {
+interface Props {
   children?: React.ReactNode;
 }
 
-function AuthContextProvider({ children=null }: ContextProviderProps) {
-  const { auth } = useFirebase();
-  const [userCredential, updateUserCrediential, authLoading, authError]
-    = usePromise<UserCredential | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+/**
+ * Provides authentication context of the current user.
+ * All authentication actions such as signing in, signing out are debounced even when
+ * called multiple times.
+ *
+ * @param children Children nodes to receive authentication context.
+ */
+export function AuthContextProvider({ children=null }: Props) {
+  const [resolveUserCredentials, isAuthLoadingRef, authError] = usePromise();
+  const userRef = useRef<User | null>(null);
 
   function signUp(email: string, password: string) {
-    updateUserCrediential(
+    return resolveUserCredentials(
       () => createUserWithEmailAndPassword(auth, email, password)
     );
   }
 
-  function logIn(email: string, password: string) {
-    updateUserCrediential(
+  function signIn(email: string, password: string) {
+    return resolveUserCredentials(
       () => signInWithEmailAndPassword(auth, email, password)
     );
   }
 
-  function logOut() {
-    updateUserCrediential(
-      () => signOut(auth).then(() => null)
+  function signOutWrapped() {
+    return resolveUserCredentials(
+      () => signOut(auth)
     );
   }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+  const subscribe = useCallback((onStoreChange: () => void) => {
+    const unsubscribe = onAuthStateChanged(auth, (newUser) => {
+      userRef.current = newUser;
+      onStoreChange();
     });
-    return unsubscribe;
-  }, [auth]);
+    console.log('subscribing');
+    return () => {
+      unsubscribe();
+      console.log('unsubscribing')
+    }
+  }, []);
 
-  const value = {
-    user,
-    userCredential,
-    authLoading,
-    authError: formatAuthError(authError.code),
+  function getSnapshot() {
+    return userRef.current;
+  }
+  console.log('rerender')
+
+  const value: AuthContext = {
+    user: useSyncExternalStore(subscribe, getSnapshot),
+    isAuthLoadingRef,
+    authErrorMessage: formatAuthErrorMessage(getErrorCode(authError)),
     signUp,
-    logIn,
-    logOut,
+    signIn,
+    signOut: signOutWrapped,
   };
 
   return (
@@ -139,5 +144,3 @@ function AuthContextProvider({ children=null }: ContextProviderProps) {
   );
 
 }
-
-export { useAuthContext, RequireAuth, RequireNoAuth, AuthContextProvider }
