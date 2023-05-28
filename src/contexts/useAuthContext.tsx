@@ -9,8 +9,9 @@ import {
   getAuth
 } from "firebase/auth";
 import firebaseApp from "../app/firebaseApp"
-import usePromise from "../hooks/usePromise";
-import { hasKey } from "../utility/utility";
+import usePromise from "../hooks/utility/usePromise";
+import { hasKey } from "../utility/typePredicates";
+import useClientSyncExternalStore, { OnStoreChange } from "../hooks/utility/useClientSyncExternalStore";
 
 function getErrorCode(error: unknown) {
   if (hasKey(error, 'code')) {
@@ -56,8 +57,8 @@ interface AuthContext {
   user: User | null;
   isAuthLoadingRef: MutableRefObject<boolean>;
   authErrorMessage: string;
-  signUp: (email: string, password: string) => Promise<UserCredential | null>;
-  signIn: (email: string, password: string) => Promise<UserCredential | null>;
+  signUp: (email: string, password: string) => Promise<UserCredential | undefined>;
+  signIn: (email: string, password: string) => Promise<UserCredential | undefined>;
   signOut: () => Promise<void | null>;
 }
 
@@ -90,46 +91,39 @@ interface Props {
  * @param children Children nodes to receive authentication context.
  */
 export function AuthContextProvider({ children=null }: Props) {
-  const [resolveUserCredentials, isAuthLoadingRef, authError] = usePromise();
-  const userRef = useRef<User | null>(null);
+  const {
+    resolve: resolveUserCredentials,
+    isLoadingRef: isAuthLoadingRef,
+    error: authError
+  } = usePromise();
 
-  function signUp(email: string, password: string) {
+  const signUp = useCallback((email: string, password: string) => {
     return resolveUserCredentials(
       () => createUserWithEmailAndPassword(auth, email, password)
     );
-  }
+  }, []);
 
-  function signIn(email: string, password: string) {
+  const signIn = useCallback((email: string, password: string) => {
     return resolveUserCredentials(
       () => signInWithEmailAndPassword(auth, email, password)
     );
-  }
+  }, []);
 
-  function signOutWrapped() {
+  const signOutWrapped = useCallback(() => {
     return resolveUserCredentials(
       () => signOut(auth)
     );
-  }
-
-  const subscribe = useCallback((onStoreChange: () => void) => {
-    const unsubscribe = onAuthStateChanged(auth, (newUser) => {
-      userRef.current = newUser;
-      onStoreChange();
-    });
-    console.log('subscribing');
-    return () => {
-      unsubscribe();
-      console.log('unsubscribing')
-    }
   }, []);
 
-  function getSnapshot() {
-    return userRef.current;
-  }
-  console.log('rerender')
+  const subscribe = useCallback((onStoreChange: OnStoreChange<User | null>) => {
+    const unsubscribe = onAuthStateChanged(auth, (newUser) => {
+      onStoreChange(newUser);
+    });
+    return unsubscribe;
+  }, []);
 
   const value: AuthContext = {
-    user: useSyncExternalStore(subscribe, getSnapshot),
+    user: useClientSyncExternalStore(subscribe),
     isAuthLoadingRef,
     authErrorMessage: formatAuthErrorMessage(getErrorCode(authError)),
     signUp,

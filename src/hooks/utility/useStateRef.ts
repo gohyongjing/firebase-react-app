@@ -38,7 +38,7 @@ export default function useStateRef<S>(
       stateRef.current = setStateAction;
     }
     _setState(setStateAction);
-  }, [_setState]);
+  }, []);
 
   return [state, setState, stateRef];
 }
