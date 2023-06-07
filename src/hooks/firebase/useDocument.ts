@@ -32,14 +32,18 @@ interface DocumentHook {
  */
 export default function useDocument(
   path: string,
+  shouldFetch: boolean = true
 ): DocumentHook {
   const firebaseDocRef = useMemo(() => doc(firestore, path), [path]);
 
   const _fetcher = useCallback(() => {
+    if (!shouldFetch) {
+      return Promise.resolve(undefined);
+    }
     return getDoc(firebaseDocRef).then(
       documentSnapshot => documentSnapshot.data()
     );
-  }, [firebaseDocRef]);
+  }, [firebaseDocRef, shouldFetch]);
 
   const {
     data,
