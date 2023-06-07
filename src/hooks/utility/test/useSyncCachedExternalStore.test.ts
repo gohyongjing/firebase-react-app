@@ -8,12 +8,12 @@ test('hook fetches, updates and returns correct data', async () => {
     return Promise.resolve(externalStoreValue);
   }
 
-  // initial value is null but updates after fetch
+  // initial value is undefined but updates after fetch
   const { result } = renderHook(
     () => useSyncCachedExternalStore<number>(fetcher)
   );
   
-  expect(result.current.data).toBe(null);
+  expect(result.current.data).toBe(undefined);
   await waitFor(() => {
     expect(result.current.data).toBe(14);
   })
@@ -21,7 +21,8 @@ test('hook fetches, updates and returns correct data', async () => {
   // fetchExternalStore is delayed but returns correct value
   externalStoreValue = -6;
   act(() => {
-    result.current.fetchExternalStore();
+    result.current.fetchExternalStore().then(
+      value => expect(value).toBe(-6));
   })
   
   expect(result.current.data).toBe(14);

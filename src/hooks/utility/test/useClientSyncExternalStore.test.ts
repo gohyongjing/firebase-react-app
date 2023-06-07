@@ -8,12 +8,12 @@ test('hook returns correct data', () => {
     return () => {};
   };
 
-  //initial value is null
+  //initial value is undefined
   const { result } = renderHook(
     () => useClientSyncExternalStore<any>(subscribe)
   );
 
-  expect(result.current).toBe(null);
+  expect(result.current).toBe(undefined);
 
   // When callback is called, hook returns new value after render.
   act(() => {
@@ -23,7 +23,6 @@ test('hook returns correct data', () => {
   expect(result.current).toBe(5);
 
 });
-
 
 test('hook correctly subscribes and unsubscribes', () => {
   const spiedUnsubscriber = {
@@ -63,5 +62,4 @@ test('hook correctly subscribes and unsubscribes', () => {
   expect(spiedSubscribe).toBeCalledTimes(1);
   expect(spiedUnsubscribe).toBeCalledTimes(1);
   expect(spiedSubscribe2).toBeCalledTimes(1);
-
 });

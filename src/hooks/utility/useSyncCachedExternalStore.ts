@@ -3,8 +3,8 @@ import usePromise from "./usePromise";
 import useClientSyncExternalStore, { OnStoreChange } from "./useClientSyncExternalStore";
 
 interface SyncCachedExternalStoreHook<T> {
-  readonly data: T | null,
-  fetchExternalStore: () => Promise<void>,
+  readonly data: T | undefined,
+  fetchExternalStore: () => Promise<T | undefined>,
   updateExternalStore: (newData: T, updater: () => Promise<void>) => Promise<void>,
   isLoading: boolean,
   error: unknown
@@ -17,20 +17,21 @@ interface SyncCachedExternalStoreHook<T> {
  * @returns SyncCachedExternalStoreHook.
  */
 export default function useSyncCachedExternalStore<T> (
-  fetcher: () => Promise<T | null>
+  fetcher: () => Promise<T>
 ): SyncCachedExternalStoreHook<T> {
   const {
     resolve: _resolve,
     isLoading,
     error,
   } = usePromise(); 
-  const dataRef = useRef<T | null>(null);
-  const onStoreChangeRef = useRef<OnStoreChange<T | null>>(() => {});
+  const dataRef = useRef<T>();
+  const onStoreChangeRef = useRef<OnStoreChange<T | undefined>>(() => {});
 
   const _fetch = useCallback(() => {
     return fetcher().then((data) => {
       dataRef.current = data;
       onStoreChangeRef.current(data);
+      return data;
     });
   }, [fetcher]);
 
@@ -63,11 +64,13 @@ export default function useSyncCachedExternalStore<T> (
     })
   }, [_resolve]);
 
-  const _subscribe = useCallback((onStoreChange: OnStoreChange<T | null>) => {
+  const _subscribe = useCallback((onStoreChange: OnStoreChange<T | undefined>) => {
     onStoreChangeRef.current = onStoreChange;
     _fetch();
 
-    const unsubscribe = () => {};
+    const unsubscribe = () => {
+      onStoreChangeRef.current = () => {};
+    };
     return unsubscribe;
   }, [])
 

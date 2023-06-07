@@ -14,7 +14,7 @@ export type Subscribe<Snapshot> = (onStoreChange: OnStoreChange<Snapshot>) => Un
 export default function useClientSyncExternalStore<Snapshot>(
   subscribe: Subscribe<Snapshot>
 ) {
-  const _dataRef = useRef<Snapshot | null>(null);
+  const _dataRef = useRef<Snapshot>();
 
   /**
    * Wraps the subscribe function so that it takes in an onStoreChange() function with no arguments
