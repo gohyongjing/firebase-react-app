@@ -1,4 +1,4 @@
-import { createContext, useContext, useSyncExternalStore, useRef, useCallback, MutableRefObject } from "react";
+import { createContext, useContext, useCallback, MutableRefObject } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,8 +10,8 @@ import {
 } from "firebase/auth";
 import firebaseApp from "../app/firebaseApp"
 import usePromise from "../hooks/utility/usePromise";
-import { hasKey } from "../utility/typePredicates";
 import useClientSyncExternalStore, { OnStoreChange } from "../hooks/utility/useClientSyncExternalStore";
+import { hasKey } from "../utility/typePredicates";
 
 function getErrorCode(error: unknown) {
   if (hasKey(error, 'code')) {
@@ -101,24 +101,25 @@ export function AuthContextProvider({ children=null }: Props) {
     return resolveUserCredentials(
       () => createUserWithEmailAndPassword(auth, email, password)
     );
-  }, []);
+  }, [resolveUserCredentials]);
 
   const signIn = useCallback((email: string, password: string) => {
     return resolveUserCredentials(
       () => signInWithEmailAndPassword(auth, email, password)
     );
-  }, []);
+  }, [resolveUserCredentials]);
 
   const signOutWrapped = useCallback(() => {
     return resolveUserCredentials(
       () => signOut(auth)
     );
-  }, []);
+  }, [resolveUserCredentials]);
 
   const subscribe = useCallback((onStoreChange: OnStoreChange<User | null>) => {
     const unsubscribe = onAuthStateChanged(auth, (newUser) => {
       onStoreChange(newUser);
     });
+
     return unsubscribe;
   }, []);
 
@@ -136,5 +137,4 @@ export function AuthContextProvider({ children=null }: Props) {
       {children}
     </AuthContextComponent.Provider>
   );
-
 }

@@ -1,9 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import usePromise from '../usePromise';
 import { delay } from '../../../utility/miscellaneous';
-
-const asyncDelayDuration = 100;
-const asyncErrorMessage = 'Test function async error '
+import { ASYNC_DELAY_DURATION, ERR_ASYNC_REJECT_MESSAGE } from '../../../utility/testConstants';
 
 async function getValueAfterDelay(value: unknown, delayDuration: number) {
   await delay(delayDuration);
@@ -12,7 +10,7 @@ async function getValueAfterDelay(value: unknown, delayDuration: number) {
 
 async function rejectAfterDelay(delayDuration: number) {
   await delay(delayDuration);
-  return Promise.reject(asyncErrorMessage);
+  return Promise.reject(ERR_ASYNC_REJECT_MESSAGE);
 }
 
 test('resolve() returns correct value', async () => {
@@ -22,7 +20,7 @@ test('resolve() returns correct value', async () => {
 
   await act(async() => {
     const value = await result.current.resolve(
-      () => getValueAfterDelay(expectedValue, asyncDelayDuration)
+      () => getValueAfterDelay(expectedValue, ASYNC_DELAY_DURATION)
     );
     expect(value).toBe(expectedValue);
   });  
@@ -37,7 +35,7 @@ test('resolve() sets loading state correctly', async () => {
   // isLoadingRef should update immediately while isLoading updates after rerender
   act(() => {
     result.current.resolve(
-      () => delay(asyncDelayDuration)
+      () => delay(ASYNC_DELAY_DURATION)
     );
     expect(result.current.isLoadingRef.current).toBe(true);
     expect(result.current.isLoading).toBe(false);
@@ -60,7 +58,7 @@ test('resolve() sets error correctly', async () => {
 
   act(() => {
     result.current.resolve(
-      () => rejectAfterDelay(asyncDelayDuration)
+      () => rejectAfterDelay(ASYNC_DELAY_DURATION)
     );
     expect(result.current.error).toBe(null);
   });
@@ -69,13 +67,13 @@ test('resolve() sets error correctly', async () => {
   expect(result.current.error).toBe(null);
   
   await waitFor(() => {
-    expect(result.current.error).toBe(asyncErrorMessage);
+    expect(result.current.error).toBe(ERR_ASYNC_REJECT_MESSAGE);
   });
 
   //resolve() should clear error
   act(() => {
     result.current.resolve(
-      () => delay(asyncDelayDuration)
+      () => delay(ASYNC_DELAY_DURATION)
     );
   });
 
@@ -86,7 +84,7 @@ test('resolve() prevents getValue() from running when isLoading', () => {
   const {result} = renderHook(() => usePromise());
 
   const spiedObject = {
-    getValue: () => delay(asyncDelayDuration),
+    getValue: () => delay(ASYNC_DELAY_DURATION),
     onDebounce: () => {}
   }
 
@@ -115,3 +113,15 @@ test('resolve() prevents getValue() from running when isLoading', () => {
   expect(spiedGetValue).toBeCalledTimes(1);
   expect(spiedOnDebounce).toBeCalledTimes(1);
 })
+
+test('hook does not unecessarily return new resolve function', () => {
+  const {result} = renderHook(() => usePromise());
+  const oldResolver = result.current.resolve;
+  
+  act(() => {
+    result.current.setIsLoading(true);
+    result.current.setError('fake error');
+  });
+
+  expect(result.current.resolve).toBe(oldResolver);
+});

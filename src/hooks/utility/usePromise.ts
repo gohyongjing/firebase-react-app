@@ -1,4 +1,4 @@
-import { Dispatch, MutableRefObject, SetStateAction, useState } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useCallback, useState } from "react";
 import useStateRef from "./useStateRef";
 
 type Resolver = <Value>(
@@ -33,10 +33,10 @@ export default function usePromise(): PromiseHook {
    * @param getValue Async function to retrieve a value.
    * @returns The value returned by the async function if successful, undefined otherwise.
    */
-  async function resolve<Value>(
+  const resolve = useCallback(async <Value>(
     getValue: () => Promise<Value>,
     onDebounce: (() => Value | undefined) = (() => undefined)
-  ) {
+  ) => {
     if (isLoadingRef.current) {
       return onDebounce();
     }
@@ -52,7 +52,7 @@ export default function usePromise(): PromiseHook {
         isLoadingRef.current = false;
         setIsLoading(false);
       });
-  }
+  }, [isLoadingRef, setIsLoading, setError]);
 
   return { resolve, isLoading, setIsLoading, isLoadingRef, error, setError };
 }
