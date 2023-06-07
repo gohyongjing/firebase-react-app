@@ -54,7 +54,7 @@ function formatAuthErrorMessage(code: string) {
 const auth = getAuth(firebaseApp);
 
 interface AuthContext {
-  user: User | null;
+  user: User | null | undefined;
   isAuthLoadingRef: MutableRefObject<boolean>;
   authErrorMessage: string;
   signUp: (email: string, password: string) => Promise<UserCredential | undefined>;
@@ -65,7 +65,7 @@ interface AuthContext {
 const ERR_NO_FIREBASE_AUTH = 'An error has occured. Please inform an administrator of the following:\n'
   + 'AuthContext used outside AuthContextProvider';
 const emptyAuthContext: AuthContext = {
-  user: null,
+  user: undefined,
   isAuthLoadingRef: { current: false },
   authErrorMessage: ERR_NO_FIREBASE_AUTH,
   signUp: () => Promise.reject(ERR_NO_FIREBASE_AUTH),

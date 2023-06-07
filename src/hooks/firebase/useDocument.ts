@@ -23,7 +23,13 @@ interface DocumentHook {
   isLoading: boolean,
   error: unknown
 }
-
+/**
+ * Wrapper around firebase document.
+ * Uses SyncCachedExternal store for intial fetch and instantly updates local document data.
+ *
+ * @param path Path to firebase document.
+ * @returns DocumentHook.
+ */
 export default function useDocument(
   path: string,
 ): DocumentHook {
@@ -33,7 +39,7 @@ export default function useDocument(
     return getDoc(firebaseDocRef).then(
       documentSnapshot => documentSnapshot.data()
     );
-  }, []);
+  }, [firebaseDocRef]);
 
   const {
     data,
@@ -45,25 +51,25 @@ export default function useDocument(
   
   const getDocWrapped = useCallback(() => {
     return fetchExternalStore();
-  }, []);
+  }, [fetchExternalStore]);
 
   const setDocWrapped = useCallback((newData: WithFieldValue<DocumentData>) => {
     return updateExternalStore(newData, () => {
       return setDoc(firebaseDocRef, newData);
     });
-  }, []);
+  }, [firebaseDocRef, updateExternalStore]);
 
   const updateDocWrapped = useCallback((newData: UpdateData<DocumentData>) => {
     return updateExternalStore({ ...data, ...newData }, () => {
       return updateDoc(firebaseDocRef, newData);
     });
-  }, []);
+  }, [data, firebaseDocRef, updateExternalStore]);
 
   const deleteDocWrapped = useCallback(() => {
     return updateExternalStore(undefined, () => {
       return deleteDoc(firebaseDocRef);
     });
-  }, []);
+  }, [firebaseDocRef, updateExternalStore]);
 
   return {
     data,

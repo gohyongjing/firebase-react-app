@@ -72,7 +72,7 @@ export default function useSyncCachedExternalStore<T> (
       onStoreChangeRef.current = () => {};
     };
     return unsubscribe;
-  }, [])
+  }, [_fetch])
 
   const data = useClientSyncExternalStore(_subscribe);
 

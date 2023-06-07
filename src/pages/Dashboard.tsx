@@ -1,11 +1,11 @@
-import { ChangeEvent, FormEvent, MouseEvent } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import { useAuthContext } from "../contexts/useAuthContext";
-//import useDocument from "../hooks/firebase/useDocument";
+import useDocument from "../hooks/firebase/useDocument";
 
 export default function Dashboard() {
-  const { authErrorMessage, signOut } = useAuthContext();
-  //const { data, setDoc } = useDocument(`/dashboard/${user?.uid}`);
-  //const [dashboardMessageField, setDashboardMessageField] = useState('');
+  const { user, authErrorMessage, signOut } = useAuthContext();
+  const { data, setDoc } = useDocument(`/dashboard/${user?.uid}`);
+  const [dashboardMessageField, setDashboardMessageField] = useState('');
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -14,24 +14,28 @@ export default function Dashboard() {
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
-    //setDashboardMessageField(e.target.value);
+    setDashboardMessageField(e.target.value);
   }
 
-  function handleSubmit(e: FormEvent<HTMLButtonElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    //setDoc({message: dashboardMessageField});
+    setDoc({message: dashboardMessageField});
   }
+
+  console.log('rerender')
+  console.log(data)
+
   return (
     <>
-      {/*data*/}
-      <form>
+      Data:
+      {  }
+      <form onSubmit={handleSubmit}>
         <input
           onChange={handleChange}
+          value={data?.message ? data.message : ''}
         >
         </input>
-        <button
-          onSubmit={handleSubmit}
-        >
+        <button>
           Update dashboard message
         </button>
       </form>
