@@ -6,7 +6,7 @@ interface User {
   userName: string
 }
 
-const defaultUserModel: User = {
+export const defaultUserModel: User = {
   userName: ''
 }
 

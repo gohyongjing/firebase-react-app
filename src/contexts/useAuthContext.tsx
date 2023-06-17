@@ -12,6 +12,7 @@ import firebaseApp from "../app/firebaseApp"
 import usePromise from "../hooks/utility/usePromise";
 import useClientSyncExternalStore, { OnStoreChange } from "../hooks/utility/useClientSyncExternalStore";
 import { hasKey } from "../utility/typePredicates";
+import useUser, { defaultUserModel } from "../hooks/models/useUser";
 
 function getErrorCode(error: unknown) {
   if (hasKey(error, 'code')) {
@@ -100,17 +101,36 @@ export function AuthContextProvider({ children=null }: Props) {
     error: authError
   } = usePromise();
 
+  const { getUser, setUser } = useUser();
+
+  const _processUser = useCallback((userCredential: UserCredential) => {
+    const userId = userCredential.user.uid;
+    const checkUserDocument = getUser(userId)
+      .then(user => {
+        if (user === undefined) {
+          setUser(userId, defaultUserModel);
+        }
+      });
+    return Promise.all([
+      checkUserDocument
+    ]);
+  }, [getUser, setUser])
+
   const signUp = useCallback((email: string, password: string) => {
-    return resolveUserCredentials(
-      () => createUserWithEmailAndPassword(auth, email, password)
-    );
-  }, [resolveUserCredentials]);
+    return resolveUserCredentials(async () => {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await setUser(userCredential.user.uid, defaultUserModel);
+      return userCredential;
+    });
+  }, [resolveUserCredentials, setUser]);
 
   const signIn = useCallback((email: string, password: string) => {
-    return resolveUserCredentials(
-      () => signInWithEmailAndPassword(auth, email, password)
-    );
-  }, [resolveUserCredentials]);
+    return resolveUserCredentials(async () => {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await _processUser(userCredential);
+      return userCredential;
+    });
+  }, [resolveUserCredentials, _processUser]);
 
   const signOutWrapped = useCallback(() => {
     return resolveUserCredentials(
