@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from "react";
 import useDocument from "./useDocument";
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, UpdateData, WithFieldValue } from "firebase/firestore";
 
 interface ModelHook<T> {
   model: T | undefined,
   getModel: () => Promise<T | undefined>,
-  setModel: (newData: T) => Promise<void>,
-  updateModel: (newData: Partial<T>) => Promise<void>,
+  setModel: (newData: WithFieldValue<T>) => Promise<void>,
+  updateModel: (newData: UpdateData<T>) => Promise<void>,
   deleteModel: () => Promise<void>,
   isLoading: boolean,
   error: unknown

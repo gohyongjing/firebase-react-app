@@ -4,7 +4,7 @@ import useModel from "../hooks/firebase/useModel";
 
 export default function Dashboard() {
   const { user, authErrorMessage, signOut } = useAuthContext();
-  const { model, updateModel } = useModel({message: 'No message', hiddenField: 0}, `/dashboard/${user?.uid}`, !!user);
+  const { model, updateModel, error } = useModel({ message: 'No message' }, `/dashboard/${user?.uid}`, !!user);
   const [dashboardMessageField, setDashboardMessageField] = useState('');
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
@@ -22,12 +22,14 @@ export default function Dashboard() {
     updateModel({ message: dashboardMessageField });
   }
 
-  console.log('rerender')
-  console.log(model)
-
   return (
     <>
-      { `Data: ${model?.message}` }
+      {
+        `Data: ${model?.message}` 
+      }
+      {
+        `Error: ${error}`
+      }
       <form onSubmit={handleSubmit}>
         <input
           onChange={handleChange}

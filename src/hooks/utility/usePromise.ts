@@ -40,7 +40,6 @@ export default function usePromise(): PromiseHook {
     if (isLoadingRef.current) {
       return onDebounce();
     }
-    isLoadingRef.current = true;
     setIsLoading(true);
     setError(null);
     return getValue()
@@ -49,7 +48,6 @@ export default function usePromise(): PromiseHook {
         return undefined;
       })
       .finally(() => {
-        isLoadingRef.current = false;
         setIsLoading(false);
       });
   }, [isLoadingRef, setIsLoading, setError]);

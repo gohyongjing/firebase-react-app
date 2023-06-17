@@ -1,15 +1,22 @@
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { useAuthContext } from "../contexts/useAuthContext";
 import { PATH_LOG_IN, PATH_SIGN_UP } from "../app/AppRoutes";
+import Form from "../components/form/Form";
+import Input from "../components/form/Input";
+import Button from "../components/form/Button";
+import useInputHandler from "../hooks/utility/form/useInputHandler";
 
 export default function SignUp() {
   const { authErrorMessage, signUp } = useAuthContext();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailInputHandler = useInputHandler('')
+  const passwordInputHandler = useInputHandler('')
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    return signUp(email, password);
+    return signUp(
+      emailInputHandler.value,
+      passwordInputHandler.value
+    );
   }
 
   return (
@@ -17,23 +24,21 @@ export default function SignUp() {
       <a href={PATH_LOG_IN}>log In</a>
       <a href={PATH_SIGN_UP}>Sign Up</a>
       <div>{authErrorMessage}</div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="email"
-          value={email}
-          autoComplete="username"
-          onChange={e => setEmail(e.target.value)}
+      <Form onSubmit={handleSubmit}>
+        <Input
+          type='email'
+          value={emailInputHandler.value}
+          onChange={emailInputHandler.onChange}
         />
-        <input
+        <Input
           type="password"
-          placeholder="password"
-          value={password}
-          autoComplete="current-password"
-          onChange={e => setPassword(e.target.value)}
+          value={passwordInputHandler.value}
+          onChange={passwordInputHandler.onChange}
         />
-        <button>Sign Up</button>
-      </form>
+        <Button>
+          Sign Up
+        </Button>
+      </Form>
     </div>
   );
 }
