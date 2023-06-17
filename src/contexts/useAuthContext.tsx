@@ -55,22 +55,24 @@ const auth = getAuth(firebaseApp);
 
 interface AuthContext {
   user: User | null | undefined;
-  isAuthLoadingRef: MutableRefObject<boolean>;
-  authErrorMessage: string;
   signUp: (email: string, password: string) => Promise<UserCredential | undefined>;
   signIn: (email: string, password: string) => Promise<UserCredential | undefined>;
   signOut: () => Promise<void | null>;
+  authIsLoading: boolean,
+  authIsLoadingRef: MutableRefObject<boolean>;
+  authErrorMessage: string;
 }
 
 const ERR_NO_FIREBASE_AUTH = 'An error has occured. Please inform an administrator of the following:\n'
   + 'AuthContext used outside AuthContextProvider';
 const emptyAuthContext: AuthContext = {
   user: undefined,
-  isAuthLoadingRef: { current: false },
-  authErrorMessage: ERR_NO_FIREBASE_AUTH,
   signUp: () => Promise.reject(ERR_NO_FIREBASE_AUTH),
   signIn: () => Promise.reject(ERR_NO_FIREBASE_AUTH),
-  signOut: () => Promise.reject(ERR_NO_FIREBASE_AUTH)
+  signOut: () => Promise.reject(ERR_NO_FIREBASE_AUTH),
+  authIsLoading: false,
+  authIsLoadingRef: { current: false },
+  authErrorMessage: ERR_NO_FIREBASE_AUTH,
 }
 
 const AuthContextComponent = createContext(emptyAuthContext);
@@ -93,7 +95,8 @@ interface Props {
 export function AuthContextProvider({ children=null }: Props) {
   const {
     resolve: resolveUserCredentials,
-    isLoadingRef: isAuthLoadingRef,
+    isLoading,
+    isLoadingRef,
     error: authError
   } = usePromise();
 
@@ -125,11 +128,12 @@ export function AuthContextProvider({ children=null }: Props) {
 
   const value: AuthContext = {
     user: useClientSyncExternalStore(subscribe),
-    isAuthLoadingRef,
-    authErrorMessage: formatAuthErrorMessage(getErrorCode(authError)),
     signUp,
     signIn,
     signOut: signOutWrapped,
+    authIsLoading: isLoading,
+    authIsLoadingRef: isLoadingRef,
+    authErrorMessage: formatAuthErrorMessage(getErrorCode(authError)),
   };
 
   return (

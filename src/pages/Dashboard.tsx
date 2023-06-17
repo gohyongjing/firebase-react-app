@@ -1,45 +1,71 @@
-import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
+import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
 import { useAuthContext } from "../contexts/useAuthContext";
-import useModel from "../hooks/firebase/useModel";
+import useUser from "../hooks/models/useUser";
+import Form from "../components/form/Form";
+import Input from "../components/form/Input";
+import Button from "../components/form/Button";
+import useInputHandler from "../hooks/utility/form/useInputHandler";
+import useSyncCachedExternalStore from "../hooks/utility/useSyncCachedExternalStore";
 
 export default function Dashboard() {
-  const { user, authErrorMessage, signOut } = useAuthContext();
-  const { model, updateModel, error } = useModel({ message: 'No message' }, `/dashboard/${user?.uid}`, !!user);
-  const [dashboardMessageField, setDashboardMessageField] = useState('');
+  const { user: firebaseUser, signOut, authIsLoading, authErrorMessage } = useAuthContext();
+  const { getUser, updateUser, userIsLoading, userError } = useUser();
+  const userNameInputHandler = useInputHandler('');
+
+  const fetcher = useCallback(async () => {
+    if (!firebaseUser?.uid) {
+      return undefined;
+    }
+    return getUser(firebaseUser.uid);
+  }, [firebaseUser?.uid, getUser])
+
+  const {data: user} = useSyncCachedExternalStore(fetcher);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     return signOut();
   }
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    setDashboardMessageField(e.target.value);
-  }
-
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    updateModel({ message: dashboardMessageField });
+    if (!firebaseUser?.uid) {
+      return;
+    }
+    updateUser(firebaseUser.uid, {
+      userName: userNameInputHandler.value
+    });
   }
+
+  useEffect(() => {
+    if (user?.userName) {
+      userNameInputHandler.setValue(user.userName);
+    }
+  }, [user?.userName, userNameInputHandler])
+  console.log('dashboard rerender', userError)
+
+  const isLoading = authIsLoading || userIsLoading;
 
   return (
     <>
       {
-        `Data: ${model?.message}` 
+        `UserName: ${user?.userName}` 
       }
       {
-        `Error: ${error}`
+        `Auth Error: ${authErrorMessage}`
       }
-      <form onSubmit={handleSubmit}>
-        <input
-          onChange={handleChange}
-          value={dashboardMessageField}
+      <Form onSubmit={handleSubmit}>
+        <Input
+          onChange={userNameInputHandler.onChange}
+          value={userNameInputHandler.value}
+          disabled={isLoading}
         >
-        </input>
-        <button>
-          Update dashboard message
-        </button>
-      </form>
+        </Input>
+        <Button
+          disabled={isLoading}
+        >
+          Update userName
+        </Button>
+      </Form>
       {authErrorMessage}
       <button onClick={handleClick}>Log Out</button>
     </>

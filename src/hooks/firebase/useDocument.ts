@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import {
   getFirestore,
   DocumentData,
@@ -8,80 +8,47 @@ import {
   setDoc,
   getDoc,
   updateDoc,
-  deleteDoc } from "firebase/firestore";
-import useSyncCachedExternalStore from "../utility/useSyncCachedExternalStore";
+  deleteDoc,
+  DocumentSnapshot
+} from "firebase/firestore";
 import firebaseApp from "../../app/firebaseApp";
 
 const firestore = getFirestore(firebaseApp);
 
 interface DocumentHook {
-  data: DocumentData | undefined,
-  getDoc: () => Promise<DocumentData | undefined>,
-  setDoc: (newData: WithFieldValue<DocumentData>) => Promise<void>,
-  updateDoc: (newData: UpdateData<DocumentData>) => Promise<void>,
-  deleteDoc: () => Promise<void>,
-  isLoading: boolean,
-  error: unknown
+  getDoc: (path: string) => Promise<DocumentSnapshot<DocumentData>>,
+  setDoc: (path: string, newData: WithFieldValue<DocumentData>) => Promise<void>,
+  updateDoc: (path: string, dataUpdates: UpdateData<DocumentData>) => Promise<void>,
+  deleteDoc: (path: string) => Promise<void>,
 }
+
 /**
  * Wrapper around firebase document.
- * Uses SyncCachedExternal store for intial fetch and instantly updates local document data.
  *
- * @param path Path to firebase document.
  * @returns DocumentHook.
  */
-export default function useDocument(
-  path: string,
-  shouldFetch: boolean = true
-): DocumentHook {
-  const firebaseDocRef = useMemo(() => doc(firestore, path), [path]);
+export default function useDocument(): DocumentHook {
 
-  const _fetcher = useCallback(() => {
-    if (!shouldFetch) {
-      return Promise.resolve(undefined);
-    }
-    return getDoc(firebaseDocRef).then(
-      documentSnapshot => documentSnapshot.data()
-    );
-  }, [firebaseDocRef, shouldFetch]);
+  const getDocWrapped = useCallback((path: string) => {
+    return getDoc(doc(firestore, path));
+  }, []);
 
-  const {
-    data,
-    fetchExternalStore,
-    updateExternalStore,
-    isLoading,
-    error
-  } = useSyncCachedExternalStore<DocumentData | undefined>(_fetcher);
-  
-  const getDocWrapped = useCallback(() => {
-    return fetchExternalStore();
-  }, [fetchExternalStore]);
+  const setDocWrapped = useCallback((path: string, newData: WithFieldValue<DocumentData>) => {
+    return setDoc(doc(firestore, path), newData);
+  }, []);
 
-  const setDocWrapped = useCallback((newData: WithFieldValue<DocumentData>) => {
-    return updateExternalStore(newData, () => {
-      return setDoc(firebaseDocRef, newData);
-    });
-  }, [firebaseDocRef, updateExternalStore]);
+  const updateDocWrapped = useCallback((path: string, newData: UpdateData<DocumentData>) => {
+    return updateDoc(doc(firestore, path), newData);
+  }, []);
 
-  const updateDocWrapped = useCallback((newData: UpdateData<DocumentData>) => {
-    return updateExternalStore({ ...data, ...newData }, () => {
-      return updateDoc(firebaseDocRef, newData);
-    });
-  }, [data, firebaseDocRef, updateExternalStore]);
-
-  const deleteDocWrapped = useCallback(() => {
-    return updateExternalStore(undefined, () => {
-      return deleteDoc(firebaseDocRef);
-    });
-  }, [firebaseDocRef, updateExternalStore]);
+  const deleteDocWrapped = useCallback((path: string) => {
+    return deleteDoc(doc(firestore, path));
+  }, []);
 
   return {
-    data,
     getDoc: getDocWrapped,
     setDoc: setDocWrapped,
     updateDoc: updateDocWrapped,
     deleteDoc: deleteDocWrapped,
-    isLoading,
-    error
   }
 }

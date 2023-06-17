@@ -36,9 +36,6 @@ test('hook fetches, updates and returns correct data', async () => {
   })
 
   expect(result.current.data).toBe(27);
-  await waitFor(() => {
-    expect(result.current.isLoading).toBe(false);
-  })
 });
 
 test('hook reverts to original data on failed update', async () => {
@@ -61,12 +58,13 @@ test('hook reverts to original data on failed update', async () => {
     result.current.updateExternalStore(
       100,
       () => Promise.reject(ERR_ASYNC_REJECT_MESSAGE)
-    );
+    ).catch(e => {
+      expect(e).toBe(ERR_ASYNC_REJECT_MESSAGE);
+    });
   })
 
   expect(result.current.data).toBe(100);
   await waitFor(() => {
     expect(result.current.data).toBe(76);
   })
-  expect(result.current.error).toBe(ERR_ASYNC_REJECT_MESSAGE)
 });

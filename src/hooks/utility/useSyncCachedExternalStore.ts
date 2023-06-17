@@ -1,29 +1,21 @@
 import { useCallback, useRef } from "react";
-import usePromise from "./usePromise";
 import useClientSyncExternalStore, { OnStoreChange } from "./useClientSyncExternalStore";
 
 interface SyncCachedExternalStoreHook<T> {
   readonly data: T | undefined,
   fetchExternalStore: () => Promise<T | undefined>,
   updateExternalStore: (newData: T, updater: () => Promise<void>) => Promise<void>,
-  isLoading: boolean,
-  error: unknown
 }
 
 /**
- * Caches a value and synchronises it with an external store.
+ * Caches a updatable value and synchronises it with an external store.
  *
- * @param fetcher Function to fetch the initial data.
+ * @param fetcher Function to fetch data from external store.
  * @returns SyncCachedExternalStoreHook.
  */
 export default function useSyncCachedExternalStore<T> (
   fetcher: () => Promise<T>
 ): SyncCachedExternalStoreHook<T> {
-  const {
-    resolve: _resolve,
-    isLoading,
-    error,
-  } = usePromise(); 
   const dataRef = useRef<T>();
   const onStoreChangeRef = useRef<OnStoreChange<T | undefined>>(() => {});
 
@@ -37,32 +29,28 @@ export default function useSyncCachedExternalStore<T> (
 
   /**
    * Fetches data from the external store.
-   * Can only run if no fetches or updates are ongoing.
    * Catches errors thrown by the fetcher.
    */
   const fetchExternalStore = useCallback(() => {
-    return _resolve(_fetch);
-  }, [_resolve, _fetch]);
+    return _fetch();
+  }, [_fetch]);
 
   /**
    * Updates the cached value and the external store.
-   * Can only run if no fetches or updates are ongoing. Reverts the
-   * cached value if the update to external store throw an error.
+   * Reverts the cached value if the update to external store throws an error.
    * 
    * @param newData New Data to be cached.
    * @param updateExternalStore Function to update the external store with newData.
    */
   const updateExternalStore = useCallback((newData: T, updater: () => Promise<void>) => {
-    return _resolve(() => {
-      const oldData = dataRef.current;
-      onStoreChangeRef.current(newData);
-      return updater().catch(e => {
-        dataRef.current = oldData;
-        onStoreChangeRef.current(oldData);
-        throw(e);
-      });
-    })
-  }, [_resolve]);
+    const oldData = dataRef.current;
+    onStoreChangeRef.current(newData);
+    return updater().catch(e => {
+      dataRef.current = oldData;
+      onStoreChangeRef.current(oldData);
+      throw(e);
+    });
+  }, []);
 
   const _subscribe = useCallback((onStoreChange: OnStoreChange<T | undefined>) => {
     onStoreChangeRef.current = onStoreChange;
@@ -76,5 +64,5 @@ export default function useSyncCachedExternalStore<T> (
 
   const data = useClientSyncExternalStore(_subscribe);
 
-  return { data, fetchExternalStore, updateExternalStore, isLoading, error }
+  return { data, fetchExternalStore, updateExternalStore }
 }
