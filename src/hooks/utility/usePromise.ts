@@ -1,7 +1,7 @@
 import { Dispatch, MutableRefObject, SetStateAction, useCallback, useState } from "react";
 import useStateRef from "./useStateRef";
 
-type Resolver = <Value>(
+export type Resolver = <Value>(
   getValue: () => Promise<Value>,
   onDebounce?: () => (Value | undefined)
 ) => Promise<Value | undefined>;

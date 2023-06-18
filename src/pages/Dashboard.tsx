@@ -1,15 +1,16 @@
 import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
 import { useAuthContext } from "../contexts/useAuthContext";
-import useUser from "../hooks/models/useUser";
 import Form from "../components/form/Form";
 import Input from "../components/form/Input";
 import Button from "../components/form/Button";
 import useInputHandler from "../hooks/utility/form/useInputHandler";
 import useSyncCachedExternalStore from "../hooks/utility/useSyncCachedExternalStore";
+import usePromise from "../hooks/utility/usePromise";
+import { getUser, updateUserName } from "../models/user";
 
 export default function Dashboard() {
   const { user: firebaseUser, signOut, authIsLoading, authErrorMessage } = useAuthContext();
-  const { getUser, updateUser, userIsLoading, userError } = useUser();
+  const {resolve, isLoading: isUpdating } = usePromise();
   const userNameInputHandler = useInputHandler('');
 
   const fetcher = useCallback(async () => {
@@ -17,9 +18,9 @@ export default function Dashboard() {
       return undefined;
     }
     return getUser(firebaseUser.uid);
-  }, [firebaseUser?.uid, getUser])
+  }, [firebaseUser?.uid])
 
-  const {data: user} = useSyncCachedExternalStore(fetcher);
+  const { data: user } = useSyncCachedExternalStore(fetcher);
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -31,9 +32,10 @@ export default function Dashboard() {
     if (!firebaseUser?.uid) {
       return;
     }
-    updateUser(firebaseUser.uid, {
-      userName: userNameInputHandler.value
-    });
+    resolve(() => updateUserName(
+      firebaseUser.uid, 
+      userNameInputHandler.value
+    ));
   }
 
   useEffect(() => {
@@ -41,9 +43,9 @@ export default function Dashboard() {
       userNameInputHandler.setValue(user.userName);
     }
   }, [user?.userName, userNameInputHandler])
-  console.log('dashboard rerender', userError)
+  console.log('dashboard rerender')
 
-  const isLoading = authIsLoading || userIsLoading;
+  const isLoading = authIsLoading || isUpdating;
 
   return (
     <>

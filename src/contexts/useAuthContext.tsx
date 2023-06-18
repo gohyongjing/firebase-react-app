@@ -12,7 +12,7 @@ import firebaseApp from "../app/firebaseApp"
 import usePromise from "../hooks/utility/usePromise";
 import useClientSyncExternalStore, { OnStoreChange } from "../hooks/utility/useClientSyncExternalStore";
 import { hasKey } from "../utility/typePredicates";
-import useUser, { defaultUserModel } from "../hooks/models/useUser";
+import { processUserSignIn, processUserSignUp } from "../models/user";
 
 function getErrorCode(error: unknown) {
   if (hasKey(error, 'code')) {
@@ -95,48 +95,41 @@ interface Props {
  */
 export function AuthContextProvider({ children=null }: Props) {
   const {
-    resolve: resolveUserCredentials,
+    resolve,
     isLoading,
     isLoadingRef,
     error: authError
   } = usePromise();
 
-  const { getUser, setUser } = useUser();
-
-  const _processUser = useCallback((userCredential: UserCredential) => {
-    const userId = userCredential.user.uid;
-    const checkUserDocument = getUser(userId)
-      .then(user => {
-        if (user === undefined) {
-          setUser(userId, defaultUserModel);
-        }
-      });
-    return Promise.all([
-      checkUserDocument
-    ]);
-  }, [getUser, setUser])
-
   const signUp = useCallback((email: string, password: string) => {
-    return resolveUserCredentials(async () => {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await setUser(userCredential.user.uid, defaultUserModel);
+    return resolve(() =>
+      createUserWithEmailAndPassword(auth, email, password)
+    ).then(async (userCredential) => {
+      if (!userCredential) {
+        return;
+      }
+      await processUserSignUp(userCredential);
       return userCredential;
     });
-  }, [resolveUserCredentials, setUser]);
+  }, [resolve]);
 
   const signIn = useCallback((email: string, password: string) => {
-    return resolveUserCredentials(async () => {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      await _processUser(userCredential);
+    return resolve(() =>
+      signInWithEmailAndPassword(auth, email, password)
+    ).then(async (userCredential) => {
+      if (!userCredential) {
+        return;
+      }
+      await processUserSignIn(userCredential);
       return userCredential;
     });
-  }, [resolveUserCredentials, _processUser]);
+  }, [resolve]);
 
   const signOutWrapped = useCallback(() => {
-    return resolveUserCredentials(
+    return resolve(
       () => signOut(auth)
     );
-  }, [resolveUserCredentials]);
+  }, [resolve]);
 
   const subscribe = useCallback((onStoreChange: OnStoreChange<User | null>) => {
     const unsubscribe = onAuthStateChanged(auth, (newUser) => {
