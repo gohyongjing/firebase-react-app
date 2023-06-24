@@ -8,9 +8,12 @@ import {
   getDoc as _getDoc,
   updateDoc as _updateDoc,
   deleteDoc as _deleteDoc,
+  onSnapshot,
+  SetOptions,
   DocumentSnapshot,
 } from "firebase/firestore";
 import firebaseApp from "../../app/firebaseApp";
+import { OnStoreChange } from "../../hooks/utility/useClientSyncExternalStore";
 
 const firestore = getFirestore(firebaseApp);
 
@@ -21,7 +24,14 @@ const firestore = getFirestore(firebaseApp);
  *
  * @param path Path to the document.
  */
-export function setDoc(path: string, newData: WithFieldValue<DocumentData>) {
+export function setDoc(
+  path: string,
+  newData: WithFieldValue<DocumentData>,
+  options?: SetOptions 
+) {
+  if (options) {
+    return _setDoc(doc(firestore, path), newData, options);
+  }
   return _setDoc(doc(firestore, path), newData);
 };
 
@@ -54,33 +64,14 @@ export function deleteDoc(path: string) {
   return _deleteDoc(doc(firestore, path));
 };
 
-/**
- * Pads the data with missing values if data is not empty or undefined.
- *
- * @param snapshot Document snapshot that contains data.
- * @param defaultModel Model containing default values for missing data.
- * @returns Padded data.
- */
-export function padMissingFields<T>(snapshot: DocumentSnapshot, defaultModel: T) {
-  return {
-    ...defaultModel,
-    ...snapshot.data()
-  };
-};
+export function subscribeDoc(
+  path: string,
+  onStoreChange: OnStoreChange<DocumentSnapshot<DocumentData>>
+) {
+  const unsubscribe = onSnapshot(
+    doc(firestore, path),
+    snapshot => onStoreChange(snapshot)
+  )
 
-/**
- * Retrieves padded document data if document exists, undefined otherwise.
- *
- * @param path Path to firestore document.
- * @param defaultModel Model containing default values for missing data.
- * @returns Padded data.
- */
-export function getDocData<T>(path: string, defaultModel: T) {
-  return getDoc(path)
-    .then(snapshot => {
-      if (!snapshot.exists()) {
-        return undefined;
-      }
-      return padMissingFields<T>(snapshot, defaultModel)
-    });
+  return unsubscribe;
 };

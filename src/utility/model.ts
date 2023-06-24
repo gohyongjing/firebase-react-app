@@ -1,43 +1,123 @@
-import { DocumentData, DocumentReference, UpdateData, WithFieldValue } from "firebase/firestore";
-import { QueryCondition, addDoc, getDocsData } from "./firebase/collection";
-import { getDocData, deleteDoc, setDoc, updateDoc } from "./firebase/document";
+import { DocumentData, DocumentReference, DocumentSnapshot, QueryConstraint, QuerySnapshot, SetOptions, UpdateData, WithFieldValue } from "firebase/firestore";
+import { addDoc, getDocs, subscribeDocs } from "./firebase/collection";
+import { deleteDoc, getDoc, setDoc, subscribeDoc, updateDoc } from "./firebase/document";
+import { OnStoreChange, Unsubscribe } from "../hooks/utility/useClientSyncExternalStore";
+
+export type WithId<T> = T & { id: string }
 
 interface ModelOperations<T> {
   addModel: (path: string, newData: WithFieldValue<T>) => Promise<DocumentReference<DocumentData> | undefined>,
-  setModel: (path: string, newData: WithFieldValue<T>) => Promise<void>,
-  getModel: (path: string) => Promise<T | undefined>,
-  getModels: (path: string, condition?: QueryCondition) => Promise<T[] | undefined>
+  setModel: (path: string, newData: WithFieldValue<T>, options?: SetOptions) => Promise<void>,
+  getModel: (path: string) => Promise<WithId<T> | undefined>,
+  getModels: (path: string, ...queryConstraints: QueryConstraint[]) => Promise<WithId<T>[]>
+  getModelWhere: (path: string, ...queryConstraints: QueryConstraint[]) => Promise<WithId<T> | undefined>
   updateModel: (path: string, dataUpdates: UpdateData<T>) => Promise<void>,
   deleteModel: (path: string) => Promise<void>,
+  subscribeModel: (path: string, onStoreChange: OnStoreChange<WithId<T> | undefined>) => Unsubscribe
+  subscribeModels: (
+    path: string,
+    onStoreChange: OnStoreChange<WithId<T>[]>,
+    ...queryConstraints: QueryConstraint[]
+  ) => Unsubscribe
 }
+
 
 export default function getModelOperations<T extends DocumentData>(defaultModel: T): ModelOperations<T> {
 
+  function _padSnapshotData(snapshot: DocumentSnapshot<DocumentData>) {
+    return {
+      ...defaultModel,
+      ...snapshot.data(),
+      id: snapshot.id
+    }
+  }
+
+  /**
+   * Retrieves padded document data if document exists, undefined otherwise.
+   * Pads document data with default values and document id.
+   *
+   * @param path Path to firestore document.
+   * @returns Padded data.
+   */
   function getModel(path: string) {
-    return getDocData(path, defaultModel);
+    return getDoc(path).then(snapshot => {
+      if (!snapshot.exists()) {
+        return undefined;
+      }
+      return _padSnapshotData(snapshot);
+    });
   };
 
-  function getModels(path: string, condition?: QueryCondition) {
-    return getDocsData(path, defaultModel, condition);
+  /**
+   * Retrieves all documents with padded data at a certain path that satisfies a condition.
+   * Retrieves all documents at the path if condition is not specified.
+   * Pads document data with default values and document id.
+   * 
+   * @param path Path to the collection to retrieve documents.
+   * @param queryConstraints Constraints that retrieved documents must satisfy.
+   * @returns Documents satisfying the contraints. 
+   */
+  function getModels(path: string, ...queryConstraints: QueryConstraint[]) {
+    return getDocs(path, ...queryConstraints)
+      .then(snapshot => snapshot.docs.map(_padSnapshotData));
   };
+
+  async function getModelWhere(path: string, ...queryConstraints: QueryConstraint[]) {
+    const models = await getModels(path, ...queryConstraints);
+    if (models.length === 0) {
+      return undefined;
+    }
+    return models[0];
+  }
+
+  function subscribeModel(path: string, onStoreChange: OnStoreChange<WithId<T> | undefined>) {
+    function onStoreChangeWrapped(snapshot: DocumentSnapshot<DocumentData>) {
+      if (!snapshot.exists()) {
+        onStoreChange(undefined);
+        return;
+      }
+      onStoreChange(_padSnapshotData(snapshot));
+    }
+    return subscribeDoc(path, onStoreChangeWrapped);
+  }
+
+  function subscribeModels(
+    path: string,
+    onStoreChange: OnStoreChange<WithId<T>[]>,
+    ...queryConstraints: QueryConstraint[]
+  ) {
+    function onStoreChangeWrapped(snapshot: QuerySnapshot<DocumentData>) {
+      onStoreChange(snapshot.docs.map(_padSnapshotData))
+    }
+    return subscribeDocs(path, onStoreChangeWrapped, ...queryConstraints);
+  }
 
   return {
   addModel: addDoc,
   setModel: setDoc,
   getModel,
   getModels,
+  getModelWhere,
   updateModel: updateDoc,
   deleteModel: deleteDoc,
+  subscribeModel,
+  subscribeModels
   }
 }
 
 interface ModelOperationsWithPath<T> {
   addModel: (newData: WithFieldValue<T>) => Promise<DocumentReference<DocumentData> | undefined>,
-  setModel: (docId: string, newData: WithFieldValue<T>) => Promise<void>,
-  getModel: (docId: string) => Promise<T | undefined>,
-  getModels: (condition?: QueryCondition) => Promise<T[] | undefined>
+  setModel: (docId: string, newData: WithFieldValue<T>, setOptions?: SetOptions) => Promise<void>,
+  getModel: (docId: string) => Promise<WithId<T> | undefined>,
+  getModels: (...queryConstraints: QueryConstraint[]) => Promise<WithId<T>[]>
+  getModelWhere: (...queryConstraints: QueryConstraint[]) => Promise<WithId<T> | undefined>
   updateModel: (docId: string, dataUpdates: UpdateData<T>) => Promise<void>,
   deleteModel: (docId: string) => Promise<void>,
+  subscribeModel: (docId: string, onStoreChange: OnStoreChange<WithId<T> | undefined>) => Unsubscribe,
+  subscribeModels: (
+    onStoreChange: OnStoreChange<WithId<T>[]>,
+    ...queryConstraints: QueryConstraint[]
+  ) => Unsubscribe
 }
 
 /**
@@ -53,12 +133,20 @@ export function getModelOperationsWithPath<T extends DocumentData>(
 ): ModelOperationsWithPath<T> {
   const ops = getModelOperations(defaultModel);
 
-  function getModel(docId: string) {
-    return ops.getModel(`${path}/${docId}`);
+  function setModel(
+    docId: string,
+    newData: WithFieldValue<T>,
+    setOptions?: SetOptions
+  ) {
+    return ops.setModel(`${path}/${docId}`, newData, setOptions)
   };
 
-  function setModel(docId: string, newData: WithFieldValue<T>) {
-    return ops.setModel(`${path}/${docId}`, newData)
+  function addModel(newData: WithFieldValue<T>) {
+    return ops.addModel(path, newData);
+  };
+
+  function getModel(docId: string) {
+    return ops.getModel(`${path}/${docId}`);
   };
 
   function updateModel(docId: string, dataUpdates: UpdateData<T>) {
@@ -69,20 +157,34 @@ export function getModelOperationsWithPath<T extends DocumentData>(
     return ops.deleteModel(`${path}/${docId}`);
   };
 
-  function addModel(newData: WithFieldValue<T>) {
-    return ops.addModel(path, newData);
+  function getModels(...queryConstraints: QueryConstraint[]) {
+    return ops.getModels(path, ...queryConstraints);
   };
 
-  function getModels(condition?: QueryCondition) {
-    return ops.getModels(path, condition);
+  function getModelWhere(...queryConstraints: QueryConstraint[]) {
+    return ops.getModelWhere(path, ...queryConstraints);
+  }
+
+  function subscribeModel(docId: string, onStoreChange: OnStoreChange<WithId<T> | undefined>) {
+    return ops.subscribeModel(`${path}/${docId}`, onStoreChange);
   };
+
+  function subscribeModels(
+    onStoreChange: OnStoreChange<WithId<T>[]>,
+    ...queryConstraints: QueryConstraint[]
+  ) {
+    return ops.subscribeModels(path, onStoreChange, ...queryConstraints);
+  }
 
   return {
     addModel,
     getModel,
     getModels,
+    getModelWhere,
     setModel,
     updateModel,
     deleteModel,
+    subscribeModel,
+    subscribeModels
   }
 }

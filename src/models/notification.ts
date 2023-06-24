@@ -1,4 +1,6 @@
-import { getModelOperationsWithPath } from "../utility/model";
+import { Timestamp, where } from "firebase/firestore";
+import { OnStoreChange } from "../hooks/utility/useClientSyncExternalStore";
+import { WithId, getModelOperationsWithPath } from "../utility/model";
 
 const FIRESTORE_PATH_NOTIFICATIONS = 'notifications';
 
@@ -6,16 +8,18 @@ const NOTIFICATION_MSG_WELCOME = 'Welcome to firebase-react-app!'
 
 type NotificationType = 'Announcement';
 
-interface Notification {
+export interface Notification {
   type: NotificationType
   recipientId: string
   message: string
+  timestamp: Timestamp
 }
 
 export const defaultNotificationModel: Notification = {
   type: 'Announcement',
   recipientId: '',
   message: '',
+  timestamp: Timestamp.fromDate(new Date())
 }
 
 const ops = getModelOperationsWithPath(
@@ -29,11 +33,21 @@ const addNotification = ops.addModel;
 //const getNotifications = ops.getModels;
 //const updateNotification = ops.updateModel;
 //const deleteNotification = ops.deleteModel;
+//const subscribeNotification = ops.subscribeModel;
+const subscribeNotifications = ops.subscribeModels;
 
 export function sendWelcomeNotification(userId: string) {
   return addNotification({
     type: 'Announcement',
     recipientId: userId,
-    message: NOTIFICATION_MSG_WELCOME
+    message: NOTIFICATION_MSG_WELCOME,
+    timestamp: Timestamp.fromDate(new Date())
   })
+}
+
+export function subscribeUserNotifications(
+  userId: string,
+  onStoreChange: OnStoreChange<WithId<Notification>[]>
+) {
+  return subscribeNotifications(onStoreChange, where('recipientId', '==', userId));
 }

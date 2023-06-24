@@ -1,5 +1,4 @@
 import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
-import { useAuthContext } from "../contexts/useAuthContext";
 import Form from "../components/form/Form";
 import Input from "../components/form/Input";
 import Button from "../components/form/Button";
@@ -7,10 +6,12 @@ import useInputHandler from "../hooks/utility/form/useInputHandler";
 import useSyncCachedExternalStore from "../hooks/utility/useSyncCachedExternalStore";
 import usePromise from "../hooks/utility/usePromise";
 import { getUser, updateUserName } from "../models/user";
+import { formatAuthErrorMessage, signOut } from "../utility/firebase/auth";
+import { useAppContext } from "../contexts/useAppContext";
 
 export default function Dashboard() {
-  const { user: firebaseUser, signOut, authIsLoading, authErrorMessage } = useAuthContext();
-  const {resolve, isLoading: isUpdating } = usePromise();
+  const { user: firebaseUser, notifications } = useAppContext();
+  const { resolve, isLoading, error } = usePromise();
   const userNameInputHandler = useInputHandler('');
 
   const fetcher = useCallback(async () => {
@@ -24,7 +25,7 @@ export default function Dashboard() {
 
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    return signOut();
+    return resolve(signOut);
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -45,15 +46,31 @@ export default function Dashboard() {
   }, [user?.userName, userNameInputHandler])
   console.log('dashboard rerender')
 
-  const isLoading = authIsLoading || isUpdating;
+  const errorMessage = formatAuthErrorMessage(error)
 
   return (
     <>
+      <div>
+        Notifications
+        {
+          notifications.map(notification => {
+            return (
+              <div
+                key={notification.id}
+              >
+                Message: {notification.message}
+                <br/>
+                Timestamp: {notification.timestamp.toString()}
+              </div>
+            )
+          })
+        }
+      </div>
       {
         `UserName: ${user?.userName}` 
       }
       {
-        `Auth Error: ${authErrorMessage}`
+        `Error: ${errorMessage}`
       }
       <Form onSubmit={handleSubmit}>
         <Input
@@ -68,7 +85,6 @@ export default function Dashboard() {
           Update userName
         </Button>
       </Form>
-      {authErrorMessage}
       <button onClick={handleClick}>Log Out</button>
     </>
   );

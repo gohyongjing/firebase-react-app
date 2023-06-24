@@ -1,29 +1,32 @@
 import { FormEvent } from "react";
-import { useAuthContext } from "../contexts/useAuthContext";
 import { PATH_LOG_IN, PATH_SIGN_UP } from "../app/AppRoutes";
 import Form from "../components/form/Form";
 import Input from "../components/form/Input";
 import Button from "../components/form/Button";
 import useInputHandler from "../hooks/utility/form/useInputHandler";
+import usePromise from "../hooks/utility/usePromise";
+import { formatAuthErrorMessage, signUp } from "../utility/firebase/auth";
 
 export default function SignUp() {
-  const { authErrorMessage, signUp } = useAuthContext();
+  const { resolve, error } = usePromise();
   const emailInputHandler = useInputHandler('')
   const passwordInputHandler = useInputHandler('')
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    return signUp(
+    return resolve(() => signUp(
       emailInputHandler.value,
       passwordInputHandler.value
-    );
+    ));
   }
+
+  const errorMessage = formatAuthErrorMessage(error);
 
   return (
     <div>
       <a href={PATH_LOG_IN}>log In</a>
       <a href={PATH_SIGN_UP}>Sign Up</a>
-      <div>{authErrorMessage}</div>
+      <div>{errorMessage}</div>
       <Form onSubmit={handleSubmit}>
         <Input
           type='email'

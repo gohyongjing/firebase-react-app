@@ -19,9 +19,13 @@ export default function useInputHandler(
     setValue(oldValue => onChange(e, oldValue));
   }, [onChange]);
 
+  const resetValue = useCallback(
+    () => setValue(''), [])
+
   return {
     value,
     setValue,
+    resetValue,
     onChange: inputOnChange
   }
 }
