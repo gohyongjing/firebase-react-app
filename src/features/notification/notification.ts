@@ -1,6 +1,6 @@
 import { Timestamp, where } from "firebase/firestore";
-import { OnStoreChange } from "../hooks/utility/useClientSyncExternalStore";
-import { WithId, getModelOperationsWithPath } from "../utility/model";
+import { OnStoreChange } from "hooks/useClientSyncExternalStore";
+import { WithId, getModelOperationsWithPath } from "utility/model";
 
 const FIRESTORE_PATH_NOTIFICATIONS = 'notifications';
 
@@ -22,10 +22,16 @@ export const defaultNotificationModel: Notification = {
   timestamp: Timestamp.fromDate(new Date())
 }
 
+
+console.log('notif', getModelOperationsWithPath)
+
 const ops = getModelOperationsWithPath(
   FIRESTORE_PATH_NOTIFICATIONS,
   defaultNotificationModel
 );
+
+console.log('notif ops', ops)
+
 
 const addNotification = ops.addModel;
 //const setNotification = ops.setModel;

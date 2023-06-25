@@ -1,5 +1,5 @@
 import { Dispatch, MutableRefObject, SetStateAction, useCallback, useState } from "react";
-import useStateRef from "./useStateRef";
+import { useStateRef } from "./useStateRef";
 
 export type Resolver = <Value>(
   getValue: () => Promise<Value>,
@@ -22,7 +22,7 @@ interface PromiseHook {
  * 
  * @returns PromiseHook.
  */
-export default function usePromise(): PromiseHook {
+export function usePromise(): PromiseHook {
   const [isLoading, setIsLoading, isLoadingRef] = useStateRef(false);
   const [error, setError] = useState<unknown>(null);
 

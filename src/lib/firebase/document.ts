@@ -12,8 +12,8 @@ import {
   SetOptions,
   DocumentSnapshot,
 } from "firebase/firestore";
-import firebaseApp from "../../app/firebaseApp";
-import { OnStoreChange } from "../../hooks/utility/useClientSyncExternalStore";
+import firebaseApp from "./firebaseApp";
+import { OnStoreChange } from "hooks/useClientSyncExternalStore";
 
 const firestore = getFirestore(firebaseApp);
 

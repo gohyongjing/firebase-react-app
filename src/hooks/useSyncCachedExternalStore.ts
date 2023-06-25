@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import useClientSyncExternalStore, { OnStoreChange } from "./useClientSyncExternalStore";
+import { OnStoreChange, useClientSyncExternalStore } from "./useClientSyncExternalStore";
 
 interface SyncCachedExternalStoreHook<T> {
   readonly data: T | undefined,
@@ -13,7 +13,7 @@ interface SyncCachedExternalStoreHook<T> {
  * @param fetcher Function to fetch data from external store.
  * @returns SyncCachedExternalStoreHook.
  */
-export default function useSyncCachedExternalStore<T> (
+export function useSyncCachedExternalStore<T> (
   fetcher: () => Promise<T>
 ): SyncCachedExternalStoreHook<T> {
   const dataRef = useRef<T>();

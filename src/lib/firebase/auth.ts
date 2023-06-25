@@ -6,11 +6,11 @@ import {
   signInWithEmailAndPassword,
   signOut as _signOut
 } from "firebase/auth";
-import { OnStoreChange } from "../../hooks/utility/useClientSyncExternalStore";
-import firebaseApp from "../../app/firebaseApp";
-import { processUserSignIn, processUserSignUp } from "../../models/user";
-import { hasKey } from "../typePredicates";
-import { sendWelcomeNotification } from "../../models/notification";
+import firebaseApp from "./firebaseApp";
+import { OnStoreChange } from "hooks/useClientSyncExternalStore";
+import { processUserSignIn, processUserSignUp } from "features/user/user";
+import { sendWelcomeNotification } from "features/notification/notification";
+import { hasKey } from "utility/typePredicates";
 
 const auth = getAuth(firebaseApp);
 

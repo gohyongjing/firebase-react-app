@@ -1,6 +1,6 @@
+import { sendWelcomeNotification } from "features/notification/notification";
 import { UserCredential } from "firebase/auth";
-import { getModelOperationsWithPath } from "../utility/model";
-import { sendWelcomeNotification } from "./notification";
+import { getModelOperationsWithPath } from "utility/model";
 
 const FIRESTORE_PATH_USERS = 'users';
 

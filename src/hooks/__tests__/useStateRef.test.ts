@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import useStateRef from '../useStateRef'
+import { useStateRef } from '../useStateRef'
 
 test('setState() immediately updates ref and sets state for next render', () => {
   const {result} = renderHook(() => useStateRef(1))

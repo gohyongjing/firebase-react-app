@@ -1,7 +1,26 @@
-import { DocumentData, DocumentReference, DocumentSnapshot, QueryConstraint, QuerySnapshot, SetOptions, UpdateData, WithFieldValue } from "firebase/firestore";
-import { addDoc, getDocs, subscribeDocs } from "./firebase/collection";
-import { deleteDoc, getDoc, setDoc, subscribeDoc, updateDoc } from "./firebase/document";
-import { OnStoreChange, Unsubscribe } from "../hooks/utility/useClientSyncExternalStore";
+import {
+  deleteDoc,
+  getDoc,
+  setDoc,
+  subscribeDoc,
+  updateDoc
+} from "lib/firebase/document";
+import {
+  addDoc,
+  getDocs,
+  subscribeDocs,
+} from "lib/firebase/collection";
+import {
+  DocumentData,
+  DocumentReference,
+  DocumentSnapshot,
+  QueryConstraint,
+  QuerySnapshot,
+  SetOptions,
+  UpdateData,
+  WithFieldValue
+} from "firebase/firestore";
+import { OnStoreChange, Unsubscribe } from "hooks/useClientSyncExternalStore";
 
 export type WithId<T> = T & { id: string }
 
@@ -20,7 +39,6 @@ interface ModelOperations<T> {
     ...queryConstraints: QueryConstraint[]
   ) => Unsubscribe
 }
-
 
 export default function getModelOperations<T extends DocumentData>(defaultModel: T): ModelOperations<T> {
 
@@ -93,15 +111,15 @@ export default function getModelOperations<T extends DocumentData>(defaultModel:
   }
 
   return {
-  addModel: addDoc,
-  setModel: setDoc,
-  getModel,
-  getModels,
-  getModelWhere,
-  updateModel: updateDoc,
-  deleteModel: deleteDoc,
-  subscribeModel,
-  subscribeModels
+    addModel: addDoc,
+    setModel: setDoc,
+    getModel,
+    getModels,
+    getModelWhere,
+    updateModel: updateDoc,
+    deleteModel: deleteDoc,
+    subscribeModel,
+    subscribeModels
   }
 }
 

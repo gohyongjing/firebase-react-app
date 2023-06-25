@@ -2,7 +2,7 @@ import { InputHTMLAttributes } from "react";
 
 type Props = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>;
 
-export default function PasswordInput(props: Props) {
+export function PasswordInput(props: Props) {
   const finalProps = {
     ...props,
     type: 'password',

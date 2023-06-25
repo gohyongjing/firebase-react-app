@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import useClientSyncExternalStore, { OnStoreChange } from "../useClientSyncExternalStore";
+import { useClientSyncExternalStore, OnStoreChange } from "../useClientSyncExternalStore";
 
 test('hook returns correct data', () => {
   let onStoreChange: OnStoreChange<number> = () => {};

@@ -1,6 +1,6 @@
-import { PATH_LOG_IN, PATH_SIGN_UP } from "../app/AppRoutes";
+import { PATH_LOG_IN, PATH_SIGN_UP } from "routes/AppRoutes";
 
-export default function Home() {
+export function Home() {
 
   return (
     <div>

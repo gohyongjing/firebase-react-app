@@ -1,9 +1,10 @@
+
+import { useAuthContext } from "features/auth/contexts/useAuthContext";
+import { SignIn } from "features/auth/pages/SignIn";
+import { SignUp } from "features/auth/pages/SignUp";
+import { Dashboard } from "pages/Dashboard";
+import { Home } from "pages/Home";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Dashboard from "../pages/Dashboard";
-import Home from "../pages/Home";
-import SignUp from "../pages/SignUp";
-import LogIn from "../pages/SignIn";
-import { useAppContext } from "../contexts/useAppContext";
 
 export const PATH_HOME = '/';
 export const PATH_SIGN_UP = '/sign-up';
@@ -15,18 +16,18 @@ interface Props {
 }
 
 function RequireAuth({ children=null }: Props) {
-  const { user } = useAppContext();
+  const user = useAuthContext();
 
   return user ? children : <Navigate replace to={PATH_LOG_IN}/>;
 }
 
 function RequireNoAuth({ children=null }: Props) {
-  const { user } = useAppContext();
+  const user = useAuthContext();
 
   return user ? <Navigate replace to={PATH_DASHBOARD}/> : children;
 }
 
-export default function AppRoutes() {
+export function AppRoutes() {
   return (
     <Routes>
       <Route path={PATH_HOME} element={
@@ -36,7 +37,7 @@ export default function AppRoutes() {
         <RequireNoAuth><SignUp/></RequireNoAuth>
       }/>
       <Route path={PATH_LOG_IN} element={
-        <RequireNoAuth><LogIn/></RequireNoAuth>
+        <RequireNoAuth><SignIn/></RequireNoAuth>
       }/>
       <Route path={PATH_DASHBOARD} element={
         <RequireAuth><Dashboard/></RequireAuth>

@@ -1,16 +1,28 @@
+import { Button } from "components/form/Button";
+import { Form } from "components/form/Form";
+import { Input } from "components/form/Input";
+import { useAuthContext } from "features/auth/contexts/useAuthContext";
+import { Notification, subscribeUserNotifications } from "features/notification/notification";
+import { getUser, updateUserName } from "features/user/user";
+import { useInputHandler } from "hooks/form/useInputHandler";
+import { OnStoreChange, useClientSyncExternalStore } from "hooks/useClientSyncExternalStore";
+import { usePromise } from "hooks/usePromise";
+import { useSyncCachedExternalStore } from "hooks/useSyncCachedExternalStore";
+import { formatAuthErrorMessage, signOut } from "lib/firebase/auth";
 import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
-import Form from "../components/form/Form";
-import Input from "../components/form/Input";
-import Button from "../components/form/Button";
-import useInputHandler from "../hooks/utility/form/useInputHandler";
-import useSyncCachedExternalStore from "../hooks/utility/useSyncCachedExternalStore";
-import usePromise from "../hooks/utility/usePromise";
-import { getUser, updateUserName } from "../models/user";
-import { formatAuthErrorMessage, signOut } from "../utility/firebase/auth";
-import { useAppContext } from "../contexts/useAppContext";
+import { WithId } from "utility/model";
 
-export default function Dashboard() {
-  const { user: firebaseUser, notifications } = useAppContext();
+export function Dashboard() {
+  const firebaseUser = useAuthContext();
+  const _wrappedSubscibeNotifications = useCallback((
+    onStoreChange: OnStoreChange<WithId<Notification>[]>
+  ) => {
+    if (!firebaseUser) {
+      return () => {};
+    }
+    return subscribeUserNotifications(firebaseUser.uid, onStoreChange)
+  }, [firebaseUser])
+  const notifications = useClientSyncExternalStore(_wrappedSubscibeNotifications) ?? [];
   const { resolve, isLoading, error } = usePromise();
   const userNameInputHandler = useInputHandler('');
 

@@ -1,5 +1,5 @@
 import { Dispatch, MutableRefObject, SetStateAction, useCallback, useRef, useState } from "react";
-import { isFunction } from "../../utility/typePredicates";
+import { isFunction } from "utility/typePredicates";
 
 export type StateRefHook<S> = [
   S,
@@ -14,7 +14,7 @@ export type StateRefHook<S> = [
  * @param initialState Initial state.
  * @returns StateRefHook.
  */
-export default function useStateRef<S>(
+export function useStateRef<S>(
   initialState: S | (() => S)
 ): StateRefHook<S> {
   let temp: S;

@@ -1,13 +1,13 @@
+import { Button } from "components/form/Button";
+import { Form } from "components/form/Form";
+import { Input } from "components/form/Input";
+import { useInputHandler } from "hooks/form/useInputHandler";
+import { usePromise } from "hooks/usePromise";
+import { formatAuthErrorMessage, signIn } from "lib/firebase/auth";
 import { FormEvent } from "react";
-import { PATH_LOG_IN, PATH_SIGN_UP } from "../app/AppRoutes";
-import useInputHandler from "../hooks/utility/form/useInputHandler";
-import Form from "../components/form/Form";
-import Input from "../components/form/Input";
-import Button from "../components/form/Button";
-import { formatAuthErrorMessage, signIn } from "../utility/firebase/auth";
-import usePromise from "../hooks/utility/usePromise";
+import { PATH_LOG_IN, PATH_SIGN_UP } from "routes/AppRoutes";
 
-export default function LogIn() {
+export function SignIn() {
   const { resolve, error } = usePromise();
   const emailInputHandler = useInputHandler('');
   const passwordInputHandler = useInputHandler('');
