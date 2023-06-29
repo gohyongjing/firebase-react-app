@@ -1,4 +1,4 @@
-import { PATH_LOG_IN, PATH_SIGN_UP } from "routes/AppRoutes";
+import { PATH_LOG_IN, PATH_SIGN_UP } from "routes";
 
 export function Home() {
 

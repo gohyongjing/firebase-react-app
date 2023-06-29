@@ -23,7 +23,7 @@ test('hasKey() returns false for objects without the particular key', () => {
 test('hasKey() returns false for non-objects', () => {
   const nonObjects: [unknown, string | number | symbol][] = [
     [ 'hello', 'hello'],
-    [ (a: number) => {a + 122}, 122],
+    [ (a: number) => (a + 122), 122],
     [ 12, 'hi' ]
   ];
   for (let [nonObj, key] of nonObjects) {

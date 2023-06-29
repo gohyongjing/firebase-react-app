@@ -20,7 +20,7 @@ import {
   UpdateData,
   WithFieldValue
 } from "firebase/firestore";
-import { OnStoreChange, Unsubscribe } from "hooks/useClientSyncExternalStore";
+import { OnStoreChange, Unsubscribe } from "hooks";
 
 export type WithId<T> = T & { id: string }
 

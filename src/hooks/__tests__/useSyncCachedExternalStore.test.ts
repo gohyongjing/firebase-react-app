@@ -55,11 +55,14 @@ test('hook reverts to original data on failed update', async () => {
 
   // hook reverts to old data on update error.
   act(() => {
+    let error: unknown;
     result.current.updateExternalStore(
       100,
       () => Promise.reject(ERR_ASYNC_REJECT_MESSAGE)
     ).catch(e => {
-      expect(e).toBe(ERR_ASYNC_REJECT_MESSAGE);
+      error = e;
+    }).finally(() => {
+      expect(error).toBe(ERR_ASYNC_REJECT_MESSAGE);
     });
   })
 

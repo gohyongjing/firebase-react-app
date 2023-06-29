@@ -1,5 +1,5 @@
 import { Timestamp, where } from "firebase/firestore";
-import { OnStoreChange } from "hooks/useClientSyncExternalStore";
+import { OnStoreChange } from "hooks";
 import { WithId, getModelOperationsWithPath } from "utility/model";
 
 const FIRESTORE_PATH_NOTIFICATIONS = 'notifications';

@@ -1,6 +1,8 @@
 import { act, renderHook } from "@testing-library/react";
 import { useClientSyncExternalStore, OnStoreChange } from "../useClientSyncExternalStore";
 
+function doNothing() {};
+
 test('hook returns correct data', () => {
   let onStoreChange: OnStoreChange<number> = () => {};
   const subscribe = (newOnStoreChange: OnStoreChange<number>) => {
@@ -50,7 +52,9 @@ test('hook correctly subscribes and unsubscribes', () => {
   expect(spiedSubscribe2).toBeCalledTimes(0);
 
   // hook should not unsubscribe on every render.
-  act(() => {});
+  act(() => {
+    doNothing();
+  });
 
   expect(spiedSubscribe).toBeCalledTimes(1);
   expect(spiedUnsubscribe).toBeCalledTimes(0);

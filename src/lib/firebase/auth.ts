@@ -7,9 +7,9 @@ import {
   signOut as _signOut
 } from "firebase/auth";
 import firebaseApp from "./firebaseApp";
-import { OnStoreChange } from "hooks/useClientSyncExternalStore";
-import { processUserSignIn, processUserSignUp } from "features/user/user";
-import { sendWelcomeNotification } from "features/notification/notification";
+import { OnStoreChange } from "hooks";
+import { processUserSignIn, processUserSignUp } from "features/user";
+import { sendWelcomeNotification } from "features/notification";
 import { hasKey } from "utility/typePredicates";
 
 const auth = getAuth(firebaseApp);

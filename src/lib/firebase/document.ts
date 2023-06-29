@@ -13,7 +13,7 @@ import {
   DocumentSnapshot,
 } from "firebase/firestore";
 import firebaseApp from "./firebaseApp";
-import { OnStoreChange } from "hooks/useClientSyncExternalStore";
+import { OnStoreChange } from "hooks";
 
 const firestore = getFirestore(firebaseApp);
 

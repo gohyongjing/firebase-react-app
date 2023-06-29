@@ -1,11 +1,9 @@
-import { Button } from "components/form/Button";
-import { Form } from "components/form/Form";
-import { Input } from "components/form/Input";
-import { useInputHandler } from "hooks/form/useInputHandler";
-import { usePromise } from "hooks/usePromise";
+import { Button, Form, Input } from "components/form";
+import { useInputHandler } from "hooks/form";
+import { usePromise } from "hooks";
 import { formatAuthErrorMessage, signUp } from "lib/firebase/auth";
 import { FormEvent } from "react";
-import { PATH_LOG_IN, PATH_SIGN_UP } from "routes/AppRoutes";
+import { PATH_LOG_IN, PATH_SIGN_UP } from "routes";
 
 export function SignUp() {
   const { resolve, error } = usePromise();

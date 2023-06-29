@@ -1,9 +1,5 @@
-
-import { useAuthContext } from "features/auth/contexts/useAuthContext";
-import { SignIn } from "features/auth/pages/SignIn";
-import { SignUp } from "features/auth/pages/SignUp";
-import { Dashboard } from "pages/Dashboard";
-import { Home } from "pages/Home";
+import { useAuthContext, SignIn, SignUp } from "features/auth";
+import { Dashboard, Home } from "pages";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 export const PATH_HOME = '/';

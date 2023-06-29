@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { useClientSyncExternalStore } from "hooks/useClientSyncExternalStore";
+import { useClientSyncExternalStore } from "hooks";
 import { subscribeAuth } from "lib/firebase/auth";
 import { ReactNode, createContext, useContext } from "react";
 

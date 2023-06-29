@@ -1,4 +1,4 @@
-import { sendWelcomeNotification } from "features/notification/notification";
+import { sendWelcomeNotification } from "features/notification";
 import { UserCredential } from "firebase/auth";
 import { getModelOperationsWithPath } from "utility/model";
 
