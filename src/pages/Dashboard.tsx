@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "components/form";
 import { useAuthContext } from "features/auth";
 import { Notification, subscribeUserNotifications } from "features/notification";
-import { getUser, updateUserName } from "features/user";
+import { getUserById, updateUserName } from "features/user";
 import { useInputHandler } from "hooks/form";
 import { OnStoreChange, useClientSyncExternalStore, usePromise, useSyncCachedExternalStore } from "hooks";
 import { formatAuthErrorMessage, signOut } from "lib/firebase/auth";
@@ -26,7 +26,7 @@ export function Dashboard() {
     if (!firebaseUser?.uid) {
       return undefined;
     }
-    return getUser(firebaseUser.uid);
+    return getUserById(firebaseUser.uid);
   }, [firebaseUser?.uid])
 
   const { data: user } = useSyncCachedExternalStore(fetcher);
