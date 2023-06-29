@@ -1,7 +1,5 @@
 import { HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
-import { EmailInput } from "./inputs/EmailInput";
-import { PasswordInput } from "./inputs/PasswordInput";
-import { TextInput } from "./inputs/TextInput";
+import { EmailInput, PasswordInput, TextInput } from "./inputs";
 
 function getSpecificInputComponent(type: HTMLInputTypeAttribute | undefined) {
   switch(type) {

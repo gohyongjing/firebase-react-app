@@ -1,12 +1,11 @@
 import { Button, Form, Input } from "components/form";
-import { useAuthContext } from "features/auth";
+import { formatErrorMessage, signOut, useAuthContext } from "features/auth";
 import { Notification, subscribeUserNotifications } from "features/notification";
 import { getUserById, updateUserName } from "features/user";
 import { useInputHandler } from "hooks/form";
 import { OnStoreChange, useClientSyncExternalStore, usePromise, useSyncCachedExternalStore } from "hooks";
 import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
 import { WithId } from "utility/model";
-import { formatErrorMessage, signOut } from "features/auth";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();

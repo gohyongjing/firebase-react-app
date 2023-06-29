@@ -3,10 +3,10 @@ import {
   DocumentReference,
   QueryConstraint,
   SetOptions,
+  Unsubscribe,
   UpdateData,
   WithFieldValue
 } from "firebase/firestore";
-import { OnStoreChange, Unsubscribe } from "hooks";
 import { WithId, getModelOperationsWithPath } from "utility/model";
 import { User } from "../types";
 
@@ -52,12 +52,12 @@ export const deleteUser: (userId: string) => Promise<void>
 
 export const subscribeUser: (
   userId: string,
-  onStoreChange: OnStoreChange<WithId<User> | undefined>
+  onNext: (user: WithId<User> | undefined) => void
 ) => Unsubscribe
   = ops.subscribeModel;
 
 export const subscribeUsers: (
-  onStoreChange: OnStoreChange<WithId<User>[]>,
+  onNext: (users: WithId<User>[]) => void,
   ...queryConstraints: QueryConstraint[]
 ) => Unsubscribe
   = ops.subscribeModels
