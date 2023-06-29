@@ -12,8 +12,7 @@ import {
   SetOptions,
   DocumentSnapshot,
 } from "firebase/firestore";
-import firebaseApp from "./firebaseApp";
-import { OnStoreChange } from "hooks";
+import firebaseApp from "../app";
 
 const firestore = getFirestore(firebaseApp);
 
@@ -66,11 +65,11 @@ export function deleteDoc(path: string) {
 
 export function subscribeDoc(
   path: string,
-  onStoreChange: OnStoreChange<DocumentSnapshot<DocumentData>>
+  onNext: (snapshot: DocumentSnapshot<DocumentData>) => void,
 ) {
   const unsubscribe = onSnapshot(
     doc(firestore, path),
-    snapshot => onStoreChange(snapshot)
+    onNext
   )
 
   return unsubscribe;

@@ -10,8 +10,7 @@ import {
   onSnapshot,
   QuerySnapshot,
 } from "firebase/firestore";
-import firebaseApp from "./firebaseApp";
-import { OnStoreChange } from "hooks";
+import firebaseApp from "../app";
 
 const firestore = getFirestore(firebaseApp);
 
@@ -38,15 +37,14 @@ export function getDocs(
 
 export function subscribeDocs(
   path: string,
-  onStoreChange: OnStoreChange<QuerySnapshot<DocumentData>>,
+  onNext: (snapshot: QuerySnapshot<DocumentData>) => void,
   ...queryConstraints: QueryConstraint[]
 ) {
   const collectionRef = collection(firestore, path);
   const docsQuery = query(collectionRef, ...queryConstraints);
   const unsubscribe = onSnapshot(
     docsQuery,
-    snapshot => onStoreChange(snapshot)
+    onNext,
   )
-
   return unsubscribe;
 };

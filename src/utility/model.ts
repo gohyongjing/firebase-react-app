@@ -4,12 +4,12 @@ import {
   setDoc,
   subscribeDoc,
   updateDoc
-} from "lib/firebase/document";
+} from "lib/firebase/firestore/document";
 import {
   addDoc,
   getDocs,
   subscribeDocs,
-} from "lib/firebase/collection";
+} from "lib/firebase/firestore/collection";
 import {
   DocumentData,
   DocumentReference,

@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut as _signOut
 } from "firebase/auth";
-import firebaseApp from "./firebaseApp";
+import firebaseApp from "../app";
 import { OnStoreChange } from "hooks";
 import { processUserSignIn, processUserSignUp } from "features/user";
 import { sendWelcomeNotification } from "features/notification";
