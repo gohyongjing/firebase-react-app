@@ -4,9 +4,9 @@ import { Notification, subscribeUserNotifications } from "features/notification"
 import { getUserById, updateUserName } from "features/user";
 import { useInputHandler } from "hooks/form";
 import { OnStoreChange, useClientSyncExternalStore, usePromise, useSyncCachedExternalStore } from "hooks";
-import { formatAuthErrorMessage, signOut } from "lib/firebase/auth";
 import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
 import { WithId } from "utility/model";
+import { formatErrorMessage, signOut } from "features/auth";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
@@ -54,7 +54,7 @@ export function Dashboard() {
   }, [user?.userName, userNameInputHandler])
   console.log('dashboard rerender')
 
-  const errorMessage = formatAuthErrorMessage(error)
+  const errorMessage = formatErrorMessage(error)
 
   return (
     <>

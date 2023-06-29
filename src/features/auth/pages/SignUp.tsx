@@ -1,9 +1,9 @@
 import { Button, Form, Input } from "components/form";
 import { useInputHandler } from "hooks/form";
 import { usePromise } from "hooks";
-import { formatAuthErrorMessage, signUp } from "lib/firebase/auth";
 import { FormEvent } from "react";
 import { PATH_LOG_IN, PATH_SIGN_UP } from "routes";
+import { formatErrorMessage, signUp } from "../api";
 
 export function SignUp() {
   const { resolve, error } = usePromise();
@@ -18,7 +18,7 @@ export function SignUp() {
     ));
   }
 
-  const errorMessage = formatAuthErrorMessage(error);
+  const errorMessage = formatErrorMessage(error);
 
   return (
     <div>

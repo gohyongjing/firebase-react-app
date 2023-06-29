@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import { useClientSyncExternalStore } from "hooks";
-import { subscribeAuth } from "lib/firebase/auth";
 import { ReactNode, createContext, useContext } from "react";
+import { subscribeAuth } from "../api";
 
 const AuthContext = createContext<User | null | undefined>(null);
 
