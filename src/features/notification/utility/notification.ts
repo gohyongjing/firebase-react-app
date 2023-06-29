@@ -7,7 +7,7 @@ import {
   Unsubscribe,
   UpdateData,
   WithFieldValue
-} from "firebase/firestore";
+} from "lib/firebase/firestore";
 import { WithId, getModelOperationsWithPath } from "utility/model";
 import { Notification } from "../types";
 

@@ -1,6 +1,6 @@
 import { WithId } from "utility/model";
 import { subscribeNotifications } from "../utility/notification";
-import { where } from "firebase/firestore";
+import { where } from "lib/firebase/firestore";
 import { Notification } from "../types";
 
 export function subscribeUserNotifications(

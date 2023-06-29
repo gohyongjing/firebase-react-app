@@ -6,7 +6,7 @@ import {
   Unsubscribe,
   UpdateData,
   WithFieldValue
-} from "firebase/firestore";
+} from "lib/firebase/firestore";
 import { WithId, getModelOperations } from "./modelOperations";
 
 interface ModelOperationsWithPath<T> {

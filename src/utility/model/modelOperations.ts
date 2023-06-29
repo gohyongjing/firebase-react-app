@@ -6,9 +6,7 @@ import {
   setDoc,
   subscribeDoc,
   subscribeDocs,
-  updateDoc
-} from "lib/firebase/firestore";
-import {
+  updateDoc,
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
@@ -18,7 +16,7 @@ import {
   Unsubscribe,
   UpdateData,
   WithFieldValue
-} from "firebase/firestore";
+} from "lib/firebase/firestore";
 
 export type WithId<T> = T & { id: string }
 

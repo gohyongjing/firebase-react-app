@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from "lib/firebase/firestore";
 import { addNotification } from "../utility/notification";
 
 const NOTIFICATION_MSG_WELCOME = 'Welcome to firebase-react-app!'
