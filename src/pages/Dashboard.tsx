@@ -6,6 +6,7 @@ import { useInputHandler } from "hooks/form";
 import { OnStoreChange, useClientSyncExternalStore, usePromise, useSyncCachedExternalStore } from "hooks";
 import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
 import { WithId } from "utility/model";
+import MainNav from "components/nav/MainNav";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
@@ -51,12 +52,12 @@ export function Dashboard() {
       userNameInputHandler.setValue(user.userName);
     }
   }, [user?.userName, userNameInputHandler])
-  console.log('dashboard rerender')
 
   const errorMessage = formatErrorMessage(error)
 
   return (
     <>
+      <MainNav />
       <div>
         Notifications
         {
