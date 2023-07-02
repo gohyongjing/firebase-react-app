@@ -1,12 +1,12 @@
 import { Button, Form, Input } from "components/form";
-import { formatErrorMessage, signOut, useAuthContext } from "features/auth";
+import { formatErrorMessage, useAuthContext } from "features/auth";
 import { Notification, subscribeUserNotifications } from "features/notification";
 import { getUserById, updateUserName } from "features/user";
 import { useInputHandler } from "hooks/form";
 import { OnStoreChange, useClientSyncExternalStore, usePromise, useSyncCachedExternalStore } from "hooks";
-import { FormEvent, MouseEvent, useCallback, useEffect } from "react";
+import { FormEvent, useCallback, useEffect } from "react";
 import { WithId } from "utility/model";
-import MainNav from "components/nav/MainNav";
+import { Page } from "components/utility";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
@@ -31,11 +31,6 @@ export function Dashboard() {
 
   const { data: user } = useSyncCachedExternalStore(fetcher);
 
-  function handleClick(e: MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    return resolve(signOut);
-  }
-
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!firebaseUser?.uid) {
@@ -56,8 +51,7 @@ export function Dashboard() {
   const errorMessage = formatErrorMessage(error)
 
   return (
-    <>
-      <MainNav />
+    <Page>
       <div>
         Notifications
         {
@@ -93,7 +87,6 @@ export function Dashboard() {
           Update userName
         </Button>
       </Form>
-      <button onClick={handleClick}>Log Out</button>
-    </>
+    </Page>
   );
 }

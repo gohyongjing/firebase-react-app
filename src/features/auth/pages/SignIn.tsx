@@ -2,8 +2,8 @@ import { useInputHandler } from "hooks/form";
 import { usePromise } from "hooks";
 import { formatErrorMessage, signIn } from "../api";
 import { FormEvent } from "react";
-import { PATH_LOG_IN, PATH_SIGN_UP } from "routes";
 import { Button, Form, Input } from "components/form";
+import { Page } from "components/utility";
 
 export function SignIn() {
   const { resolve, error } = usePromise();
@@ -21,9 +21,7 @@ export function SignIn() {
   const errorMessage = formatErrorMessage(error);
 
   return (
-    <div>
-      <a href={PATH_LOG_IN}>log In</a>
-      <a href={PATH_SIGN_UP}>Sign Up</a>
+    <Page>
       <div>{errorMessage}</div>
       <Form onSubmit={handleSubmit}>
         <Input
@@ -40,6 +38,6 @@ export function SignIn() {
           Sign Up
         </Button>
       </Form>
-    </div>
+    </Page>
   );
 }

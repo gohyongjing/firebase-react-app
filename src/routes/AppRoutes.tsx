@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 export const PATH_HOME = '/';
 export const PATH_SIGN_UP = '/sign-up';
-export const PATH_LOG_IN = '/log-in';
+export const PATH_SIGN_IN = '/log-in';
 export const PATH_DASHBOARD = '/dashboard'
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 function RequireAuth({ children=null }: Props) {
   const user = useAuthContext();
 
-  return user ? children : <Navigate replace to={PATH_LOG_IN}/>;
+  return user ? children : <Navigate replace to={PATH_SIGN_IN}/>;
 }
 
 function RequireNoAuth({ children=null }: Props) {
@@ -32,7 +32,7 @@ export function AppRoutes() {
       <Route path={PATH_SIGN_UP} element={
         <RequireNoAuth><SignUp/></RequireNoAuth>
       }/>
-      <Route path={PATH_LOG_IN} element={
+      <Route path={PATH_SIGN_IN} element={
         <RequireNoAuth><SignIn/></RequireNoAuth>
       }/>
       <Route path={PATH_DASHBOARD} element={

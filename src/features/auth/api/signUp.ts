@@ -1,3 +1,4 @@
+import { sendWelcomeNotification } from "features/notification";
 import { processUserSignUp } from "features/user";
 import { signUp as _signUp } from "lib/firebase/auth";
 
@@ -9,7 +10,10 @@ export function signUp(email: string, password: string) {
     if (!userCredential) {
       return;
     }
-    await processUserSignUp(userCredential);
+    await Promise.all([
+      processUserSignUp(userCredential),
+      sendWelcomeNotification(userCredential.user.uid)
+    ]);
     return userCredential;
   });
 };
