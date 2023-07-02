@@ -8,10 +8,14 @@ interface Props {
 export function Page({ children }: Props) {
   return (
     <div
-      className="bg-slate-900 text-slate-200 h-screen"
+      className="bg-slate-900 text-slate-200 min-h-screen"
     >
       <MainNav />
-      { children }
+      <div
+        className="p-2"
+      >
+        { children }
+      </div>
     </div>
   );
 }

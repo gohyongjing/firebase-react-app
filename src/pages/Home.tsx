@@ -8,9 +8,11 @@ export function Home() {
   return (
     <Page>
       <div
-        className="flex flex-col justify-center items-center py-40"
+        className="flex flex-col justify-center items-center min-h-full"
       >
-        <WelcomeBanner />
+        <WelcomeBanner
+          className='my-20'
+        />
         <Button
           className="w-1/2 m-2"
         >

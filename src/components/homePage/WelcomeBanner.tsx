@@ -1,9 +1,13 @@
 import { FirebaseReactAppLogo } from "components/utility";
 
-export function WelcomeBanner() {
+interface Props {
+  className?: string
+}
+
+export function WelcomeBanner({ className = '' }: Props) {
   return (
     <div
-      className="my-10"
+      className={'my-10 text-center ' + className}
     >
       <div
         className="text-xl"
@@ -11,10 +15,10 @@ export function WelcomeBanner() {
         Welcome to
       </div>
       <div
-        className="my-5"
+        className="my-5 text-center"
       >
         <FirebaseReactAppLogo
-          className="text-4xl"
+          className="text-3xl"
         />  
       </div> 
     </div>

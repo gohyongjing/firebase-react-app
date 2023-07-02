@@ -20,7 +20,7 @@ export function MainNav() {
 
   return (
     <NavigationMenu.Root
-      className='bg-primary-1'
+      className='bg-primary-1 sticky top-0'
     >
       <NavigationMenu.List
         className='flex p-2 justify-between'
