@@ -13,7 +13,9 @@ export function NavMenuItemLink({ href, children }: Props) {
           href={href}
           className='text-primary-2'
         >
-          { children }
+          <b>
+            { children }
+          </b>
         </NavigationMenu.Link>
     </NavigationMenu.Item>
   );

@@ -7,18 +7,18 @@ interface Props {
 export function WelcomeBanner({ className = '' }: Props) {
   return (
     <div
-      className={'my-10 text-center ' + className}
+      className={'text-center ' + className}
     >
-      <div
+      <b
         className="text-xl"
       >
         Welcome to
-      </div>
+      </b>
       <div
         className="my-5 text-center"
       >
         <FirebaseReactAppLogo
-          className="text-3xl"
+          className="text-4xl"
         />  
       </div> 
     </div>

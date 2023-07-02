@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "components/form";
+import { Button, Form, LabelledInput } from "components/form";
 import { useInputHandler } from "hooks/form";
 import { usePromise } from "hooks";
 import { FormEvent } from "react";
@@ -24,15 +24,19 @@ export function SignUp() {
     <Page>
       <div>{errorMessage}</div>
       <Form onSubmit={handleSubmit}>
-        <Input
+        <LabelledInput
           type='email'
           value={emailInputHandler.value}
           onChange={emailInputHandler.onChange}
+          labelText="Email"
+          id='email'
         />
-        <Input
+        <LabelledInput
           type="password"
           value={passwordInputHandler.value}
           onChange={passwordInputHandler.onChange}
+          labelText="Password"
+          id='password'
         />
         <Button>
           Sign Up

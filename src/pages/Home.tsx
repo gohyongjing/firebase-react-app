@@ -14,7 +14,7 @@ export function Home() {
           className='my-20'
         />
         <Button
-          className="w-1/2 m-2"
+          className="w-1/2 m-2 bg-primary-2 text-primary-1"
         >
           <a href={PATH_SIGN_UP}> Sign Up</a>
         </Button>
