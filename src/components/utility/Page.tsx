@@ -7,9 +7,11 @@ interface Props {
 
 export function Page({ children }: Props) {
   return (
-    <>
+    <div
+      className="bg-slate-900 text-slate-200 h-screen"
+    >
       <MainNav />
       { children }
-    </>
+    </div>
   );
 }

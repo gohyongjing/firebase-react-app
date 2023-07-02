@@ -1,10 +1,27 @@
+import { Button } from "components/form";
+import { WelcomeBanner } from "components/homePage";
 import { Page } from "components/utility";
+import { PATH_SIGN_IN, PATH_SIGN_UP } from "routes";
 
 export function Home() {
 
   return (
     <Page>
-      Welcome to firebase-react-app
+      <div
+        className="flex flex-col justify-center items-center py-40"
+      >
+        <WelcomeBanner />
+        <Button
+          className="w-1/2 m-2"
+        >
+          <a href={PATH_SIGN_UP}> Sign Up</a>
+        </Button>
+        <Button
+          className="w-1/2 m-2"
+        >
+          <a href={PATH_SIGN_IN}> Sign In</a>
+        </Button>
+      </div>
     </Page>
   );
 }

@@ -23,7 +23,7 @@ export function MainNav() {
       className='bg-primary-1'
     >
       <NavigationMenu.List
-        className='flex p-2 justify-between text-lg'
+        className='flex p-2 justify-between'
       >
         <div
           className='flex items-center'
@@ -31,7 +31,7 @@ export function MainNav() {
           <LogoNavMenuItem />
         </div>
         <div
-          className='flex gap-3'
+          className='flex items-center gap-3'
         >
           {
             navMenuItems.map((navMenuItem, index) => (
