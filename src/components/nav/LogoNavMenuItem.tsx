@@ -6,7 +6,6 @@ export function LogoNavMenuItem() {
   return (
     <NavigationMenu.Item>
       <NavigationMenu.Link
-        className="text-primary-2"
         href={PATH_HOME}
       >
         <FirebaseReactAppLogo />

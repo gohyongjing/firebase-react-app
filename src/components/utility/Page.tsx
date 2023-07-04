@@ -8,7 +8,7 @@ interface Props {
 export function Page({ children }: Props) {
   return (
     <div
-      className="bg-slate-900 text-slate-200 min-h-screen"
+      className="bg-slate-50 text-primary-1 dark:bg-slate-900 dark:text-slate-200 min-h-screen"
     >
       <MainNav />
       <div

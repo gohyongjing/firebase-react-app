@@ -11,7 +11,7 @@ export function NavMenuItemLink({ href, children }: Props) {
     <NavigationMenu.Item>
         <NavigationMenu.Link
           href={href}
-          className='text-primary-2'
+          className='text-primary-2 dark:text-primary-3 hover:underline'
         >
           <b>
             { children }

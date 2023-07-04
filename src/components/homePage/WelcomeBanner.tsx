@@ -1,16 +1,19 @@
 import { FirebaseReactAppLogo } from "components/utility";
+import { twMerge } from 'lib/tailwindMerge'
 
 interface Props {
   className?: string
 }
 
+const defaultClassName = 'text-center';
+
 export function WelcomeBanner({ className = '' }: Props) {
   return (
     <div
-      className={'text-center ' + className}
+      className={twMerge(defaultClassName, className)}
     >
       <b
-        className="text-xl"
+        className="text-2xl"
       >
         Welcome to
       </b>

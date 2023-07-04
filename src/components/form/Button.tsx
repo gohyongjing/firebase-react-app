@@ -1,13 +1,15 @@
+import { twMerge } from "lib/tailwindMerge";
 import { ButtonHTMLAttributes } from "react";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>
 
+const defaultClassName = 'bg-primary-2 border-primary-2 text-white dark:bg-primary-1 dark:text-primary-3 dark:border-primary-3 border-2 rounded-lg p-2';
 export function Button(props: Props) {
   
   return (
     <button
       { ...props }
-      className={"bg-primary-1 text-primary-2 border-primary-2 border-2 rounded-lg py-1 px-2 " + props.className}
+      className={twMerge(defaultClassName, props.className)}
     >
       <b>
         {props.children}

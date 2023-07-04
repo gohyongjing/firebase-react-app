@@ -20,7 +20,7 @@ export function Dashboard() {
   }, [firebaseUser])
   const notifications = useClientSyncExternalStore(_wrappedSubscibeNotifications) ?? [];
   const { resolve, isLoading, error } = usePromise();
-  const userNameInputHandler = useInputHandler('');
+  const { value: userName, setValue: setUserName, onChange: onUserNameChange } = useInputHandler('');
 
   const fetcher = useCallback(async () => {
     if (!firebaseUser?.uid) {
@@ -38,15 +38,15 @@ export function Dashboard() {
     }
     resolve(() => updateUserName(
       firebaseUser.uid, 
-      userNameInputHandler.value
+      userName
     ));
   }
 
   useEffect(() => {
     if (user?.userName) {
-      userNameInputHandler.setValue(user.userName);
+      setUserName(user.userName);
     }
-  }, [user?.userName, userNameInputHandler])
+  }, [user?.userName, setUserName])
 
   const errorMessage = formatErrorMessage(error)
 
@@ -76,8 +76,8 @@ export function Dashboard() {
       }
       <Form onSubmit={handleSubmit}>
         <Input
-          onChange={userNameInputHandler.onChange}
-          value={userNameInputHandler.value}
+          onChange={onUserNameChange}
+          value={userName}
           disabled={isLoading}
         >
         </Input>

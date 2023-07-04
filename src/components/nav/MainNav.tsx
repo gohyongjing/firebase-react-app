@@ -7,6 +7,7 @@ import {
 } from 'features/auth';
 import { NavigationMenu } from 'lib/radixUi';
 import { LogoNavMenuItem } from './LogoNavMenuItem';
+import { StyleThemeToggle } from 'features/styleTheme';
 
 export function MainNav() {
   const user = useAuthContext();
@@ -20,7 +21,7 @@ export function MainNav() {
 
   return (
     <NavigationMenu.Root
-      className='bg-primary-1 sticky top-0'
+      className='bg-slate-50 dark:bg-primary-1 sticky top-0 shadow-sm'
     >
       <NavigationMenu.List
         className='flex p-2 justify-between'
@@ -33,6 +34,9 @@ export function MainNav() {
         <div
           className='flex items-center gap-3'
         >
+          <NavigationMenu.Item>
+            <StyleThemeToggle />
+          </NavigationMenu.Item>
           {
             navMenuItems.map((navMenuItem, index) => (
               <Fragment
