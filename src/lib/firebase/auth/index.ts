@@ -7,7 +7,7 @@ import {
   signOut as _signOut,
   NextOrObserver,
   ErrorFn,
-  CompleteFn
+  CompleteFn,
 } from "firebase/auth";
 import firebaseApp from "../app";
 
@@ -47,3 +47,5 @@ export function signIn(email: string, password: string) {
 export function signOut() {
   return _signOut(auth);
 };
+
+export type { UserCredential } from 'firebase/auth';

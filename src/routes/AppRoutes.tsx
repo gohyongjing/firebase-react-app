@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 export const PATH_HOME = '/';
 export const PATH_SIGN_UP = '/sign-up';
-export const PATH_SIGN_IN = '/log-in';
+export const PATH_SIGN_IN = '/sign-in';
 export const PATH_DASHBOARD = '/dashboard'
 
 interface Props {

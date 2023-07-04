@@ -1,4 +1,4 @@
-import { UserCredential } from "firebase/auth";
+import { UserCredential } from "lib/firebase/auth";
 import { defaultUserModel, getUser, setUser } from "../utility";
 
 export async function processUserSignIn(userCredential: UserCredential) {

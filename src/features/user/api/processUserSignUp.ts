@@ -1,4 +1,4 @@
-import { UserCredential } from "firebase/auth";
+import { UserCredential } from "lib/firebase/auth";
 import { sendWelcomeNotification } from "features/notification";
 import { defaultUserModel, setUser } from "../utility";
 
