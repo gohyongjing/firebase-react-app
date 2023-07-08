@@ -20,7 +20,7 @@ export function NavMenuItemLink({
     <NavigationMenu.Item>
         <NavigationMenu.Link
           onClick={handleClick}
-          className='text-primary-2 dark:text-primary-3 hover:cursor-pointer'
+          className='text-primary-1 dark:text-primary-3 hover:cursor-pointer'
         >
           <b>
             { children }

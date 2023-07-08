@@ -4,6 +4,7 @@ import { usePromise } from "hooks";
 import { FormEvent } from "react";
 import { formatErrorMessage, signUp } from "../api";
 import { Page } from "components/utility";
+import { Center } from "components/layout/Center";
 
 export function SignUp() {
   const { resolve, error } = usePromise();
@@ -22,26 +23,28 @@ export function SignUp() {
 
   return (
     <Page>
-      <div>{errorMessage}</div>
-      <Form onSubmit={handleSubmit}>
-        <LabelledInput
-          type='email'
-          value={emailInputHandler.value}
-          onChange={emailInputHandler.onChange}
-          labelText="Email"
-          id='email'
-        />
-        <LabelledInput
-          type="password"
-          value={passwordInputHandler.value}
-          onChange={passwordInputHandler.onChange}
-          labelText="Password"
-          id='password'
-        />
-        <Button>
-          Sign Up
-        </Button>
-      </Form>
+        <Form onSubmit={handleSubmit}>
+          <Center className="gap-1">
+            <LabelledInput
+              type='email'
+              value={emailInputHandler.value}
+              onChange={emailInputHandler.onChange}
+              labelText="Email"
+              id='email'
+            />
+            <LabelledInput
+              type="password"
+              value={passwordInputHandler.value}
+              onChange={passwordInputHandler.onChange}
+              labelText="Password"
+              id='password'
+            />
+            <div>{errorMessage}</div>
+            <Button>
+              Sign Up
+            </Button>
+          </Center>
+        </Form>
     </Page>
   );
 }

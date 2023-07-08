@@ -2,8 +2,9 @@ import { useInputHandler } from "hooks/form";
 import { usePromise } from "hooks";
 import { formatErrorMessage, signIn } from "../api";
 import { FormEvent } from "react";
-import { Button, Form, Input } from "components/form";
+import { Button, Form, Input, LabelledInput } from "components/form";
 import { Page } from "components/utility";
+import { Center } from "components/layout/Center";
 
 export function SignIn() {
   const { resolve, error } = usePromise();
@@ -22,21 +23,29 @@ export function SignIn() {
 
   return (
     <Page>
-      <div>{errorMessage}</div>
       <Form onSubmit={handleSubmit}>
-        <Input
-          type='email'
-          value={emailInputHandler.value}
-          onChange={emailInputHandler.onChange}
-        />
-        <Input
-          type="password"
-          value={passwordInputHandler.value}
-          onChange={passwordInputHandler.onChange}
-        />
-        <Button>
-          Sign Up
-        </Button>
+        <Center
+          className="gap-1"
+        >
+          <LabelledInput
+            type='email'
+            value={emailInputHandler.value}
+            onChange={emailInputHandler.onChange}
+            labelText="Email"
+            id='email'
+          />
+          <LabelledInput
+            type="password"
+            value={passwordInputHandler.value}
+            onChange={passwordInputHandler.onChange}
+            labelText="Password"
+            id='password'
+          />
+          <div>{errorMessage}</div>
+          <Button>
+            Sign In
+          </Button>
+        </Center>
       </Form>
     </Page>
   );

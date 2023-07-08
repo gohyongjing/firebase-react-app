@@ -1,5 +1,8 @@
 import { HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
 import { EmailInput, PasswordInput, TextInput } from "./inputs";
+import { mergeClassNameIntoProps } from "utility/mergeClassNameIntoProps";
+
+const defaultClassName = 'roun'
 
 function getSpecificInputComponent(type: HTMLInputTypeAttribute | undefined) {
   switch(type) {
@@ -14,15 +17,13 @@ function getSpecificInputComponent(type: HTMLInputTypeAttribute | undefined) {
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 
-export function Input(props: Props) {
-  const SpecificInput = getSpecificInputComponent(props.type);
+export function Input({ type, ...props }: Props) {
+  const SpecificInput = getSpecificInputComponent(type);
 
   return (
     <SpecificInput
-      {...{
-        ...props,
-        type: undefined
-      }}
+      { ...mergeClassNameIntoProps(props, defaultClassName) }
+      className="rounded p-1 font-semibold border-2 text-primary-1 bg-slate-100 border-primary-1 dark:border-slate-50"
     />
   );
 }

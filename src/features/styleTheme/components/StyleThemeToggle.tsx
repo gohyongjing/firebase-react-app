@@ -13,6 +13,7 @@ export function StyleThemeToggle() {
   return (
     <Button
       onClick={handleClick}
+      className="py-2"
     >
       {
         styleTheme === 'light'

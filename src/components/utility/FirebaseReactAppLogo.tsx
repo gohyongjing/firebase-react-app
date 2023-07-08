@@ -21,13 +21,12 @@ export function FirebaseReactAppLogo({ className = ''}: Props) {
       onClick={handleClick}
     >
       <span
-        className="text-secondary-1"
+        className="rounded-l-full underline decoration-4 decoration-secondary-1 dark:bg-inherit dark:text-secondary-1 dark:no-underline"
       >
-        firebase
+        firebase-
       </span>
-      -
       <span
-        className="text-primary-2 dark:text-primary-3"
+        className="rounded-r-full underline decoration-4 decoration-primary-3 dark:bg-inherit dark:text-primary-3 dark:no-underline"
       >
         react-app
       </span>

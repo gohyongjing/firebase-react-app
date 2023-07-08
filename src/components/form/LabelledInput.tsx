@@ -13,8 +13,13 @@ export function LabelledInput({
   ...props
 }: Props) {
   return (
-    <Label.Root htmlFor={props.id}>
-      { labelText }
+    <Label.Root 
+      htmlFor={props.id}
+      className="flex flex-col gap-1 text-primary-1 dark:text-slate-50"
+    >
+      <b>
+       { labelText }
+      </b>
       <Input
         { ...props }
       />
