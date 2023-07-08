@@ -1,17 +1,26 @@
 import { NavigationMenu } from "lib/radixUi";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   href?: string,
   children:  ReactNode
 }
 
-export function NavMenuItemLink({ href, children }: Props) {
+export function NavMenuItemLink({
+  href = '',
+  children
+}: Props) {
+  const navigate = useNavigate();
+  const handleClick = useCallback(() => {
+    navigate(href);
+  }, [href, navigate]);
+
   return (
     <NavigationMenu.Item>
         <NavigationMenu.Link
-          href={href}
-          className='text-primary-2 dark:text-primary-3 hover:underline'
+          onClick={handleClick}
+          className='text-primary-2 dark:text-primary-3 hover:cursor-pointer'
         >
           <b>
             { children }

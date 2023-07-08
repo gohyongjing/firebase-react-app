@@ -1,5 +1,5 @@
-import { twMerge } from "lib/tailwindMerge";
 import { ButtonHTMLAttributes } from "react";
+import { mergeClassNameIntoProps } from "utility/mergeClassNameIntoProps";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>
 
@@ -8,8 +8,7 @@ export function Button(props: Props) {
   
   return (
     <button
-      { ...props }
-      className={twMerge(defaultClassName, props.className)}
+      { ...mergeClassNameIntoProps(props, defaultClassName) }
     >
       <b>
         {props.children}

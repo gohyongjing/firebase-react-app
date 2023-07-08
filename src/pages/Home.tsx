@@ -1,7 +1,6 @@
-import { Button } from "components/form";
 import { WelcomeBanner } from "components/homePage";
 import { Page } from "components/utility";
-import { PATH_SIGN_IN, PATH_SIGN_UP } from "routes";
+import { SignInButton, SignUpButton } from "features/auth";
 
 export function Home() {
 
@@ -13,16 +12,8 @@ export function Home() {
         <WelcomeBanner
           className='my-20'
         />
-        <Button
-          className="w-1/2 m-2"
-        >
-          <a href={PATH_SIGN_UP}> Sign Up</a>
-        </Button>
-        <Button
-          className="w-1/2 m-2"
-        >
-          <a href={PATH_SIGN_IN}> Sign In</a>
-        </Button>
+        <SignUpButton />
+        <SignInButton /> 
       </div>
     </Page>
   );

@@ -37,7 +37,6 @@ export function StyleThemeContextProvider({ children }: Props) {
     )
   }, [updateExternalStore])
 
-  console.log('style theme context rerender', styleTheme)
   return (
     <StyleThemeContextComponent.Provider
       value={{
