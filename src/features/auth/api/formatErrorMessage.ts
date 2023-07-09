@@ -1,4 +1,4 @@
-import { hasKey } from "utility/typePredicates/isFunction";
+import { hasKey } from "utility/typePredicates";
 
 function getErrorCode(error: unknown) {
   if (hasKey(error, 'code')) {

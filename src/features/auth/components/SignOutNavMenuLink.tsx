@@ -1,10 +1,10 @@
 import { Button } from 'components/form';
 import { usePromise } from 'hooks';
 import { signOut } from '../api';
-import { NavMenuItemLink } from './utility.ts';
+import { NavMenuLink } from './utility';
 import { PATH_HOME } from 'routes';
 
-export function SignOutNavMenuItem() {
+export function SignOutNavMenuLink() {
   const { resolve, isLoading } = usePromise();
 
   function handleClick() {
@@ -12,7 +12,7 @@ export function SignOutNavMenuItem() {
   }
 
   return (
-    <NavMenuItemLink
+    <NavMenuLink
       href={PATH_HOME}
     >
       <Button
@@ -21,6 +21,6 @@ export function SignOutNavMenuItem() {
       >
         Sign Out
       </Button>
-    </NavMenuItemLink>
+    </NavMenuLink>
   );
 }

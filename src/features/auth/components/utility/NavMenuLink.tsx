@@ -7,7 +7,7 @@ interface Props {
   children:  ReactNode
 }
 
-export function NavMenuItemLink({
+export function NavMenuLink({
   href = '',
   children
 }: Props) {
@@ -17,15 +17,13 @@ export function NavMenuItemLink({
   }, [href, navigate]);
 
   return (
-    <NavigationMenu.Item>
-        <NavigationMenu.Link
-          onClick={handleClick}
-          className='text-primary-1 dark:text-primary-3 hover:cursor-pointer'
-        >
-          <b>
-            { children }
-          </b>
-        </NavigationMenu.Link>
-    </NavigationMenu.Item>
+    <NavigationMenu.Link
+      onClick={handleClick}
+      className='text-primary-1 dark:text-primary-3 hover:cursor-pointer'
+    >
+      <b>
+        { children }
+      </b>
+    </NavigationMenu.Link>
   );
 }

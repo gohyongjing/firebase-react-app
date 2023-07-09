@@ -1,8 +1,7 @@
-import { Fragment } from 'react';
 import {
-  SignInNavMenuItem,
-  SignOutNavMenuItem,
-  SignUpNavMenuItem,
+  SignInNavMenuLink,
+  SignOutNavMenuLink,
+  SignUpNavMenuLink,
   useAuthContext
 } from 'features/auth';
 import { NavigationMenu } from 'lib/radixUi';
@@ -13,10 +12,10 @@ export function MainNav() {
   const user = useAuthContext();
   const navMenuItems: JSX.Element[] = [];
   if (user) {
-    navMenuItems.push(<SignOutNavMenuItem />);
+    navMenuItems.push(<SignOutNavMenuLink />);
   } else {
-    navMenuItems.push(<SignInNavMenuItem />);
-    navMenuItems.push(<SignUpNavMenuItem />);
+    navMenuItems.push(<SignInNavMenuLink />);
+    navMenuItems.push(<SignUpNavMenuLink />);
   }
 
   return (
@@ -39,11 +38,11 @@ export function MainNav() {
           </NavigationMenu.Item>
           {
             navMenuItems.map((navMenuItem, index) => (
-              <Fragment
+              <NavigationMenu.Item
                 key={index}
               >
                 { navMenuItem }
-              </Fragment>
+              </NavigationMenu.Item>
             ))
           }  
         </div>

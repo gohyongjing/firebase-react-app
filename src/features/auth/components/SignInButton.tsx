@@ -1,5 +1,5 @@
 import { PATH_SIGN_IN } from "routes";
-import { ButtonLink } from "./utility.ts/ButtonLink";
+import { ButtonLink } from "./utility/ButtonLink";
 
 export function SignInButton() {
   return (
