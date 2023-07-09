@@ -8,9 +8,9 @@ interface Props {
 
 export function NotificationCard({ notification }: Props) {
   return (
-    <div className="flex flex-col p-1 px-2">
+    <div className="flex flex-col p-1 px-3">
       <div className="flex justify-between items-center">
-        <b className="text-lg">
+        <b className="">
           { notification.title }
         </b>
         <DismissNotificationButton notificationId={notification.id} />
@@ -18,7 +18,7 @@ export function NotificationCard({ notification }: Props) {
       <div className="text-xs">
         { notification.timestamp.toDate().toDateString() }
       </div>
-      <div className="p-2">
+      <div className="text-sm p-2">
         { notification.message }
       </div>
     </div>

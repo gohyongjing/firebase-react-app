@@ -1,5 +1,5 @@
 import { useAuthContext } from "features/auth";
-import { BellIcon, Cross1Icon, Popover, Separator } from "lib/radixUi";
+import { BellIcon, Cross1Icon, Popover, ScrollArea, Separator } from "lib/radixUi";
 import { Fragment, useCallback } from "react";
 import { WithId } from "utility/model";
 import { subscribeUserNotifications } from "../api";
@@ -54,13 +54,13 @@ export function NotificationsPopover() {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
-          className="p-1 rounded-xl border-2 border-primary-1 dark:bg-primary-1 dark:text-slate-50 dark:border-primary-3 bg-slate-50 w-[var(--radix-popover-content-available-width)] max-h-[var(--radix-popover-content-available-height)]"
+          className="p-1 rounded-xl border-2 border-primary-1 dark:bg-primary-1 dark:text-slate-50 dark:border-primary-3 bg-slate-50 w-[var(--radix-popover-content-available-width)] max-h-[var(--radix-popover-content-available-height)] overflow-hidden"
           collisionPadding={ 8 }
         >
           <Popover.Arrow
             className="dark:fill-primary-3"
           />
-          <div className="p-2 flex justify-between text-xl">
+          <div className="p-2 flex justify-between text-lg">
             <h1>
               <b>
                 Notifications
@@ -70,24 +70,31 @@ export function NotificationsPopover() {
               <Cross1Icon />
             </Popover.Close>
           </div>
-          {
-            notifications.length === 0
-            ? <div className="m-2">
-              You have no notifications
-            </div>
-            : notifications.map(notification => (
-              <Fragment
-                key={notification.id}
-              >
-                <Separator.Root
-                  className="h-px m-1 bg-primary-2"  
-                />
-                <NotificationCard
-                  notification={notification}
-                />
-              </Fragment>
-            ))
-          }
+          <ScrollArea.Root className="h-60">
+            <ScrollArea.Viewport className="h-full">
+              {
+                notifications.length === 0
+                ? <div className="m-2">
+                  You have no notifications
+                </div>
+                : notifications.map(notification => (
+                  <Fragment
+                    key={notification.id}
+                  >
+                    <Separator.Root
+                      className="h-px mx-2 bg-primary-2"  
+                    />
+                    <NotificationCard
+                      notification={notification}
+                    />
+                  </Fragment>
+                ))
+              }
+            </ScrollArea.Viewport>
+            <ScrollArea.Scrollbar className="rounded-full bg-primary-2 w-2">
+              <ScrollArea.Thumb className="rounded-full bg-primary-3"/>
+            </ScrollArea.Scrollbar>
+          </ScrollArea.Root>
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

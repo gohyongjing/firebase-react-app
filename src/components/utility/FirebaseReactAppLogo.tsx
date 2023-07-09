@@ -7,7 +7,7 @@ interface Props {
   className?: string
 }
 
-const defaultClassName = 'text-lg hover:cursor-pointer';
+const defaultClassName = 'hover:cursor-pointer';
 
 export function FirebaseReactAppLogo({ className = ''}: Props) {
   const navigate = useNavigate();

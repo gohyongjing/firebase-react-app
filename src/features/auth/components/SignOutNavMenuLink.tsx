@@ -12,15 +12,18 @@ export function SignOutNavMenuLink() {
   }
 
   return (
-    <NavMenuLink
-      href={PATH_HOME}
-    >
+
       <Button
         onClick={handleClick}
         disabled={isLoading}
       >
+    <NavMenuLink
+      href={PATH_HOME}
+    >
+
         Sign Out
-      </Button>
     </NavMenuLink>
+    
+      </Button>
   );
 }

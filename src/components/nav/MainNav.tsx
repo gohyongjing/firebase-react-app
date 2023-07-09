@@ -32,7 +32,7 @@ export function MainNav() {
           <LogoNavMenuItem />
         </div>
         <div
-          className='flex items-center gap-3'
+          className='flex items-center gap-2'
         >
           <NavigationMenu.Item>
             <StyleThemeToggle />
