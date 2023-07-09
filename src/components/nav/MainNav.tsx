@@ -8,6 +8,7 @@ import { NavigationMenu } from 'lib/radixUi';
 import { LogoNavMenuItem } from './LogoNavMenuItem';
 import { StyleThemeToggle } from 'features/styleTheme';
 import { NotificationsPopover } from 'features/notification';
+import { NavMenuItem } from './NavMenuItem';
 
 export function MainNav() {
   const user = useAuthContext();
@@ -32,14 +33,14 @@ export function MainNav() {
           <LogoNavMenuItem />
         </div>
         <div
-          className='flex items-center gap-2'
+          className='flex items-center gap-1'
         >
-          <NavigationMenu.Item>
+          <NavMenuItem>
             <StyleThemeToggle />
-          </NavigationMenu.Item>
-          <NavigationMenu.Item>
+          </NavMenuItem>
+          <NavMenuItem>
             <NotificationsPopover />
-          </NavigationMenu.Item>
+          </NavMenuItem>
           {
             navMenuItems.map((navMenuItem, index) => (
               <NavigationMenu.Item

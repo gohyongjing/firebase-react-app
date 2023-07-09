@@ -13,7 +13,6 @@ export function StyleThemeToggle() {
     <Toggle.Root
       pressed={styleTheme === 'dark'}
       onPressedChange={handlePress}
-      className="border-2 p-2 rounded-lg border-primary-1 dark:border-primary-3 dark:text-primary-3"
     >
       {
         styleTheme === 'light'

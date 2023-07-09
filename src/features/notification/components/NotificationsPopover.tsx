@@ -44,9 +44,7 @@ export function NotificationsPopover() {
 
   return (
     <Popover.Root>
-      <Popover.Trigger
-        className="border-2 p-2 rounded-lg border-primary-1 dark:border-primary-3 dark:text-primary-3"
-      >
+      <Popover.Trigger>
         <BellIcon />
         {
           notifications.length > 0 && <NewNotificationIndicator />
