@@ -33,7 +33,15 @@ export function StyleThemeContextProvider({ children }: Props) {
   const setStyleThemeWrapped = useCallback((newStyleTheme: StyleTheme) => {
     updateExternalStore(
       newStyleTheme,
-      () => Promise.resolve(setStyleTheme(newStyleTheme))
+      () => {
+        if (newStyleTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        setStyleTheme(newStyleTheme);
+        return Promise.resolve();
+      }
     )
   }, [updateExternalStore])
 
@@ -44,12 +52,7 @@ export function StyleThemeContextProvider({ children }: Props) {
         setStyleTheme: setStyleThemeWrapped
       }}
     >
-      <div
-        className={styleTheme}
-      >
         { children }
-      </div>
-      
     </StyleThemeContextComponent.Provider>
   );
 }

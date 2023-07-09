@@ -7,6 +7,7 @@ import {
 import { NavigationMenu } from 'lib/radixUi';
 import { LogoNavMenuItem } from './LogoNavMenuItem';
 import { StyleThemeToggle } from 'features/styleTheme';
+import { NotificationsPopover } from 'features/notification';
 
 export function MainNav() {
   const user = useAuthContext();
@@ -35,6 +36,9 @@ export function MainNav() {
         >
           <NavigationMenu.Item>
             <StyleThemeToggle />
+          </NavigationMenu.Item>
+          <NavigationMenu.Item>
+            <NotificationsPopover />
           </NavigationMenu.Item>
           {
             navMenuItems.map((navMenuItem, index) => (

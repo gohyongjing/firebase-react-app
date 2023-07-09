@@ -16,7 +16,8 @@ const FIRESTORE_PATH_NOTIFICATIONS = 'notifications';
 export const defaultNotificationModel: Notification = {
   type: 'Announcement',
   recipientId: '',
-  message: '',
+  title: 'Notification',
+  message: 'You have a new notification!',
   timestamp: Timestamp.fromDate(new Date())
 }
 

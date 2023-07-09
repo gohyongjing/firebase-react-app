@@ -1,1 +1,2 @@
-export * from './NotificationNavMenuItem';
+export * from './NotificationCard';
+export * from './NotificationsPopover';

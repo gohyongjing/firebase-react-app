@@ -1,24 +1,13 @@
 import { Button, Form, Input } from "components/form";
 import { formatErrorMessage, useAuthContext } from "features/auth";
-import { Notification, subscribeUserNotifications } from "features/notification";
 import { getUserById, updateUserName } from "features/user";
 import { useInputHandler } from "hooks/form";
-import { OnStoreChange, useClientSyncExternalStore, usePromise, useSyncCachedExternalStore } from "hooks";
+import { usePromise, useSyncCachedExternalStore } from "hooks";
 import { FormEvent, useCallback, useEffect } from "react";
-import { WithId } from "utility/model";
 import { Page } from "components/utility";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
-  const _wrappedSubscibeNotifications = useCallback((
-    onStoreChange: OnStoreChange<WithId<Notification>[]>
-  ) => {
-    if (!firebaseUser) {
-      return () => {};
-    }
-    return subscribeUserNotifications(firebaseUser.uid, onStoreChange)
-  }, [firebaseUser])
-  const notifications = useClientSyncExternalStore(_wrappedSubscibeNotifications) ?? [];
   const { resolve, isLoading, error } = usePromise();
   const { value: userName, setValue: setUserName, onChange: onUserNameChange } = useInputHandler('');
 
@@ -52,22 +41,6 @@ export function Dashboard() {
 
   return (
     <Page>
-      <div>
-        Notifications
-        {
-          notifications.map(notification => {
-            return (
-              <div
-                key={notification.id}
-              >
-                Message: {notification.message}
-                <br/>
-                Timestamp: {notification.timestamp.toString()}
-              </div>
-            )
-          })
-        }
-      </div>
       {
         `UserName: ${user?.userName}` 
       }
