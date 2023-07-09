@@ -1,9 +1,9 @@
-import { Cross1Icon } from "@radix-ui/react-icons";
 import { Notification } from "../types";
-import { Button } from "components/form";
+import { DismissNotificationButton } from "./DismissNotificationButton";
+import { WithId } from "utility/model";
 
 interface Props {
-  notification: Notification
+  notification: WithId<Notification>
 }
 
 export function NotificationCard({ notification }: Props) {
@@ -13,13 +13,7 @@ export function NotificationCard({ notification }: Props) {
         <b className="text-lg">
           { notification.title }
         </b>
-        <Button
-          className="border-0 bg-slate-50"
-        >
-          <Cross1Icon
-            className="text-primary-1 dark:text-slate-50"
-          />
-        </Button>
+        <DismissNotificationButton notificationId={notification.id} />
       </div>
       <div className="text-xs">
         { notification.timestamp.toDate().toDateString() }

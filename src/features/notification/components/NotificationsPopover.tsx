@@ -1,12 +1,13 @@
 import { useAuthContext } from "features/auth";
 import { BellIcon, Cross1Icon, Popover, Separator } from "lib/radixUi";
-import { useCallback } from "react";
+import { Fragment, useCallback } from "react";
 import { WithId } from "utility/model";
 import { subscribeUserNotifications } from "../api";
 import { OnStoreChange, useClientSyncExternalStore } from "hooks";
 import { Notification } from "../types";
 import { NotificationCard } from "./NotificationCard";
 import { Timestamp } from "lib/firebase/firestore";
+import { NewNotificationIndicator } from "./NewNotificationIndicator";
 
 function compareTimestamp(
   n1: { timestamp: Timestamp },
@@ -40,12 +41,16 @@ export function NotificationsPopover() {
     return subscribeUserNotifications(firebaseUser.uid, wrappedOnStoreChange)
   }, [firebaseUser])
   const notifications = useClientSyncExternalStore(_wrappedSubscibeNotifications) ?? [];
+
   return (
     <Popover.Root>
       <Popover.Trigger
         className="border-2 p-2 rounded-lg border-primary-1 dark:border-primary-3 dark:text-primary-3"
       >
         <BellIcon />
+        {
+          notifications.length > 0 && <NewNotificationIndicator />
+        }
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
@@ -66,17 +71,21 @@ export function NotificationsPopover() {
             </Popover.Close>
           </div>
           {
-            notifications.map((notification, index) => (
-              <>
-              <Separator.Root
-                key={index}
-                className="h-px m-1 bg-primary-2"  
-              />
-              <NotificationCard
+            notifications.length === 0
+            ? <div className="m-2">
+              You have no notifications
+            </div>
+            : notifications.map(notification => (
+              <Fragment
                 key={notification.id}
-                notification={notification}
-              />
-              </>
+              >
+                <Separator.Root
+                  className="h-px m-1 bg-primary-2"  
+                />
+                <NotificationCard
+                  notification={notification}
+                />
+              </Fragment>
             ))
           }
         </Popover.Content>

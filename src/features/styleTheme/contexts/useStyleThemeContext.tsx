@@ -1,5 +1,5 @@
 import { useSyncCachedExternalStore } from "hooks";
-import { ReactNode, createContext, useCallback, useContext } from "react";
+import { ReactNode, createContext, useCallback, useContext, useEffect } from "react";
 import { StyleTheme } from "../types";
 import { DEFAULT_STYLE_THEME, getStyleTheme, setStyleTheme } from "../utility";
 
@@ -34,16 +34,19 @@ export function StyleThemeContextProvider({ children }: Props) {
     updateExternalStore(
       newStyleTheme,
       () => {
-        if (newStyleTheme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
         setStyleTheme(newStyleTheme);
         return Promise.resolve();
       }
     )
   }, [updateExternalStore])
+
+  useEffect(() => {
+    if (styleTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [styleTheme])
 
   return (
     <StyleThemeContextComponent.Provider
