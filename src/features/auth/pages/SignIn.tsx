@@ -2,7 +2,7 @@ import { useInputHandler } from "hooks/form";
 import { usePromise } from "hooks";
 import { formatErrorMessage, signIn } from "../api";
 import { FormEvent } from "react";
-import { Button, Form, Input, LabelledInput } from "components/form";
+import { Button, Form, LabelledInput } from "components/form";
 import { Page } from "components/utility";
 import { Center } from "components/layout/Center";
 

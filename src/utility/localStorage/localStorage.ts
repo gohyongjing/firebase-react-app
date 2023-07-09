@@ -1,4 +1,4 @@
-import { hasKey, isObject } from "../typePredicates";
+import { hasKey, isObject } from "../typePredicates/isFunction";
 
 const LOCAL_STORAGE_KEY = 'firebase-react-app';
 

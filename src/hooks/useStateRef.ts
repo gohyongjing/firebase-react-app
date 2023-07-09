@@ -1,5 +1,5 @@
 import { Dispatch, MutableRefObject, SetStateAction, useCallback, useRef, useState } from "react";
-import { isFunction } from "utility/typePredicates";
+import { isFunction } from "utility/typePredicates/isFunction";
 
 export type StateRefHook<S> = [
   S,

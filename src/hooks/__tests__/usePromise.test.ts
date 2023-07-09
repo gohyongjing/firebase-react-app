@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { usePromise } from '../usePromise';
-import { delay } from 'utility/miscellaneous';
+import { delay } from 'utility/delay';
 import { ASYNC_DELAY_DURATION, ERR_ASYNC_REJECT_MESSAGE } from 'utility/testConstants';
 
 async function getValueAfterDelay(value: unknown, delayDuration: number) {

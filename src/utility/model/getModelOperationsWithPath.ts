@@ -7,7 +7,7 @@ import {
   UpdateData,
   WithFieldValue
 } from "lib/firebase/firestore";
-import { WithId, getModelOperations } from "./modelOperations";
+import { WithId, getModelOperations } from "./getModelOperations";
 
 interface ModelOperationsWithPath<T> {
   addModel: (newData: WithFieldValue<T>) => Promise<DocumentReference<DocumentData> | undefined>,

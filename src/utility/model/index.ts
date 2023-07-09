@@ -1,2 +1,2 @@
-export * from './modelOperations';
-export * from './modelOperationsWithPath';
+export * from './getModelOperations';
+export * from './getModelOperationsWithPath';
