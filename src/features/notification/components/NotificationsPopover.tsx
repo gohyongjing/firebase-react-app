@@ -1,5 +1,5 @@
 import { useAuthContext } from "features/auth";
-import { BellIcon, Cross1Icon, Popover, ScrollArea, Separator } from "lib/radixUi";
+import { BellIcon, Popover, ScrollArea, Separator } from "lib/radixUi";
 import { Fragment, useCallback } from "react";
 import { WithId } from "utility/model";
 import { subscribeUserNotifications } from "../api";
@@ -64,9 +64,6 @@ export function NotificationsPopover() {
                 Notifications
               </b>
             </h1>
-            <Popover.Close className="ml-2">
-              <Cross1Icon />
-            </Popover.Close>
           </div>
           <ScrollArea.Root className="h-60">
             <ScrollArea.Viewport className="h-full">

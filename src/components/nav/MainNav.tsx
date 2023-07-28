@@ -4,7 +4,7 @@ import {
   SignUpNavMenuLink,
   useAuthContext
 } from 'features/auth';
-import { NavigationMenu } from 'lib/radixUi';
+import { AccessibleIcon, HamburgerMenuIcon, NavigationMenu } from 'lib/radixUi';
 import { LogoNavMenuItem } from './LogoNavMenuItem';
 import { StyleThemeToggle } from 'features/styleTheme';
 import { NotificationsPopover } from 'features/notification';
@@ -33,23 +33,51 @@ export function MainNav() {
           <LogoNavMenuItem />
         </div>
         <div
-          className='flex items-center gap-1'
+          className='flex items-center gap-2'
         >
           <NavMenuItem>
             <StyleThemeToggle />
           </NavMenuItem>
-          <NavMenuItem>
-            <NotificationsPopover />
-          </NavMenuItem>
           {
-            navMenuItems.map((navMenuItem, index) => (
-              <NavigationMenu.Item
-                key={index}
+            user && (
+              <NavMenuItem>
+                <NotificationsPopover />
+              </NavMenuItem>
+            )
+          }
+          <NavMenuItem className='sm:hidden'>
+            <NavigationMenu.Trigger>
+              <AccessibleIcon.Root
+                label='links'
               >
-                { navMenuItem }
-              </NavigationMenu.Item>
-            ))
-          }  
+                <HamburgerMenuIcon />
+              </AccessibleIcon.Root>
+            </NavigationMenu.Trigger>
+            <NavigationMenu.Content className='absolute top-12 right-2 border-2 rounded border-primary-1 bg-slate-50 dark:border-primary-3 dark:bg-primary-1'>
+              <ul>
+                {
+                  navMenuItems.map((navMenuItem, index) => (
+                    <NavigationMenu.Item
+                      key={index}
+                      className='hover:bg-primary-3 p-1 rounded-sm'
+                    >
+                      { navMenuItem }
+                    </NavigationMenu.Item>
+                  ))
+                } 
+            </ul>
+          </NavigationMenu.Content>
+        </NavMenuItem>
+        {
+          navMenuItems.map((navMenuItem, index) => (
+            <NavigationMenu.Item
+              key={index}
+              className='hidden sm:block'
+            >
+              { navMenuItem }
+            </NavigationMenu.Item>
+          ))
+        }
         </div>
       </NavigationMenu.List>
     </NavigationMenu.Root>
