@@ -8,7 +8,7 @@ export type StateRefHook<S> = [
 ]
 
 /**
- * A value that has properties of a state and a ref.
+ * Manages a value that has properties of a state and a ref.
  * When updating the state, the ref is updated instantly and state changes are queued for the next render.
  *
  * @param initialState Initial state.

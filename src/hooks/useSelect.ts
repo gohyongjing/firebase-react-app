@@ -106,12 +106,12 @@ function optionsReducer<T>(
 }
 
 /**
- * Handles the selection of options from a list.
+ * Manages the selection of options from a list.
  *
  * @param initialOptions Initial list of options.
- * @returns SelectHandlerHook.
+ * @returns SelectHook.
  */
-export function useSelectHandler<T>(
+export function useSelect<T>(
   initialOptions: T[],
 ) {
 
@@ -123,5 +123,5 @@ export function useSelectHandler<T>(
     }
   );
 
-  return { selected, options, dispatch};
+  return { selected, options, dispatch };
 }

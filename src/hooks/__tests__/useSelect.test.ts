@@ -1,9 +1,9 @@
 import { act, renderHook } from '@testing-library/react';
 import { expect, test } from 'vitest';
-import { useSelectHandler } from '../useSelectHandler';
+import { useSelect } from '../useSelect';
 
 test('dispatch selects correct value', async () => {
-  const { result } = renderHook(() => useSelectHandler([2, 5, -5, 1]))
+  const { result } = renderHook(() => useSelect([2, 5, -5, 1]))
 
   const expectedValue = -5;
 
@@ -19,7 +19,7 @@ test('dispatch selects correct value', async () => {
 })
 
 test('dispatch adds correct value', async () => {
-  const { result } = renderHook(() => useSelectHandler(['a', 'b', 'c', 'd']))
+  const { result } = renderHook(() => useSelect(['a', 'b', 'c', 'd']))
 
   const newItem = 'z'
   await act(async() => {
@@ -38,7 +38,7 @@ test('dispatch updates correct value', async () => {
   const originalItems = ['e', originalItem, 'g', 'h'];
   const updatedItem = 'F'
 
-  const { result } = renderHook(() => useSelectHandler(originalItems))
+  const { result } = renderHook(() => useSelect(originalItems))
 
   await act(async() => {
     result.current.dispatch({
@@ -65,7 +65,7 @@ test('dispatch deletes correct value', async () => {
   const itemToDelete = 3;
   const originalItems = [7, 3.01, itemToDelete, '3'];
 
-  const { result } = renderHook(() => useSelectHandler(originalItems))
+  const { result } = renderHook(() => useSelect(originalItems))
 
   await act(async() => {
     result.current.dispatch({
@@ -110,7 +110,7 @@ test('dispatch maintains selected item after resetting items', async () => {
   const newIndex = 1;
   newOptions[newIndex] = {id, value: 'everyone'};
 
-  const { result } = renderHook(() => useSelectHandler(originalOptions))
+  const { result } = renderHook(() => useSelect(originalOptions))
 
   await act(async() => {
     result.current.dispatch({

@@ -1,5 +1,5 @@
 import { useSyncCachedExternalStore } from "hooks"
-import { useSelectHandler } from "./useSelectHandler";
+import { useSelect } from "./useSelect";
 import { useCallback } from "react";
 
 type Props<T> = {
@@ -20,7 +20,7 @@ export function useAsyncSelectHandler<T>({
     selected,
     options,
     dispatch
-  } = useSelectHandler(initialOptions);
+  } = useSelect(initialOptions);
 
   const refetchOptions = useCallback(async () => {
     const newOptions = await fetchExternalStore() ?? [];
