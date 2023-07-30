@@ -32,7 +32,7 @@ export function setDoc(
     return _setDoc(doc(firestore, path), newData, options);
   }
   return _setDoc(doc(firestore, path), newData);
-};
+}
 
 /**
  * Retrives the document data at a certain path.
@@ -41,7 +41,7 @@ export function setDoc(
  */
 export function getDoc(path: string) {
   return _getDoc(doc(firestore, path));
-};
+}
 
 /**
  * Updates the document data at a certain path.
@@ -52,7 +52,7 @@ export function getDoc(path: string) {
  */
 export function updateDoc(path: string, newData: UpdateData<DocumentData>) {
   return _updateDoc(doc(firestore, path), newData);
-};
+}
 
 /**
  * Deletes the document data at a certain path.
@@ -61,7 +61,7 @@ export function updateDoc(path: string, newData: UpdateData<DocumentData>) {
  */
 export function deleteDoc(path: string) {
   return _deleteDoc(doc(firestore, path));
-};
+}
 
 export function subscribeDoc(
   path: string,
@@ -73,4 +73,4 @@ export function subscribeDoc(
   )
 
   return unsubscribe;
-};
+}

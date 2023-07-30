@@ -18,7 +18,7 @@ const firestore = getFirestore(firebaseApp);
 
 export function addDoc(path: string, data: WithFieldValue<DocumentData>) {
   return _addDoc(collection(firestore, path), data);
-};
+}
 
 /**
  * Adds a new document at a certain path.
@@ -33,7 +33,7 @@ export function getDocs(
   const collectionRef = collection(firestore, path);
   const docsQuery = query(collectionRef, ...queryConstraints);
   return _getDocs(docsQuery);
-};
+}
 
 export function subscribeDocs(
   path: string,
@@ -47,4 +47,4 @@ export function subscribeDocs(
     onNext,
   )
   return unsubscribe;
-};
+}

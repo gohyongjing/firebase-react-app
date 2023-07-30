@@ -1,9 +1,9 @@
 import { twMerge } from 'lib/tailwindMerge';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'lib/reactRouterDom';
 import { PATH_HOME } from 'routes';
 
-interface Props {
+type Props = {
   className?: string
 }
 

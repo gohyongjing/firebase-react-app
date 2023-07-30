@@ -2,7 +2,7 @@ import { NavigationMenu } from "lib/radixUi";
 import { ReactNode } from "react";
 import { twMerge } from "lib/tailwindMerge";
 
-interface Props {
+type Props = {
   children?: ReactNode
   className?: string
 }

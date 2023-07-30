@@ -1,7 +1,7 @@
 import { FirebaseReactAppLogo } from "components/utility";
 import { twMerge } from 'lib/tailwindMerge'
 
-interface Props {
+type Props = {
   className?: string
 }
 

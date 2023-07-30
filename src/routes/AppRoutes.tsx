@@ -1,11 +1,13 @@
 import { useAuthContext, SignIn, SignUp } from "features/auth";
+import { Friends } from "features/friend";
 import { Dashboard, Home } from "pages";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "lib/reactRouterDom";
 
 export const PATH_HOME = '/';
 export const PATH_SIGN_UP = '/sign-up';
 export const PATH_SIGN_IN = '/sign-in';
 export const PATH_DASHBOARD = '/dashboard'
+export const PATH_FRIENDS = '/friends'
 
 interface Props {
   children?: JSX.Element | null;
@@ -37,6 +39,9 @@ export function AppRoutes() {
       }/>
       <Route path={PATH_DASHBOARD} element={
         <RequireAuth><Dashboard/></RequireAuth>
+      }/>
+      <Route path={PATH_FRIENDS} element={
+        <RequireAuth><Friends/></RequireAuth>
       }/>
     </Routes>
   );

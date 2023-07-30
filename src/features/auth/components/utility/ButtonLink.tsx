@@ -1,6 +1,6 @@
 import { Button } from "components/form";
+import { useNavigate } from "lib/reactRouterDom";
 import { ButtonHTMLAttributes, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { mergeClassNameIntoProps } from "utility/mergeClassNameIntoProps";
 
 const defaultClassName = "w-1/2 m-2";

@@ -1,7 +1,7 @@
 import { MainNav } from "components/nav";
 import { ReactNode } from "react";
 
-interface Props {
+type Props = {
   children: ReactNode
 }
 

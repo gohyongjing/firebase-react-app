@@ -12,6 +12,8 @@ export {
   DocumentReference,
   QueryConstraint,
   Timestamp,
+  limit,
+  startAt,
   where,
 } from 'firebase/firestore';
 

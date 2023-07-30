@@ -2,7 +2,7 @@ import { Timestamp } from "lib/firebase/firestore";
 
 type NotificationType = 'Announcement';
 
-export interface Notification {
+export type Notification = {
   type: NotificationType
   recipientId: string
   title: string

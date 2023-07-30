@@ -52,7 +52,7 @@ export function NotificationsPopover() {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
-          className="p-1 rounded-xl border-2 border-primary-1 dark:bg-primary-1 dark:text-slate-50 dark:border-primary-3 bg-slate-50 w-[var(--radix-popover-content-available-width)] max-h-[var(--radix-popover-content-available-height)] overflow-hidden"
+          className="p-1 rounded-xl border-2 border-primary-1 dark:bg-primary-1 dark:text-slate-50 dark:border-primary-3 bg-slate-50 max-w-[var(--radix-popover-content-available-width)] max-h-[var(--radix-popover-content-available-height)] overflow-hidden"
           collisionPadding={ 8 }
         >
           <Popover.Arrow
@@ -65,7 +65,7 @@ export function NotificationsPopover() {
               </b>
             </h1>
           </div>
-          <ScrollArea.Root className="h-60">
+          <ScrollArea.Root className="h-56">
             <ScrollArea.Viewport className="h-full">
               {
                 notifications.length === 0

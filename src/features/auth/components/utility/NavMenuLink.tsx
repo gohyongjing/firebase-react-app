@@ -1,6 +1,6 @@
 import { NavigationMenu } from "lib/radixUi";
 import { ReactNode, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "lib/reactRouterDom";
 
 interface Props {
   href?: string,

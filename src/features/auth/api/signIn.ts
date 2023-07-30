@@ -15,4 +15,4 @@ export async function signIn(email: string, password: string) {
     sendWelcomeNotification(userCredential.user.uid)
   ]);
   return userCredential;
-};
+}
