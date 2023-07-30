@@ -20,21 +20,22 @@ export function useAsyncSelectHandler<T>({
     selected,
     options,
     dispatch
-  } = useSelectHandler(initialOptions, isEqual);
+  } = useSelectHandler(initialOptions);
 
   const refetchOptions = useCallback(async () => {
     const newOptions = await fetchExternalStore() ?? [];
     dispatch({
       type: 'SET_OPTIONS',
-      payload: newOptions
+      newOptions,
+      isEqual
     });
-  }, [fetchExternalStore, dispatch]);
+  }, [fetchExternalStore, dispatch, isEqual]);
 
   const selectOption = useCallback((predicate: (option: T) => boolean) => {
     dispatch(
       {
         type: 'SELECT',
-        payload: predicate
+        predicate
       }
     );
   }, [dispatch])
@@ -46,7 +47,7 @@ export function useAsyncSelectHandler<T>({
     dispatch(
       {
         type: 'ADD',
-        payload: newOption
+        newOption
       }
     );
   }, [dispatch]);
@@ -54,10 +55,10 @@ export function useAsyncSelectHandler<T>({
   const updateOption = useCallback(async (
     updateOption: () => Promise<T>
   ) => {
-    const updatedOption = await updateOption();
+    const newOption = await updateOption();
     dispatch({
       type: 'UPDATE',
-      payload: updatedOption
+      newOption
     })
   }, [dispatch])
 

@@ -3,14 +3,14 @@ import { expect, test } from 'vitest';
 import { useSelectHandler } from '../useSelectHandler';
 
 test('dispatch selects correct value', async () => {
-  const { result } = renderHook(() => useSelectHandler([2, 5, -5, 1], (a, b) => a === b))
+  const { result } = renderHook(() => useSelectHandler([2, 5, -5, 1]))
 
   const expectedValue = -5;
 
   await act(async() => {
     result.current.dispatch({
       type: 'SELECT',
-      payload: n => n === expectedValue
+      predicate: n => n === expectedValue
     })
   });
 
@@ -19,13 +19,13 @@ test('dispatch selects correct value', async () => {
 })
 
 test('dispatch adds correct value', async () => {
-  const { result } = renderHook(() => useSelectHandler(['a', 'b', 'c', 'd'], (a, b) => a === b))
+  const { result } = renderHook(() => useSelectHandler(['a', 'b', 'c', 'd']))
 
   const newItem = 'z'
   await act(async() => {
     result.current.dispatch({
       type: 'ADD',
-      payload: newItem
+      newOption: newItem
     })
   });
 
@@ -38,16 +38,16 @@ test('dispatch updates correct value', async () => {
   const originalItems = ['e', originalItem, 'g', 'h'];
   const updatedItem = 'F'
 
-  const { result } = renderHook(() => useSelectHandler(originalItems, (a, b) => a === b))
+  const { result } = renderHook(() => useSelectHandler(originalItems))
 
   await act(async() => {
     result.current.dispatch({
       type: 'SELECT',
-      payload: item => item === originalItem
+      predicate: item => item === originalItem
     });
     result.current.dispatch({
       type: 'UPDATE',
-      payload: updatedItem
+      newOption: updatedItem
     })
   });
 
@@ -65,12 +65,12 @@ test('dispatch deletes correct value', async () => {
   const itemToDelete = 3;
   const originalItems = [7, 3.01, itemToDelete, '3'];
 
-  const { result } = renderHook(() => useSelectHandler(originalItems, (a, b) => a === b))
+  const { result } = renderHook(() => useSelectHandler(originalItems))
 
   await act(async() => {
     result.current.dispatch({
       type: 'SELECT',
-      payload: item => item === itemToDelete
+      predicate: item => item === itemToDelete
     });
     result.current.dispatch({
       type: 'DELETE',
@@ -88,7 +88,10 @@ test('dispatch deletes correct value', async () => {
 
 test('dispatch maintains selected item after resetting items', async () => {
   const id = 'abc'
-  const originalItems = [ 
+  const originalOptions: {
+    id: string,
+    value: string
+  }[] = [ 
     {id: 'ghj', value: 'abc'},
     {id: 'abcd', value: '5678'},
     {id: 'xyz', value: 'letters'},
@@ -96,8 +99,8 @@ test('dispatch maintains selected item after resetting items', async () => {
     {id: 'def', value: '1234'},
   ];
   const originalIndex = 3;
-  originalItems[originalIndex] = {id, value: 'hello'};
-  const newItems = [
+  originalOptions[originalIndex] = {id, value: 'hello'};
+  const newOptions = [
     {id: 'hijk', value: 'abc'},
     {id: 'bcde', value: '???'},
     {id: 'xyz', value: 'letters'},
@@ -105,20 +108,20 @@ test('dispatch maintains selected item after resetting items', async () => {
     {id: 'def', value: '7890'},
   ];
   const newIndex = 1;
-  newItems[newIndex] = {id, value: 'everyone'};
+  newOptions[newIndex] = {id, value: 'everyone'};
 
-  const { result } = renderHook(() => useSelectHandler(originalItems, (a, b) => a.id === b.id))
+  const { result } = renderHook(() => useSelectHandler(originalOptions))
 
   await act(async() => {
     result.current.dispatch({
       type: 'SELECT',
-      payload: item => item.id === id
+      predicate: item => item.id === id
     });
     result.current.dispatch({
       type: 'SET_OPTIONS',
-      payload: newItems
-    })
+      newOptions,
+      isEqual: (option1, option2) => option1.id === option2.id
+    });
   });
-
   expect(result.current.selected).toBe(newIndex);
 })
