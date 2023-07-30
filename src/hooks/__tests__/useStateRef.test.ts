@@ -1,10 +1,14 @@
 import { act, renderHook } from '@testing-library/react'
+import { expect, test } from 'vitest';
 import { useStateRef } from '../useStateRef'
 
 test('setState() immediately updates ref and sets state for next render', () => {
   const {result} = renderHook(() => useStateRef(1))
+  const stateRefHook = result.current;
+  let state = stateRefHook[0];
+  const setState = stateRefHook[1];
+  let stateRef = stateRefHook[2];
 
-  let [state, setState, stateRef] = result.current;
   expect(state).toBe(1);
 
   act(() => {

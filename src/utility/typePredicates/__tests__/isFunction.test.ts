@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { isFunction } from "../isFunction";
 
 test('isFunction() returns true for functions', () => {
@@ -6,7 +7,7 @@ test('isFunction() returns true for functions', () => {
     console.log,
     (a: number, b: number) => a + b
   ];
-  for (let func of functions) {
+  for (const func of functions) {
     expect(isFunction(func)).toBe(true);
   }
 });
@@ -17,7 +18,7 @@ test('isFunction() returns false for inputs that are not a function', () => {
     'function',
     { function: () => {} }
   ];
-  for (let notFunc of notFunctions) {
+  for (const notFunc of notFunctions) {
     expect(isFunction(notFunc)).toBe(false);
   }
 });

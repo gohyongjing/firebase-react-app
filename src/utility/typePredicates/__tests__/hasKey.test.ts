@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { hasKey } from "../hasKey";
 
 test('hasKey() returns true for objects with the particular key', () => {
@@ -5,7 +6,7 @@ test('hasKey() returns true for objects with the particular key', () => {
     [ {'hello': 'world'}, 'hello'],
     [ {4: 5, 23: () => {}}, 23],
   ];
-  for (let [obj, key] of objects) {
+  for (const [obj, key] of objects) {
     expect(hasKey(obj, key)).toBe(true);
   }
 });
@@ -15,7 +16,7 @@ test('hasKey() returns false for objects without the particular key', () => {
     [ {'hi': 'world'}, 'hello'],
     [ {121: () => {}}, 122],
   ];
-  for (let [obj, key] of objects) {
+  for (const [obj, key] of objects) {
     expect(hasKey(obj, key)).toBe(false);
   }
 });
@@ -26,7 +27,7 @@ test('hasKey() returns false for non-objects', () => {
     [ (a: number) => (a + 122), 122],
     [ 12, 'hi' ]
   ];
-  for (let [nonObj, key] of nonObjects) {
+  for (const [nonObj, key] of nonObjects) {
     expect(hasKey(nonObj, key)).toBe(false);
   }
 });

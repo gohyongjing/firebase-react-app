@@ -1,4 +1,5 @@
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react';
+import { expect, test, vi } from 'vitest';
 import { usePromise } from '../usePromise';
 import { delay } from 'utility/delay';
 import { ASYNC_DELAY_DURATION, ERR_ASYNC_REJECT_MESSAGE } from 'utility/testConstants';
@@ -88,8 +89,8 @@ test('resolve() prevents getValue() from running when isLoading', () => {
     onDebounce: () => {}
   }
 
-  const spiedGetValue = jest.spyOn(spiedObject, 'getValue');
-  const spiedOnDebounce = jest.spyOn(spiedObject, 'onDebounce');
+  const spiedGetValue = vi.spyOn(spiedObject, 'getValue');
+  const spiedOnDebounce = vi.spyOn(spiedObject, 'onDebounce');
 
   // getValue() is called if is not loading.
   act(() => {

@@ -6,17 +6,16 @@ export type Resolver = <Value>(
   onDebounce?: () => (Value | undefined)
 ) => Promise<Value | undefined>;
 
-interface PromiseHook {
+type PromiseHook = {
   resolve: Resolver,
   isLoading: boolean,
   setIsLoading: (newState: boolean) => void,
   isLoadingRef: MutableRefObject<boolean>,
   error: unknown,
   setError: Dispatch<SetStateAction<unknown>>
-};
+}
 
 /**
- * Promise hook.
  * Wraps around a promise to make sure that only one async operation
  * runs at a time and catches errors.
  * 

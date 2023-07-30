@@ -1,7 +1,8 @@
 import { act, renderHook } from "@testing-library/react";
+import { expect, test, vi } from 'vitest';
 import { useClientSyncExternalStore, OnStoreChange } from "../useClientSyncExternalStore";
 
-function doNothing() {};
+function doNothing() {}
 
 test('hook returns correct data', () => {
   let onStoreChange: OnStoreChange<number> = () => {};
@@ -12,7 +13,7 @@ test('hook returns correct data', () => {
 
   //initial value is undefined
   const { result } = renderHook(
-    () => useClientSyncExternalStore<any>(subscribe)
+    () => useClientSyncExternalStore(subscribe)
   );
 
   expect(result.current).toBe(undefined);
@@ -36,12 +37,12 @@ test('hook correctly subscribes and unsubscribes', () => {
     subscribe2: () => spiedUnsubscriber.unsubscribe
   };
 
-  const spiedSubscribe = jest.spyOn(spiedSubscriber, 'subscribe');
-  const spiedSubscribe2 = jest.spyOn(spiedSubscriber, 'subscribe2');
-  const spiedUnsubscribe = jest.spyOn(spiedUnsubscriber, 'unsubscribe');
+  const spiedSubscribe = vi.spyOn(spiedSubscriber, 'subscribe');
+  const spiedSubscribe2 = vi.spyOn(spiedSubscriber, 'subscribe2');
+  const spiedUnsubscribe = vi.spyOn(spiedUnsubscriber, 'unsubscribe');
 
   const { rerender } = renderHook(
-    ({ subscribe }) => useClientSyncExternalStore<any>(subscribe),
+    ({ subscribe }) => useClientSyncExternalStore(subscribe),
     {
       initialProps: { subscribe: spiedSubscriber.subscribe }
     }

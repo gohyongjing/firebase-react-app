@@ -14,5 +14,5 @@ export default defineConfig({
       routes: "/src/routes",
       utility: "/src/utility"
     }
-  }
+  },
 })
