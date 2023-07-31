@@ -5,6 +5,7 @@ import { FormEvent } from "react";
 import { Button, Form, LabelledInput } from "components/form";
 import { Page } from "components/utility";
 import { Center } from "components/layout/Center";
+import { SignInWithGoogleButton } from "..";
 
 export function SignIn() {
   const { resolve, error } = usePromise();
@@ -23,7 +24,11 @@ export function SignIn() {
 
   return (
     <Page>
-      <Form onSubmit={handleSubmit}>
+      <Center>
+        <SignInWithGoogleButton />
+      </Center>
+      {/* Temporarily hide form until more features are completed (reset password, verify email) */}
+      <Form onSubmit={handleSubmit} className="hidden">
         <Center
           className="gap-1"
         >

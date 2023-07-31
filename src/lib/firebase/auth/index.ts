@@ -4,10 +4,12 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut as _signOut,
   NextOrObserver,
   ErrorFn,
   CompleteFn,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import firebaseApp from "../app";
 
@@ -26,7 +28,7 @@ export function subscribeAuth(
   );
 
   return unsubscribe;
-};
+}
 
 export function signUp(email: string, password: string) {
   return createUserWithEmailAndPassword(
@@ -34,7 +36,7 @@ export function signUp(email: string, password: string) {
     email,
     password
   );
-};
+}
 
 export function signIn(email: string, password: string) {
   return signInWithEmailAndPassword(
@@ -42,10 +44,17 @@ export function signIn(email: string, password: string) {
     email,
     password
   );
-};
+}
+
+export function signInWithGoogle() {
+  return signInWithPopup(
+    auth,
+    new GoogleAuthProvider()
+  );
+}
 
 export function signOut() {
   return _signOut(auth);
-};
+}
 
 export type { UserCredential } from 'firebase/auth';

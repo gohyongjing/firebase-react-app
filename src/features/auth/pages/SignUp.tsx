@@ -5,6 +5,7 @@ import { FormEvent } from "react";
 import { formatErrorMessage, signUp } from "../api";
 import { Page } from "components/utility";
 import { Center } from "components/layout/Center";
+import { SignInWithGoogleButton } from "..";
 
 export function SignUp() {
   const { resolve, error } = usePromise();
@@ -23,28 +24,32 @@ export function SignUp() {
 
   return (
     <Page>
-        <Form onSubmit={handleSubmit}>
-          <Center className="gap-1">
-            <LabelledInput
-              type='email'
-              value={emailInputHandler.value}
-              onChange={emailInputHandler.onChange}
-              labelText="Email"
-              id='email'
-            />
-            <LabelledInput
-              type="password"
-              value={passwordInputHandler.value}
-              onChange={passwordInputHandler.onChange}
-              labelText="Password"
-              id='password'
-            />
-            <div>{errorMessage}</div>
-            <Button>
-              Sign Up
-            </Button>
-          </Center>
-        </Form>
+      <Center>
+        <SignInWithGoogleButton />
+      </Center>
+      {/* Temporarily hide form until more features are completed (reset password, verify email) */}
+      <Form onSubmit={handleSubmit} className="hidden">
+        <Center className="gap-1">
+          <LabelledInput
+            type='email'
+            value={emailInputHandler.value}
+            onChange={emailInputHandler.onChange}
+            labelText="Email"
+            id='email'
+          />
+          <LabelledInput
+            type="password"
+            value={passwordInputHandler.value}
+            onChange={passwordInputHandler.onChange}
+            labelText="Password"
+            id='password'
+          />
+          <div>{errorMessage}</div>
+          <Button>
+            Sign Up
+          </Button>
+        </Center>
+      </Form>
     </Page>
   );
 }

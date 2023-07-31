@@ -1,13 +1,11 @@
 import { UserCredential } from "lib/firebase/auth";
-import { sendWelcomeNotification } from "features/notification";
-import { defaultUserModel, setUser } from "../utility";
+import { setUser } from "../utility";
+import { Timestamp } from "lib/firebase/firestore";
 
 export function processUserSignUp(userCredential: UserCredential) {
   const userId = userCredential.user.uid;
-  const createUserDocument = setUser(userId, defaultUserModel);
-  const createWelcomeNotification = sendWelcomeNotification(userId);
-  return Promise.all([
-    createUserDocument,
-    createWelcomeNotification
-  ])
-};
+  return setUser(userId, {
+    userName: `User ${userId}`,
+    dateCreated: Timestamp.now()
+  });
+}

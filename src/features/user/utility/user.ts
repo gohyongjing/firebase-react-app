@@ -3,6 +3,7 @@ import {
   DocumentReference,
   QueryConstraint,
   SetOptions,
+  Timestamp,
   Unsubscribe,
   UpdateData,
   WithFieldValue
@@ -13,7 +14,8 @@ import { User } from "../types";
 const FIRESTORE_PATH_USERS = 'users';
 
 export const defaultUserModel: User = {
-  userName: ''
+  userName: '',
+  dateCreated: Timestamp.now()
 }
 
 const ops = getModelOperationsWithPath(
