@@ -3,11 +3,7 @@ import { expect, test, vi } from 'vitest';
 import { usePromise } from '../usePromise';
 import { delay } from 'utility/delay';
 import { ASYNC_DELAY_DURATION, ERR_ASYNC_REJECT_MESSAGE } from 'utility/testConstants';
-
-async function getValueAfterDelay(value: unknown, delayDuration: number) {
-  await delay(delayDuration);
-  return value;
-}
+import { getValueAfterDelay } from 'utility/getValueAfterDelay';
 
 async function rejectAfterDelay(delayDuration: number) {
   await delay(delayDuration);

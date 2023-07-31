@@ -4,6 +4,6 @@
  * @param delayDuration Delay duration in milliseconds.
  * @returns A promise that resolves after the delay duration.
  */
-export function delay(delayDuration: number) {
-  return new Promise(resolve => setTimeout(resolve, delayDuration));
+export async function delay(delayDuration: number) {
+  await new Promise(resolve => setTimeout(resolve, delayDuration));
 }

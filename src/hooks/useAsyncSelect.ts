@@ -1,35 +1,34 @@
-import { useSyncCachedExternalStore } from "hooks"
 import { useSelect } from "./useSelect";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
-type Props<T> = {
-  fetchOptions: () => Promise<T[]>
-  isEqual: (option1: T, option2: T) => boolean
-}
-
-export function useAsyncSelectHandler<T>({
-  fetchOptions,
-  isEqual
-}: Props<T>) {
-  const {
-    data,
-    fetchExternalStore,
-  } = useSyncCachedExternalStore(fetchOptions);
-  const initialOptions = data ?? [];
+export function useAsyncSelect<T>(
+  fetchOptions: () => Promise<T[]>,
+) {
   const {
     selected,
     options,
     dispatch
-  } = useSelect(initialOptions);
+  } = useSelect<T>([]);
 
-  const refetchOptions = useCallback(async () => {
-    const newOptions = await fetchExternalStore() ?? [];
+  useEffect(() => {
+    fetchOptions().then(newOptions => {
+      dispatch({
+        type:'SET_OPTIONS',
+        newOptions 
+      })
+    })
+  }, [fetchOptions, dispatch])
+
+  const refetchOptions = useCallback(async (
+    isEqual?: (option1: T, option2: T) => boolean
+  ) => {
+    const newOptions = await fetchOptions();
     dispatch({
       type: 'SET_OPTIONS',
       newOptions,
       isEqual
     });
-  }, [fetchExternalStore, dispatch, isEqual]);
+  }, [fetchOptions, dispatch]);
 
   const selectOption = useCallback((predicate: (option: T) => boolean) => {
     dispatch(
