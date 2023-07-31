@@ -1,21 +1,21 @@
-import { Button } from "components/form";
+import { WithId } from "utility/model";
 import { User } from "../types";
-import {  MouseEventHandler } from "react";
 
 type Props = {
-  user: User
-  onClick: MouseEventHandler<HTMLButtonElement>
+  user: WithId<User>
 }
 
 export function UserCard({
   user,
-  onClick,
 }: Props) {
   return (
-    <Button
-      onClick={onClick}
+    <div
+      className="py-2 flex flex-col"
     >
-      { user.userName }
-    </Button>
+      <b>
+        { user.userName }
+      </b>
+      { user.id }
+    </div>
   );
 }

@@ -13,6 +13,7 @@ export {
   QueryConstraint,
   Timestamp,
   limit,
+  orderBy,
   startAt,
   where,
 } from 'firebase/firestore';
