@@ -6,8 +6,9 @@ import { ASYNC_DELAY_DURATION } from 'utility/testConstants';
 import { delay } from 'utility/delay';
 
 test('select() selects correct value', async () => {
+  const getValue = () => getValueAfterDelay([2, 5, -5, 1], ASYNC_DELAY_DURATION);
   const { result } = renderHook(() => useAsyncSelect(
-    () => getValueAfterDelay([2, 5, -5, 1], ASYNC_DELAY_DURATION)
+    getValue
   ));
 
   const expectedValue = -5;
@@ -26,8 +27,9 @@ test('select() selects correct value', async () => {
 
 test('addOption() adds correct value', async () => {
   const options = ['a', 'b', 'c', 'd'];
+  const getValue = () => getValueAfterDelay(options, ASYNC_DELAY_DURATION);
   const { result } = renderHook(() => useAsyncSelect(
-    () => getValueAfterDelay(options, ASYNC_DELAY_DURATION)
+    getValue
   ));
 
   await waitFor(() => {
@@ -49,8 +51,9 @@ test('UpdateOption() updates correct value', async () => {
   const originalItem = 'f';
   const originalItems = ['e', originalItem, 'g', 'h'];
   const updatedItem = 'F'
+  const getValue = () => getValueAfterDelay(originalItems, ASYNC_DELAY_DURATION);
   const { result } = renderHook(() => useAsyncSelect(
-    () => getValueAfterDelay(originalItems, ASYNC_DELAY_DURATION)
+    getValue
   ));
   await waitFor(() => {
     expect(result.current.options.length === originalItems.length).toBeTruthy();
@@ -78,8 +81,9 @@ test('UpdateOption() updates correct value', async () => {
 test('deleteOption() deletes correct value', async () => {
   const itemToDelete = 3;
   const originalItems = [7, 3.01, itemToDelete, '3'];
+  const getValue = () => getValueAfterDelay(originalItems, ASYNC_DELAY_DURATION);
   const { result } = renderHook(() => useAsyncSelect(
-    () => getValueAfterDelay(originalItems, ASYNC_DELAY_DURATION)
+    getValue
   ))
 
   await waitFor(() => {
