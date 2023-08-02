@@ -2,10 +2,10 @@ import { useAuthContext } from "features/auth";
 import { User, UserCard } from "features/user";
 import { WithId } from "utility/model";
 import { AddFriendButton } from "./AddFriendButton";
-import { Friendship } from "../types";
+import { ClientFriendship } from "../types";
 import { useCallback, useEffect, useState } from "react";
-import { getFriendshipOfUsers } from "../api/getFriendshipOfUsers";
-import { getFriendshipStatus } from "../api/getFriendshipStatus";
+import { getClientFriendship } from "../api/getClientFriendship";
+import { CancelRequestButton } from "./CancelRequestButton";
 
 type Props = {
   otherUser: WithId<User>
@@ -15,23 +15,26 @@ export function AddFriendCard({
   otherUser
 }: Props) {
   const user = useAuthContext();
-  const [friendship, setFriendship] = useState<Friendship | undefined>();
+  const [clientFriendship, setClientFriendship] = useState<ClientFriendship>({
+    friendship: undefined,
+    status: 'UNKNOWN'
+  });
 
-  const fetchFriendship = useCallback(() => {
-    if (!user?.uid) {
+  const fetchClientFriendship = useCallback(() => {
+    const isSelf = user?.uid === otherUser.id;
+    if (!user?.uid || isSelf) {
       return;
     }
-    getFriendshipOfUsers(user?.uid, otherUser.id).then(friendship => (
-      setFriendship(friendship)
+    getClientFriendship(user?.uid, otherUser.id).then(clientFriendship => (
+      setClientFriendship(clientFriendship)
     ))
   }, [user?.uid, otherUser.id])
 
   useEffect(() => {
-    fetchFriendship();
-  }, [fetchFriendship])
+    fetchClientFriendship();
+  }, [fetchClientFriendship])
 
   const isSelf = user?.uid === otherUser.id;
-  const friendshipStatus = getFriendshipStatus(otherUser.id, friendship);
 
   console.log('add friend card rerender', user?.uid, otherUser.id)
 
@@ -48,13 +51,22 @@ export function AddFriendCard({
           if (!user?.uid || isSelf) {
             return <></>;
           }
-          switch (friendshipStatus) {
+          switch (clientFriendship.status) {
             case 'NOT_FRIENDS': {
               return (
                 <AddFriendButton
                   requesterId={user.uid}
                   recipientId={otherUser.id}
-                  onAdd={fetchFriendship}
+                  onAdd={fetchClientFriendship}
+                />
+              );
+            }
+            case 'REQUEST_SENT': {
+              return (
+                <CancelRequestButton
+                  requesterId={user.uid}
+                  recipientId={otherUser.id}
+                  onCancel={fetchClientFriendship}
                 />
               );
             }
