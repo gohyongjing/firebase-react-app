@@ -6,3 +6,5 @@ export type Friendship = {
   dateRequested: Timestamp
   dateAccepted: Timestamp | null
 }
+
+export type FriendshipStatus = 'NOT_FRIENDS' | 'FRIENDS' | 'REQUEST_SENT' | 'REQUEST_RECEIVED' | 'UNKNOWN'

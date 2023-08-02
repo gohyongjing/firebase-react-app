@@ -9,8 +9,10 @@ import {
   WithFieldValue,
   onSnapshot,
   QuerySnapshot,
+  QueryCompositeFilterConstraint,
 } from "firebase/firestore";
 import firebaseApp from "../app";
+import { isQueryCompositeFilterConstraint } from "utility/typePredicates/isQueryCompositeFilterConstraint";
 
 const firestore = getFirestore(firebaseApp);
 
@@ -26,12 +28,20 @@ export function addDoc(path: string, data: WithFieldValue<DocumentData>) {
  *
  * @param path Path to the collection to store the new document.
  */
+export function getDocs(path: string, queryCompositeFilterConstraint: QueryCompositeFilterConstraint): Promise<QuerySnapshot>
+export function getDocs(path: string, ...queryConstraints: QueryConstraint[]): Promise<QuerySnapshot>
 export function getDocs(
   path: string,
+  constraint?: QueryCompositeFilterConstraint | QueryConstraint,
   ...queryConstraints: QueryConstraint[]
 ) {
   const collectionRef = collection(firestore, path);
-  const docsQuery = query(collectionRef, ...queryConstraints);
+  if (!constraint) {
+    return _getDocs(query(collectionRef));
+  }
+  const docsQuery = isQueryCompositeFilterConstraint(constraint)
+    ? query(collectionRef, constraint)
+    : query(collectionRef, constraint, ...queryConstraints)
   return _getDocs(docsQuery);
 }
 

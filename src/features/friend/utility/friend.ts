@@ -1,6 +1,7 @@
 import {
   DocumentData,
   DocumentReference,
+  QueryCompositeFilterConstraint,
   QueryConstraint,
   SetOptions,
   Timestamp,
@@ -40,12 +41,14 @@ export const setFriendship: (
 export const getFriendship: (friendshipId: string) => Promise<WithId<Friendship> | undefined>
   = ops.getModel;
 
-export const getFriendships: (...queryConstraints: QueryConstraint[]) => Promise<WithId<Friendship>[]>
+export const getFriendships: 
+  ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<Friendship>[]>)
+  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Friendship>[]>)
   = ops.getModels;
 
-export const getFriendshipWhere: (
-  ...queryConstraints: QueryConstraint[]
-) => Promise<WithId<Friendship> | undefined>
+export const getFriendshipWhere:
+  ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<Friendship> | undefined>)
+  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Friendship> | undefined>)
   = ops.getModelWhere;
 
 export const updateFriendship: (

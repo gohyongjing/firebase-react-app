@@ -1,4 +1,5 @@
 export * as AccessibleIcon from '@radix-ui/react-accessible-icon';
+export * as AlertDialog from '@radix-ui/react-alert-dialog';
 export * as Collapsible from '@radix-ui/react-collapsible';
 export * as Label from '@radix-ui/react-label';
 export * as NavigationMenu from '@radix-ui/react-navigation-menu';

@@ -10,10 +10,15 @@ export type {
 
 export {
   DocumentReference,
+  QueryCompositeFilterConstraint,
   QueryConstraint,
   Timestamp,
+  and,
+  collection,
   limit,
+  or,
   orderBy,
+  query,
   startAt,
   where,
 } from 'firebase/firestore';

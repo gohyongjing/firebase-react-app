@@ -10,12 +10,14 @@ export function UserCard({
 }: Props) {
   return (
     <div
-      className="py-2 flex flex-col"
+      className="p-1 flex flex-col"
     >
-      <b>
+      <b className="w-48 truncate sm:w-auto">
         { user.userName }
       </b>
-      { user.id }
+      <div className="w-48 truncate sm:w-auto">
+        { user.id }
+      </div>
     </div>
   );
 }

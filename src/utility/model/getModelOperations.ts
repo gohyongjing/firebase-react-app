@@ -10,13 +10,15 @@ import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
+  QueryCompositeFilterConstraint,
   QueryConstraint,
   QuerySnapshot,
   SetOptions,
   Unsubscribe,
   UpdateData,
-  WithFieldValue
+  WithFieldValue,
 } from "lib/firebase/firestore";
+import { isQueryCompositeFilterConstraint } from "utility/typePredicates/isQueryCompositeFilterConstraint";
 
 export type WithId<T> = T & { id: string }
 
@@ -24,8 +26,12 @@ interface ModelOperations<T> {
   addModel: (path: string, newData: WithFieldValue<T>) => Promise<DocumentReference<DocumentData> | undefined>,
   setModel: (path: string, newData: WithFieldValue<T>, options?: SetOptions) => Promise<void>,
   getModel: (path: string) => Promise<WithId<T> | undefined>,
-  getModels: (path: string, ...queryConstraints: QueryConstraint[]) => Promise<WithId<T>[]>
-  getModelWhere: (path: string, ...queryConstraints: QueryConstraint[]) => Promise<WithId<T> | undefined>
+  getModels:
+    ((path: string, queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<T>[]>)
+    & ((path: string, ...queryConstraints: QueryConstraint[]) => Promise<WithId<T>[]>)
+  getModelWhere:
+    ((path: string, queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<T> | undefined>)
+    & ((path: string, ...queryConstraints: QueryConstraint[]) => Promise<WithId<T> | undefined>)
   updateModel: (path: string, dataUpdates: UpdateData<T>) => Promise<void>,
   deleteModel: (path: string) => Promise<void>,
   subscribeModel: (
@@ -63,7 +69,7 @@ export function getModelOperations<T extends DocumentData>(defaultModel: T): Mod
       }
       return _padSnapshotData(snapshot);
     });
-  };
+  }
 
   /**
    * Retrieves all documents with padded data at a certain path that satisfies a condition.
@@ -74,13 +80,38 @@ export function getModelOperations<T extends DocumentData>(defaultModel: T): Mod
    * @param queryConstraints Constraints that retrieved documents must satisfy.
    * @returns Documents satisfying the contraints. 
    */
-  function getModels(path: string, ...queryConstraints: QueryConstraint[]) {
-    return getDocs(path, ...queryConstraints)
-      .then(snapshot => snapshot.docs.map(_padSnapshotData));
-  };
+  function getModels(path: string, queryCompositeFilterConstraint: QueryCompositeFilterConstraint): Promise<WithId<T>[]>
+  function getModels(path: string, ...queryConstraints: QueryConstraint[]): Promise<WithId<T>[]>
+  async function getModels(
+    path: string,
+    constraint?: QueryCompositeFilterConstraint | QueryConstraint,
+    ...queryConstraints: QueryConstraint[]
+  ) {
+    if (!constraint) {
+      return getDocs(path)
+        .then(snapshot => snapshot.docs.map(_padSnapshotData));
+    }
+    return (
+      isQueryCompositeFilterConstraint(constraint)
+        ? getDocs(path, constraint)
+        : getDocs(path, constraint, ...queryConstraints)
+    ).then(snapshot => snapshot.docs.map(_padSnapshotData));
+  }
 
-  async function getModelWhere(path: string, ...queryConstraints: QueryConstraint[]) {
-    const models = await getModels(path, ...queryConstraints);
+  function getModelWhere(path: string, queryCompositeFilterConstraint: QueryCompositeFilterConstraint): Promise<WithId<T> | undefined>
+  function getModelWhere(path: string, ...queryConstraints: QueryConstraint[]): Promise<WithId<T> | undefined>
+  async function getModelWhere(
+    path: string,
+    constraint?: QueryConstraint | QueryCompositeFilterConstraint,
+    ...queryConstraints: QueryConstraint[]
+  ) {
+    const models = !constraint
+      ? await getModels(path)
+      : (
+        isQueryCompositeFilterConstraint(constraint)
+        ? await getModels(path, constraint)
+        : await getModels(path, constraint, ...queryConstraints)
+      );
     if (models.length === 0) {
       return undefined;
     }
