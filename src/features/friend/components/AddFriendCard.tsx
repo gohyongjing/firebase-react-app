@@ -1,5 +1,5 @@
 import { useAuthContext } from "features/auth";
-import { User, UserCard } from "features/user";
+import { User, UserCard, useUser } from "features/user";
 import { WithId } from "utility/model";
 import { ClientFriendship } from "../types";
 import { useCallback, useEffect, useState } from "react";
@@ -15,6 +15,7 @@ export function AddFriendCard({
   otherUser
 }: Props) {
   const user = useAuthContext();
+  const userProfile = useUser(user?.uid);
   const [clientFriendship, setClientFriendship] = useState<ClientFriendship>({
     friendship: undefined,
     status: 'UNKNOWN'
@@ -48,7 +49,7 @@ export function AddFriendCard({
       />
       {
         (() => {
-          if (!user?.uid || isSelf) {
+          if (!user?.uid || isSelf || !userProfile) {
             return <></>;
           }
           switch (clientFriendship.status) {
@@ -73,8 +74,8 @@ export function AddFriendCard({
             case 'REQUEST_RECEIVED': {
               return (
                 <AcceptRequestButton
-                  requesterId={user.uid}
-                  recipientId={otherUser.id}
+                  requester={otherUser}
+                  recipient={userProfile}
                   onAccept={fetchClientFriendship}
                 />
               )

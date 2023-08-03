@@ -1,21 +1,11 @@
 import { useAuthContext } from "features/auth";
 import { FriendsLink } from "features/friend";
-import { getUserById } from "features/user";
-import { useSyncCachedExternalStore } from "hooks";
-import { useCallback } from "react";
+import { useUser } from "features/user";
 import { Page } from "components/utility";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
-
-  const fetcher = useCallback(async () => {
-    if (!firebaseUser?.uid) {
-      return undefined;
-    }
-    return getUserById(firebaseUser.uid);
-  }, [firebaseUser?.uid])
-
-  const { data: user } = useSyncCachedExternalStore(fetcher);
+  const user = useUser(firebaseUser?.uid);
 
   return (
     <Page>

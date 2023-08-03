@@ -15,9 +15,9 @@ export async function sendFriendRequest(requesterId: string, recipientId: string
     dateRequested: Timestamp.now(),
     dateAccepted: null
   });
-  const sendFriendRequestNotificationPromise = sendFriendRequestNotification(recipientId);
+  const sendNotificationPromise = sendFriendRequestNotification(recipientId);
   return Promise.all([
     addFriendshipPromise,
-    sendFriendRequestNotificationPromise
+    sendNotificationPromise
   ])
 }
