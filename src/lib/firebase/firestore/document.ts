@@ -11,10 +11,11 @@ import {
   onSnapshot,
   SetOptions,
   DocumentSnapshot,
+  Firestore,
 } from "firebase/firestore";
 import firebaseApp from "../app";
 
-const firestore = getFirestore(firebaseApp);
+let firestore = getFirestore(firebaseApp);
 
 /**
  * Sets the document data at a certain path with new data.
@@ -73,4 +74,14 @@ export function subscribeDoc(
   )
 
   return unsubscribe;
+}
+
+/**
+ * Replaces the firestore used by other functions.
+ * Used for testing purposes.
+ *
+ * @param newFirestore Firestore to replace the original firestore.
+ */
+export function replaceDocFirestore(newFirestore: Firestore) {
+  firestore = newFirestore;
 }

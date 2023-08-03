@@ -10,11 +10,12 @@ import {
   onSnapshot,
   QuerySnapshot,
   QueryCompositeFilterConstraint,
+  Firestore,
 } from "firebase/firestore";
 import firebaseApp from "../app";
 import { isQueryCompositeFilterConstraint } from "utility/typePredicates/isQueryCompositeFilterConstraint";
 
-const firestore = getFirestore(firebaseApp);
+let firestore = getFirestore(firebaseApp);
 
 // Wrapper around firebase collection.
 
@@ -57,4 +58,14 @@ export function subscribeDocs(
     onNext,
   )
   return unsubscribe;
+}
+
+/**
+ * Replaces the firestore used by other functions.
+ * Used for testing purposes.
+ *
+ * @param newFirestore Firestore to replace the original firestore.
+ */
+export function replaceColFirestore(newFirestore: Firestore) {
+  firestore = newFirestore;
 }
