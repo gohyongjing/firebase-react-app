@@ -1,4 +1,4 @@
-import { AsyncButton } from "components/form/AsyncButton";
+import { AsyncButton } from "components/form";
 import { signInWithGoogle } from "../api/signInWithGoogle";
 
 export function SignInWithGoogleButton() {

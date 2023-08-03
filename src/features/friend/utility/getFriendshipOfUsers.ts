@@ -6,7 +6,7 @@ export async function getFriendshipOfUsers(
   userId2: string
 ) {
   if (userId1 === userId2) {
-    console.error(`User ${userId1} cannot have befriend themselves`);
+    console.error(`User ${userId1} cannot befriend themselves`);
     return;
   }
   return getFriendshipWhere(or(

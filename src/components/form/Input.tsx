@@ -23,7 +23,7 @@ export function Input({ type, ...props }: Props) {
   return (
     <SpecificInput
       { ...mergeClassNameIntoProps(props, defaultClassName) }
-      className="rounded p-1 font-semibold border-2 text-primary-1 bg-slate-100 border-primary-1 dark:border-slate-50"
+      className="rounded p-1 font-semibold border-2 text-primary-1 bg-background-100 border-primary-1 dark:border-background-50"
     />
   );
 }

@@ -1,7 +1,7 @@
 import { Button } from "components/form";
 import { Collapsible, MinusIcon, PlusIcon } from "lib/radixUi";
 import { useState } from "react";
-import { AddFriendUsersList } from "./AddFriendUsersList";
+import { AddFriendUsersList } from ".";
 
 export function AddFriendCollapsible() {
   const [isOpen, setIsOpen] = useState(false);

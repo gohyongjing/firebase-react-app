@@ -1,29 +1,30 @@
-import { ButtonHTMLAttributes, MouseEvent, useCallback } from "react"
+import { ButtonHTMLAttributes, Ref, forwardRef, useCallback } from "react"
 import { Button } from "./Button"
 import { usePromise } from "hooks"
 
-type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> & {
-  onClick: (e: MouseEvent<HTMLButtonElement>) => Promise<unknown>
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+  onClick: () => Promise<unknown>
 }
 
-export function AsyncButton({
-  onClick,
-  disabled,
-  ...props
-}: Props) {
-  const {resolve, isLoading } = usePromise();
+export const AsyncButton = forwardRef((
+  props: Props,
+  forwardedRef: Ref<HTMLButtonElement>
+) => {
+  const onClick = props.onClick;
+  const { resolve, isLoading } = usePromise();
+  console.log('received clickhandler', props)
 
-  const handleClick = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-    resolve(() => onClick(e));
+  const handleClick = useCallback(() => {
+    console.log('resolving', onClick)
+    return resolve(onClick);
   }, [onClick, resolve])
-
-  console.log('async button rerender')
 
   return (
     <Button
       { ...props }
       onClick={handleClick}
-      disabled={ disabled || isLoading }
+      disabled={ props.disabled || isLoading }
+      ref={forwardedRef}
     />
   )
-}
+});

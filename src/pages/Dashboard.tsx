@@ -1,9 +1,9 @@
 import { useAuthContext } from "features/auth";
+import { FriendsLink } from "features/friend";
 import { getUserById } from "features/user";
 import { useSyncCachedExternalStore } from "hooks";
 import { useCallback } from "react";
 import { Page } from "components/utility";
-import { FriendsLink } from "features/friend/components/FriendsLink";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();

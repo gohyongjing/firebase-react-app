@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { AsyncButton } from "components/form/AsyncButton";
-import { cancelFriendRequest } from "../api/cancelFriendRequest";
+import { AsyncButton } from "components/form";
+import { cancelFriendRequest } from "../api";
 
 type Props = {
   requesterId: string
@@ -22,7 +22,7 @@ export function CancelRequestButton({
   return (
     <AsyncButton
       onClick={handleClick}
-      className='py-2'
+      className='py-2 bg-cancel-300 dark:border-cancel-900 dark:text-cancel-50 dark:bg-cancel-600 w-40'
     >
       Cancel Request
     </AsyncButton>

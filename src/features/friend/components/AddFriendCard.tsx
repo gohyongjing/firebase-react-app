@@ -1,11 +1,11 @@
 import { useAuthContext } from "features/auth";
 import { User, UserCard } from "features/user";
 import { WithId } from "utility/model";
-import { AddFriendButton } from "./AddFriendButton";
 import { ClientFriendship } from "../types";
 import { useCallback, useEffect, useState } from "react";
-import { getClientFriendship } from "../api/getClientFriendship";
-import { CancelRequestButton } from "./CancelRequestButton";
+import { getClientFriendship } from "../api";
+import { AcceptRequestButton, AddFriendButton, CancelRequestButton } from ".";
+import { RemoveFriendButton } from "./RemoveFriendButton";
 
 type Props = {
   otherUser: WithId<User>
@@ -41,7 +41,7 @@ export function AddFriendCard({
   return (
     <div
       key={otherUser.id}
-      className='p-1 flex items-center justify-between border-2 border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800'
+      className='p-1 flex items-center justify-between border-2 border-background-200 bg-background-100 dark:border-background-700 dark:bg-background-800'
     >
       <UserCard
         user={otherUser}
@@ -70,8 +70,26 @@ export function AddFriendCard({
                 />
               );
             }
+            case 'REQUEST_RECEIVED': {
+              return (
+                <AcceptRequestButton
+                  requesterId={user.uid}
+                  recipientId={otherUser.id}
+                  onAccept={fetchClientFriendship}
+                />
+              )
+            }
+            case 'FRIENDS': {
+              return (
+                <RemoveFriendButton
+                  requesterId={user.uid}
+                  recipient={otherUser}
+                  onRemove={fetchClientFriendship}
+                />
+              );
+            }
             default: {
-              return <></>
+              return <></>;
             }
           }
         }) ()

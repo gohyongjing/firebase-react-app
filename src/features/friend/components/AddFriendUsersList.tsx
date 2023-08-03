@@ -2,7 +2,7 @@ import { User, getUsersByName } from '../../user';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from 'features/auth';
 import { WithId } from 'utility/model';
-import { AddFriendCard } from './AddFriendCard';
+import { AddFriendCard } from '.';
 
 export function AddFriendUsersList() {
   const user = useAuthContext();

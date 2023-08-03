@@ -11,7 +11,7 @@ export function FriendsLink() {
   }, [navigate]);
 
   return (
-    <div onClick={handleClick} className="flex items-center gap-1 hover:cursor-pointer text-sm text-primary-3 hover hover:underline">
+    <div onClick={handleClick} className="flex items-center gap-1 hover:cursor-pointer text-sm text-primary-2 dark:text-primary-3 hover hover:underline">
       <PersonIcon />
       <a>
         Friends

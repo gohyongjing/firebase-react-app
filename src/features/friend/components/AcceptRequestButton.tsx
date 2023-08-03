@@ -1,30 +1,31 @@
 import { useCallback } from "react";
-import { sendFriendRequest } from "../api";
 import { AsyncButton } from "components/form";
+import { acceptFriendRequest } from "../api";
 
 type Props = {
   requesterId: string
   recipientId: string
-  onAdd: () => void
+  onAccept: () => void
 }
 
-export function AddFriendButton({
+export function AcceptRequestButton({
   requesterId,
   recipientId,
-  onAdd
+  onAccept
 }: Props) {
 
   const handleClick = useCallback(async () => {
-    await sendFriendRequest(requesterId, recipientId);
-    return onAdd();
-  }, [requesterId, recipientId, onAdd])
+    await acceptFriendRequest(requesterId, recipientId);
+    return onAccept();
+  }, [requesterId, recipientId, onAccept])
 
   return (
     <AsyncButton
       onClick={handleClick}
-      className='py-2 text-background-50 bg-primary-1 w-40'
+      className='py-2'
     >
-      Add Friend
+      Accept Request
     </AsyncButton>
   );
 }
+

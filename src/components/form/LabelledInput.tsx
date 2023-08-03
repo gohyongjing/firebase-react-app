@@ -15,7 +15,7 @@ export function LabelledInput({
   return (
     <Label.Root 
       htmlFor={props.id}
-      className="flex flex-col gap-1 text-primary-1 dark:text-slate-50"
+      className="flex flex-col gap-1 text-primary-1 dark:text-background-50"
     >
       <b>
        { labelText }

@@ -1,7 +1,7 @@
 import { AccessibleIcon, Cross1Icon } from "lib/radixUi";
 import { useCallback } from "react";
 import { deleteNotificationById } from "../api";
-import { AsyncButton } from "components/form/AsyncButton";
+import { AsyncButton } from "components/form";
 
 interface Props {
   notificationId: string
@@ -15,12 +15,12 @@ export function DismissNotificationButton({ notificationId }: Props) {
 
   return (
     <AsyncButton
-      className="border-0 bg-slate-50"
+      className="border-0 bg-cancel-50"
       onClick={handleClick}  
     >
       <AccessibleIcon.Root label="Dismiss">
         <Cross1Icon
-          className="text-primary-1 dark:text-slate-50"
+          className="text-primary-1 dark:text-cancel-50"
         />
       </AccessibleIcon.Root>
     </AsyncButton>
