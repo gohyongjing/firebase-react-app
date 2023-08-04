@@ -16,7 +16,6 @@ export function AddFriendUsersList() {
       setUsers(users);
     })
   }, [user?.uid])
-  console.log('add list rerender')
 
   return (
     <div className='flex flex-col gap-1 p-1'>

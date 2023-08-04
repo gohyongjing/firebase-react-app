@@ -12,10 +12,8 @@ export const AsyncButton = forwardRef((
 ) => {
   const onClick = props.onClick;
   const { resolve, isLoading } = usePromise();
-  console.log('received clickhandler', props)
 
   const handleClick = useCallback(() => {
-    console.log('resolving', onClick)
     return resolve(onClick);
   }, [onClick, resolve])
 

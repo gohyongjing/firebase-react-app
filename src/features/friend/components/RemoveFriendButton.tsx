@@ -23,9 +23,6 @@ export function RemoveFriendButton({
     return onRemove();
   }, [onRemove, requesterId, recipient.id])
 
-
-  console.log('giving handle confirm', handleConfirm)
-
   return (
     <AlertDialog.Root
       open={isOpen}

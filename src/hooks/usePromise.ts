@@ -41,7 +41,6 @@ export function usePromise(): PromiseHook {
     }
     setIsLoading(true);
     setError(null);
-    console.log('getting value')
     return getValue()
       .catch((e: unknown) => {
         setError(e);

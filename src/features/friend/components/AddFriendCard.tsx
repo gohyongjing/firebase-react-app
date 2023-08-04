@@ -37,8 +37,6 @@ export function AddFriendCard({
 
   const isSelf = user?.uid === otherUser.id;
 
-  console.log('add friend card rerender', user?.uid, otherUser.id)
-
   return (
     <div
       key={otherUser.id}

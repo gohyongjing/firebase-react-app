@@ -12,13 +12,11 @@ export function useAsyncSelect<T>(
 
   useEffect(() => {
     fetchOptions().then(newOptions => {
-      console.log(newOptions)
       dispatch({
         type:'SET_OPTIONS',
         newOptions 
       })
     })
-    console.log('rerender')
   }, [fetchOptions, dispatch])
 
   const refetchOptions = useCallback(async (
