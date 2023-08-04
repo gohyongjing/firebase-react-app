@@ -1,3 +1,7 @@
+/**
+ * Code adapted from https://github.com/firebase/quickstart-testing/tree/master
+ */
+
 import {  initializeTestEnvironment } from '@firebase/rules-unit-testing';
 import { readFileSync, createWriteStream } from "node:fs";
 import { get } from "node:http";
@@ -12,7 +16,9 @@ export const USER_ID_ALICE = 'alice';
 export const USER_ID_BOB = 'bob';
 
 export function parseHostAndPort(hostAndPort: string | undefined): { host: string; port: number; } | undefined {
-  if(hostAndPort == undefined) { return undefined; }
+  if (hostAndPort == undefined) {
+    return undefined;
+  }
   const pieces = hostAndPort.split(':');
   return {
     host: pieces[0],
@@ -33,7 +39,7 @@ function getFirestoreCoverageMeta(projectId: string, firebaseJsonPath: string) {
   }
 }
 
-export async function prepareTestEnvironment(userId: string = USER_ID_ALICE) {
+export async function prepareTestEnvironment(userId?: string) {
   // Silence expected rules rejections from Firestore SDK. Unexpected rejections
   // will still bubble up and will be thrown as an error (failing the tests).
   setLogLevel('error');
@@ -47,9 +53,13 @@ export async function prepareTestEnvironment(userId: string = USER_ID_ALICE) {
     },
   });
 
+  const textEnvContext = userId
+    ? testEnv.authenticatedContext(userId)
+    : testEnv.unauthenticatedContext();
+
   // convert Firestore v8 API to v9 API
   const testFirestore: Firestore = {
-    ...testEnv.authenticatedContext(userId).firestore(),
+    ...textEnvContext.firestore(),
     type: 'firestore',
     toJSON: () => { throw Error('toJSON() not implemented') }
   };

@@ -1,13 +1,12 @@
 import { beforeEach, beforeAll, afterAll, test, expect } from 'vitest';
 import { assertFails, assertSucceeds, RulesTestEnvironment } from '@firebase/rules-unit-testing';
 import { USER_ID_ALICE, USER_ID_BOB, logTestResults, prepareTestEnvironment } from 'utility/test/testEnvironmentUtility';
-import { deleteNotificationById, sendWelcomeNotification } from '..';
-import { sendAcceptedFriendRequestNotification } from '../sendAcceptedFriendRequestNotification';
+import { deleteNotificationById, sendAcceptedFriendRequestNotification, sendWelcomeNotification } from '..';
 
 let testEnv: RulesTestEnvironment;
 
 beforeAll(async () => {
-  testEnv = await prepareTestEnvironment(); 
+  testEnv = await prepareTestEnvironment(USER_ID_ALICE); 
 });
 
 afterAll(async () => {

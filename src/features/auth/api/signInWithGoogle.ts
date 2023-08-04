@@ -7,7 +7,7 @@ export async function signInWithGoogle() {
   if (!userCredential) {
     return;
   }
-  const user = await processUserSignIn(userCredential);
+  const user = await processUserSignIn(userCredential.user.uid);
   if (!user) {
     sendWelcomeNotification(userCredential.user.uid);
   }
