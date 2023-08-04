@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { expect, test } from 'vitest';
 import { useAsyncSelect } from 'hooks/useAsyncSelect';
 import { getValueAfterDelay } from 'utility/getValueAfterDelay';
-import { ASYNC_DELAY_DURATION } from 'utility/testConstants';
+import { ASYNC_DELAY_DURATION } from 'utility/test/testConstants';
 import { delay } from 'utility/delay';
 
 test('select() selects correct value', async () => {

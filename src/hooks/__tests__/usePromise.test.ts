@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { expect, test, vi } from 'vitest';
 import { usePromise } from '../usePromise';
 import { delay } from 'utility/delay';
-import { ASYNC_DELAY_DURATION, ERR_ASYNC_REJECT_MESSAGE } from 'utility/testConstants';
+import { ASYNC_DELAY_DURATION, ERR_ASYNC_REJECT_MESSAGE } from 'utility/test/testConstants';
 import { getValueAfterDelay } from 'utility/getValueAfterDelay';
 
 async function rejectAfterDelay(delayDuration: number) {

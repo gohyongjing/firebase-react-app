@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+firestore-coverage.html
 
 node_modules
 dist
@@ -25,3 +26,4 @@ dist-ssr
 
 # secrets
 .env
+firestore.rules
