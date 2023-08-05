@@ -1,12 +1,13 @@
 import { beforeEach, beforeAll, afterAll, test, expect } from 'vitest';
 import { assertFails, assertSucceeds, RulesTestEnvironment } from '@firebase/rules-unit-testing';
-import { USER_ID_ALICE, USER_ID_BOB, logTestResults, prepareTestEnvironment } from 'utility/test/testEnvironmentUtility';
+import { logTestResults, prepareTestEnvironment } from 'utility/test/testEnvironmentUtility';
 import { deleteNotificationById, sendAcceptedFriendRequestNotification, sendWelcomeNotification } from '..';
+import { USER_ALICE, USER_BOB } from 'utility/test/testConstants';
 
 let testEnv: RulesTestEnvironment;
 
 beforeAll(async () => {
-  testEnv = await prepareTestEnvironment(USER_ID_ALICE); 
+  testEnv = await prepareTestEnvironment(USER_ALICE.id); 
 });
 
 afterAll(async () => {
@@ -21,14 +22,14 @@ test('can only delete own notifications', async () => {
   let aliceDocId = '';
   let bobDocId = '';
   await assertSucceeds((async () => {
-    const docRef = await sendWelcomeNotification(USER_ID_ALICE);
+    const docRef = await sendWelcomeNotification(USER_ALICE.id);
     expect(docRef).toBeTruthy();
     if (docRef) {
       aliceDocId = docRef.id;
     }
   }) ());
   await assertSucceeds((async () => {
-    const docRef = await sendAcceptedFriendRequestNotification(USER_ID_BOB, 'Xx_alice_xX');
+    const docRef = await sendAcceptedFriendRequestNotification(USER_BOB.id, USER_ALICE.userName);
     expect(docRef).toBeTruthy();
     if (docRef) {
      bobDocId = docRef.id;

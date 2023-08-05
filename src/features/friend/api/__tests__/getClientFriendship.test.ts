@@ -1,6 +1,6 @@
 import { beforeEach, beforeAll, afterAll, test } from 'vitest';
 import { assertSucceeds, RulesTestEnvironment } from '@firebase/rules-unit-testing';
-import { getUserById } from '..';
+import { getClientFriendship } from '..';
 import { logTestResults, prepareTestEnvironment } from 'utility/test/testEnvironmentUtility';
 import { USER_ALICE, USER_BOB } from 'utility/test/testConstants';
 
@@ -18,6 +18,7 @@ beforeEach(async () => {
   await testEnv.clearFirestore();
 });
 
-test('can get user by id', async () => {
-  await assertSucceeds(getUserById(USER_BOB.id));
+test('can get user friendships', async () => {
+  await assertSucceeds(getClientFriendship(USER_ALICE.id, USER_BOB.id));
+  await assertSucceeds(getClientFriendship(USER_BOB.id, USER_ALICE.id));
 });

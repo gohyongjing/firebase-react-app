@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 import firebaseApp from "../app";
 
-let firestore = getFirestore(firebaseApp);
+export let firestore = getFirestore(firebaseApp);
 
 /**
  * Sets the document data at a certain path with new data.

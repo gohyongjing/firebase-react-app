@@ -1,12 +1,13 @@
 import { beforeEach, beforeAll, afterAll, test } from 'vitest';
 import { assertSucceeds, RulesTestEnvironment } from '@firebase/rules-unit-testing';
 import { getUsersByName } from '..';
-import { USER_ID_ALICE, logTestResults, prepareTestEnvironment } from 'utility/test/testEnvironmentUtility';
+import { logTestResults, prepareTestEnvironment } from 'utility/test/testEnvironmentUtility';
+import { USER_ALICE } from 'utility/test/testConstants';
 
 let testEnv: RulesTestEnvironment;
 
 beforeAll(async () => {
-  testEnv = await prepareTestEnvironment(USER_ID_ALICE); 
+  testEnv = await prepareTestEnvironment(USER_ALICE.id); 
 });
 
 afterAll(async () => {

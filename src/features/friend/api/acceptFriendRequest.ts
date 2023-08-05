@@ -1,5 +1,5 @@
 import { Timestamp } from "lib/firebase/firestore";
-import {  updateFriendship } from "../utility";
+import { updateFriendship } from "../utility";
 import { getClientFriendship } from "./getClientFriendship";
 import { sendAcceptedFriendRequestNotification } from "features/notification/api/sendAcceptedFriendRequestNotification";
 import { User } from "features/user";

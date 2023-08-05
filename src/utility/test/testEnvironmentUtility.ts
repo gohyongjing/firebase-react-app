@@ -12,9 +12,6 @@ import { replaceColFirestore, replaceDocFirestore } from 'lib/firebase/firestore
 const PROJECT_ID = 'fakeproject2';
 const FIREBASE_JSON = resolve(__dirname, '../../../firebase.json');
 
-export const USER_ID_ALICE = 'alice';
-export const USER_ID_BOB = 'bob';
-
 export function parseHostAndPort(hostAndPort: string | undefined): { host: string; port: number; } | undefined {
   if (hostAndPort == undefined) {
     return undefined;
@@ -81,5 +78,4 @@ export async function logTestResults() {
       res.on("error", reject);
     });
   });
-  console.log(`View firestore rule coverage information at ${coverageFile}\n`);
 }

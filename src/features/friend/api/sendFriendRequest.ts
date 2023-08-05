@@ -6,7 +6,7 @@ import { sendFriendRequestNotification } from "features/notification/api/sendFri
 export async function sendFriendRequest(requesterId: string, recipientId: string) {
   const clientFriendship = await getClientFriendship(requesterId, recipientId);
   if (clientFriendship.status !== 'NOT_FRIENDS') {
-    console.error(`Bad request: User ${requesterId} cannot send friend request to user ${recipientId}`);
+    console.error(`Bad request: User ${requesterId} cannot send friend request to user ${recipientId}:`, clientFriendship);
     return;
   }
   const addFriendshipPromise = addFriendship({
