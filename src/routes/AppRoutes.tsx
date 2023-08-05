@@ -1,12 +1,14 @@
 import { useAuthContext, SignIn, SignUp } from "features/auth";
 import { Friends } from "features/friend";
 import { Dashboard, Home } from "pages";
-import { Navigate, Route, Routes } from "lib/reactRouterDom";
+import { Route, Routes } from "lib/reactRouterDom";
+import { UserSettings } from "features/user";
 
 export const PATH_HOME = '/';
 export const PATH_SIGN_UP = '/sign-up';
 export const PATH_SIGN_IN = '/sign-in';
 export const PATH_DASHBOARD = '/dashboard'
+export const PATH_SETTINGS_USER = '/settings/user'
 export const PATH_FRIENDS = '/friends'
 
 interface Props {
@@ -16,13 +18,13 @@ interface Props {
 function RequireAuth({ children=null }: Props) {
   const user = useAuthContext();
 
-  return user ? children : <Navigate replace to={PATH_SIGN_IN}/>;
+  return user ? children : <SignIn/>;
 }
 
 function RequireNoAuth({ children=null }: Props) {
   const user = useAuthContext();
 
-  return user ? <Navigate replace to={PATH_DASHBOARD}/> : children;
+  return user ? <Dashboard /> : children;
 }
 
 export function AppRoutes() {
@@ -39,6 +41,9 @@ export function AppRoutes() {
       }/>
       <Route path={PATH_DASHBOARD} element={
         <RequireAuth><Dashboard/></RequireAuth>
+      }/>
+      <Route path={PATH_SETTINGS_USER} element={
+        <RequireAuth><UserSettings/></RequireAuth>
       }/>
       <Route path={PATH_FRIENDS} element={
         <RequireAuth><Friends/></RequireAuth>

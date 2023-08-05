@@ -2,12 +2,12 @@ import { ButtonHTMLAttributes, Ref, forwardRef, useCallback } from "react"
 import { Button } from "./Button"
 import { usePromise } from "hooks"
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
+export type AsyncButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   onClick: () => Promise<unknown>
 }
 
 export const AsyncButton = forwardRef((
-  props: Props,
+  props: AsyncButtonProps,
   forwardedRef: Ref<HTMLButtonElement>
 ) => {
   const onClick = props.onClick;

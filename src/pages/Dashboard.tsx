@@ -1,7 +1,7 @@
 import { useAuthContext } from "features/auth";
-import { FriendsLink } from "features/friend";
 import { useUser } from "features/user";
 import { Page } from "components/utility";
+import { SideNav } from "components/sideNav/SideNav";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
@@ -12,7 +12,7 @@ export function Dashboard() {
       <b>
         { user?.userName }
       </b>
-      <FriendsLink />
+      <SideNav />
     </Page>
   );
 }

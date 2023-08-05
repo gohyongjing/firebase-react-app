@@ -1,14 +1,13 @@
-import { AsyncButton } from "components/form";
 import { signInWithGoogle } from "../api/signInWithGoogle";
+import { LongAsyncButton } from "components/form/LongAsyncButton";
 
 export function SignInWithGoogleButton() {
   return (
-    <AsyncButton
-      className="w-1/2 m-2"
+    <LongAsyncButton
       onClick={signInWithGoogle}
     >
       Sign In with Google
-    </AsyncButton>
+    </LongAsyncButton>
   );
 }
 
