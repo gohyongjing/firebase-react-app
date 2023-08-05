@@ -1,5 +1,5 @@
-import { signInWithGoogle } from "../api/signInWithGoogle";
-import { LongAsyncButton } from "components/form/LongAsyncButton";
+import { signInWithGoogle } from "../api";
+import { LongAsyncButton } from "components/form";
 
 export function SignInWithGoogleButton() {
   return (

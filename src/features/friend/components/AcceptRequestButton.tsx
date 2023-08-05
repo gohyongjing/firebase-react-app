@@ -24,7 +24,6 @@ export function AcceptRequestButton({
   return (
     <AsyncButton
       onClick={handleClick}
-      className='py-2'
     >
       Accept Request
     </AsyncButton>

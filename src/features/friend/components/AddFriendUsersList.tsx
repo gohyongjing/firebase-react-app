@@ -18,7 +18,7 @@ export function AddFriendUsersList() {
   }, [user?.uid])
 
   return (
-    <div className='flex flex-col gap-1 p-1'>
+    <div className='flex flex-col gap-1'>
       {
         users.map(otherUser => {
           return (

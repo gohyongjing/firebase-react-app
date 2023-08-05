@@ -22,7 +22,7 @@ export function CancelRequestButton({
   return (
     <AsyncButton
       onClick={handleClick}
-      className='py-2 bg-cancel-300 dark:border-cancel-900 dark:text-cancel-50 dark:bg-cancel-600 w-40'
+      className='bg-cancel-300 dark:border-cancel-900 dark:text-cancel-50 dark:bg-cancel-600 w-40'
     >
       Cancel Request
     </AsyncButton>

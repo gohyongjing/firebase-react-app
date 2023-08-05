@@ -22,7 +22,7 @@ export function AddFriendButton({
   return (
     <AsyncButton
       onClick={handleClick}
-      className='py-2 text-background-50 bg-primary-1 w-40'
+      className='w-40'
     >
       Add Friend
     </AsyncButton>

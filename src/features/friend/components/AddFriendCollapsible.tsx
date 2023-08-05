@@ -8,12 +8,12 @@ export function AddFriendCollapsible() {
 
   return (
     <Collapsible.Root>
-      <div className="flex justify-between">
-        <b>
-          Friends
-        </b>
+      <div className="flex justify-end">
         <Collapsible.Trigger asChild>
-          <Button onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            onClick={() => setIsOpen(!isOpen)}
+            className="my-2"
+          >
             <div className="flex items-center gap-1">
               {
                 isOpen

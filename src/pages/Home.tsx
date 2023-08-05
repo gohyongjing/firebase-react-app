@@ -1,5 +1,5 @@
 import { WelcomeBanner } from "components/homePage";
-import { Center } from "components/layout/Center";
+import { Center } from "components/layout";
 import { Page } from "components/utility";
 import { SignInButton, SignInWithGoogleButton, SignUpButton } from "features/auth";
 

@@ -4,7 +4,7 @@ import { usePromise } from "hooks";
 import { FormEvent } from "react";
 import { formatErrorMessage, signUp } from "../api";
 import { Page } from "components/utility";
-import { Center } from "components/layout/Center";
+import { Center } from "components/layout";
 import { SignInWithGoogleButton } from "..";
 
 export function SignUp() {

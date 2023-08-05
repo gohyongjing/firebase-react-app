@@ -30,7 +30,7 @@ export function RemoveFriendButton({
     >
       <AlertDialog.Trigger asChild>
         <Button
-          className='py-2 bg-danger-400 dark:border-danger-950 dark:bg-danger-900 dark:text-danger-50 w-40'
+          className='bg-danger-200 dark:border-danger-950 dark:bg-danger-900 dark:text-danger-50 w-40'
         >
           Remove Friend
         </Button>

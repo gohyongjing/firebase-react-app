@@ -3,7 +3,7 @@ import { usePromise } from "hooks";
 import { FormEvent, useCallback, useEffect } from "react";
 import { Form, LabelledInput, LongButton } from "components/form";
 import { Page } from "components/utility";
-import { Center } from "components/layout/Center";
+import { Center, PageHeading } from "components/layout";
 import { updateUserName, useUser } from "..";
 import { useAuthContext } from "features/auth";
 
@@ -36,6 +36,9 @@ export function UserSettings() {
 
   return (
     <Page>
+      <PageHeading
+        heading="Settings"
+      />
       <Form onSubmit={handleSave}>
         <Center
           className="p-2 gap-2"

@@ -9,4 +9,4 @@ export function Center(props: Props) {
   return (
     <div {...mergeClassNameIntoProps(props, defaultClassName)} />
   );
-};
+}
