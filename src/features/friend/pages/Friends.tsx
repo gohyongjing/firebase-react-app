@@ -1,6 +1,5 @@
-import { Page } from "components/utility";
 import { AddFriendCollapsible } from "../components/AddFriendCollapsible";
-import { PageHeading } from "components/layout";
+import { Page, PageHeading } from "components/layout";
 
 export function Friends() {
 

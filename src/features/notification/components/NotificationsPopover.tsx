@@ -44,8 +44,8 @@ export function NotificationsPopover() {
 
   return (
     <Popover.Root>
-      <Popover.Trigger>
-        <BellIcon />
+      <Popover.Trigger className="w-8 h-8 flex justify-center items-center">
+        <BellIcon/>
         {
           notifications.length > 0 && <NewNotificationIndicator />
         }

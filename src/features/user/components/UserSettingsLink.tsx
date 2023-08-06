@@ -1,6 +1,6 @@
 import { PATH_SETTINGS_USER } from "routes";
 import { GearIcon } from "@radix-ui/react-icons";
-import { NavMenuItemLink } from "components/sideNav/NavMenuItemLink";
+import { NavMenuItemLink } from "components/sideNav";
 
 export function UserSettingsLink() {
   return (

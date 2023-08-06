@@ -1,4 +1,4 @@
-import { BackToDashboardButton } from "components/utility/BackToDashboardButton";
+import { BackToDashboardButton } from "components/utility";
 import { Separator } from "lib/radixUi";
 
 type Props = {

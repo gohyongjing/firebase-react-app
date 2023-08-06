@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { deleteNotificationById } from "../api";
 import { AsyncButton } from "components/form";
 
-interface Props {
+type Props = {
   notificationId: string
 }
 

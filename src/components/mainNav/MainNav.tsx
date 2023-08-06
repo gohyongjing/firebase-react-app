@@ -35,12 +35,12 @@ export function MainNav() {
         <div
           className='flex items-center gap-2'
         >
-          <NavMenuItem>
+          <NavMenuItem className='p-0'>
             <StyleThemeToggle />
           </NavMenuItem>
           {
             user && (
-              <NavMenuItem>
+              <NavMenuItem className='p-0'>
                 <NotificationsPopover />
               </NavMenuItem>
             )

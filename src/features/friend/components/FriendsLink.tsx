@@ -1,6 +1,6 @@
 import { PATH_FRIENDS } from "routes";
 import { PersonIcon } from "@radix-ui/react-icons";
-import { NavMenuItemLink } from "components/sideNav/NavMenuItemLink";
+import { NavMenuItemLink } from "components/sideNav";
 
 export function FriendsLink() {
   return (

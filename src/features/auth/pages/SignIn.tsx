@@ -3,8 +3,7 @@ import { usePromise } from "hooks";
 import { formatErrorMessage, signIn } from "../api";
 import { FormEvent } from "react";
 import { Button, Form, LabelledInput } from "components/form";
-import { Page } from "components/utility";
-import { Center } from "components/layout";
+import { Center, Page } from "components/layout";
 import { SignInWithGoogleButton } from "..";
 
 export function SignIn() {

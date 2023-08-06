@@ -1,1 +1,1 @@
-export * from './useStyleThemeContext';
+export * from '../hooks/useStyleThemeContext';
