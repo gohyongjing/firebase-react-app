@@ -1,17 +1,19 @@
 import {
   DocumentData,
   DocumentReference,
+  Firestore,
   QueryCompositeFilterConstraint,
   QueryConstraint,
   SetOptions,
   Unsubscribe,
   UpdateData,
-  WithFieldValue
+  WithFieldValue,
+  appFirestore
 } from "lib/firebase/firestore";
 import { WithId, getModelOperations } from "./getModelOperations";
 import { isQueryCompositeFilterConstraint } from "utility/typePredicates/isQueryCompositeFilterConstraint";
 
-type ModelOperationsWithPath<T> = {
+export type ModelOperationsWithPath<T> = {
   addModel: (newData: WithFieldValue<T>) => Promise<DocumentReference<DocumentData> | undefined>
   setModel: (docId: string, newData: WithFieldValue<T>, setOptions?: SetOptions) => Promise<void>
   getModel: (docId: string) => Promise<WithId<T> | undefined>
@@ -42,9 +44,10 @@ type ModelOperationsWithPath<T> = {
  */
 export function getModelOperationsWithPath<T extends DocumentData>(
   path: string,
-  defaultModel: T
+  defaultModel: T,
+  firestore: Firestore = appFirestore
 ): ModelOperationsWithPath<T> {
-  const ops = getModelOperations(defaultModel);
+  const ops = getModelOperations(defaultModel, firestore);
 
   function setModel(
     docId: string,
