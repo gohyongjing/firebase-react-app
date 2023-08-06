@@ -1,7 +1,7 @@
 import { getFirestoreCoverageMeta } from "./getFirestoreCoverageMeta";
 import { createWriteStream } from "node:fs";
 import { get } from "node:http";
-import { FIREBASE_JSON, PROJECT_ID } from "./testConstants";
+import { FIREBASE_JSON, PROJECT_ID } from ".";
 
 
 export async function saveCoverageReport() {

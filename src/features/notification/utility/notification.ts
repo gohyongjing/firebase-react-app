@@ -11,7 +11,7 @@ import {
 import { WithId, getModelOperationsWithPath } from "utility/model";
 import { Notification } from "../types";
 
-const FIRESTORE_PATH_NOTIFICATIONS = 'notifications';
+export const FIRESTORE_PATH_NOTIFICATIONS = 'notifications';
 
 export const defaultNotificationModel: Notification = {
   type: 'Announcement',

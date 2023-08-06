@@ -85,7 +85,6 @@ export function getModelOperations<T extends DocumentData>(
    * @param newModel New model to be added.
    */
   function addModel(path: string, newModel: WithFieldValue<T>) {
-    doc(firestore, path);
     return addDoc(collection(firestore, path), newModel);
   }
 

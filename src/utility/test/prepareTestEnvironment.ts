@@ -1,16 +1,32 @@
-import { initializeTestEnvironment } from "@firebase/rules-unit-testing";
+import { RulesTestContext, RulesTestEnvironment, initializeTestEnvironment } from "@firebase/rules-unit-testing";
 import { readFileSync } from "node:fs";
-import { setLogLevel } from "firebase/firestore";
-import { FIREBASE_JSON, PROJECT_ID } from "./testConstants";
+import { DocumentData, Firestore, setLogLevel } from "firebase/firestore";
+import { FIREBASE_JSON, PROJECT_ID } from ".";
 import { getFirestoreCoverageMeta } from "./getFirestoreCoverageMeta";
+import { ModelOperationsWithPath, getModelOperationsWithPath } from "utility/model";
+import { getTestContext } from ".";
+import { getTestFirestore } from "./getTestFirestore";
 
-export async function prepareTestEnvironment() {
+type TestEnvironment<T> = {
+  testEnv: RulesTestEnvironment
+  testContexts: RulesTestContext[]
+  testFirestores: Firestore[]
+  modelOperations: ModelOperationsWithPath<T>[]
+  withSecurityRulesDisabled: (
+    operate: (modelOperations: ModelOperationsWithPath<T>) => Promise<unknown>
+  ) => Promise<void>
+}
+
+export async function prepareTestEnvironment<T extends DocumentData>(
+  userIds: (string | undefined)[],
+  firestorePath: string,
+  defaultModel: T,
+): Promise<TestEnvironment<T>> {
   // Silence expected rules rejections from Firestore SDK. Unexpected rejections
   // will still bubble up and will be thrown as an error (failing the tests).
   setLogLevel('error');
   const { host, port } = getFirestoreCoverageMeta(PROJECT_ID, FIREBASE_JSON);
-  console.log('host and port ',host, port)
-  return initializeTestEnvironment({
+  const testEnv = await initializeTestEnvironment({
     projectId: PROJECT_ID,
     firestore: {
       host,
@@ -18,4 +34,33 @@ export async function prepareTestEnvironment() {
       rules: readFileSync('firestore.rules', 'utf8')
     },
   });
+  const testContexts = userIds.map(userId => getTestContext(testEnv, userId));
+  const testFirestores = testContexts.map(testContext => getTestFirestore(testContext));
+  const modelOperations = testFirestores.map(testFirestore => getModelOperationsWithPath(
+    firestorePath,
+    defaultModel,
+    testFirestore
+  ));
+
+  async function withSecurityRulesDisabled(
+    operate: (modelOperations: ModelOperationsWithPath<T>) => Promise<unknown>
+  ) {
+    return testEnv.withSecurityRulesDisabled(async (context) => {
+      const adminFirestore = getTestFirestore(context);
+      const adminOps = getModelOperationsWithPath(
+        firestorePath,
+        defaultModel,
+        adminFirestore
+      );
+      await operate(adminOps);
+    });
+}
+
+  return {
+    testEnv,
+    testContexts,
+    testFirestores,
+    modelOperations,
+    withSecurityRulesDisabled
+  }
 }

@@ -1,16 +1,7 @@
-import { User } from "features/user";
-import { Timestamp } from "firebase/firestore";
-import { WithId } from "utility/model";
-import { resolve } from 'node:path';
+import { User } from "features/user"
+import { Timestamp } from "firebase/firestore"
+import { WithId } from "utility/model"
 
-// Test constants
-export const PROJECT_ID = 'fakeproject2';
-export const FIREBASE_JSON = resolve(__dirname, '../../../firebase.json');
-
-export const ASYNC_DELAY_DURATION = 100;
-export const ERR_ASYNC_REJECT_MESSAGE = 'Error message for testing purposes';
-
-// Users
 export const USER_ALICE: WithId<User> = {
   id: 'alice',
   userName: 'Wonderland Explorer',

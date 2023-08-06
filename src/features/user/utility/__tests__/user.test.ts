@@ -1,35 +1,30 @@
 import { beforeEach, afterAll, test, beforeAll, describe } from 'vitest';
 import { RulesTestEnvironment, assertFails, assertSucceeds } from '@firebase/rules-unit-testing';
 import { FIRESTORE_PATH_USERS, defaultUserModel } from '..';
-import { ModelOperationsWithPath, getModelOperationsWithPath } from 'utility/model';
-import { USER_ALICE, USER_BOB, prepareTestContext, prepareTestEnvironment, saveCoverageReport } from 'utility/test';
+import { ModelOperationsWithPath, WithId } from 'utility/model';
+import { prepareTestEnvironment, saveCoverageReport } from 'utility/test';
 import { limit, orderBy, where } from 'firebase/firestore';
 import { User } from 'features/user';
-import { prepareTestFirestore } from 'utility/test/prepareTestFirestore';
-import { createTestUser } from '../test/createTestUser';
+import { USER_ALICE, USER_BOB } from '../test';
 
 let testEnv: RulesTestEnvironment;
 
-let aliceOps: ModelOperationsWithPath<User>;
 let unauthenticatedOps: ModelOperationsWithPath<User>;
+let aliceOps: ModelOperationsWithPath<User>;
+
+let createTestUser: (user: WithId<User>) => Promise<void>;
 
 beforeAll(async () => {
-  testEnv = await prepareTestEnvironment();
-  const aliceTestContext = prepareTestContext(testEnv, USER_ALICE.id);
-  const aliceFirestore = prepareTestFirestore(aliceTestContext)
-  aliceOps = getModelOperationsWithPath(
+  const testEnvironment = await prepareTestEnvironment(
+    [undefined, USER_ALICE.id],
     FIRESTORE_PATH_USERS,
-    defaultUserModel,
-    aliceFirestore
+    defaultUserModel
   );
-
-  const unauthenticatedTestContext = prepareTestContext(testEnv);
-  const unauthenticatedFirestore = prepareTestFirestore(unauthenticatedTestContext)
-  unauthenticatedOps = getModelOperationsWithPath(
-    FIRESTORE_PATH_USERS,
-    defaultUserModel,
-    unauthenticatedFirestore
-  );
+  testEnv = testEnvironment.testEnv;
+  [unauthenticatedOps, aliceOps] = testEnvironment.modelOperations;
+  createTestUser = (user: WithId<User>) => {
+    return testEnvironment.withSecurityRulesDisabled((ops) => ops.setModel(user.id, user))
+  }
 });
 
 afterAll(async () => {
@@ -42,12 +37,12 @@ beforeEach(async () => {
 
 describe('unauthenticated users', () => {
   test('cannot create, get, update or delete users', async () => {
-    await createTestUser(testEnv, USER_ALICE);
-    await createTestUser(testEnv, USER_BOB);
+    await createTestUser(USER_ALICE);
+    await createTestUser(USER_BOB);
 
     await assertFails(unauthenticatedOps.getModel(USER_BOB.id));
     await assertFails(unauthenticatedOps.setModel(USER_ALICE.id, USER_ALICE));
-    await assertFails(unauthenticatedOps.updateModel(USER_ALICE.id, {userName: 'hacked!'}));
+    await assertFails(unauthenticatedOps.updateModel(USER_ALICE.id, { userName: 'hacked!' }));
     await assertFails(unauthenticatedOps.deleteModel(USER_BOB.id));
   });
 });
@@ -77,8 +72,8 @@ describe('authenticated users', () => {
   });
 
   test('can only update own userName', async () => {
-    await createTestUser(testEnv, USER_ALICE);
-    await createTestUser(testEnv, USER_BOB);
+    await createTestUser(USER_ALICE);
+    await createTestUser(USER_BOB);
 
     await assertSucceeds(aliceOps.updateModel(
       USER_ALICE.id,

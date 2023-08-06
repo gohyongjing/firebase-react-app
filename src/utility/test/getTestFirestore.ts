@@ -9,7 +9,7 @@ import { Firestore } from "firebase/firestore";
  * @param testContext Context for rules testing
  * @returns V9 API Firestore.
  */
-export function prepareTestFirestore(testContext: RulesTestContext): Firestore {
+export function getTestFirestore(testContext: RulesTestContext): Firestore {
   return {
     ...testContext.firestore(),
     type: 'firestore',

@@ -1,24 +1,4 @@
-import { beforeEach, beforeAll, afterAll, test } from 'vitest';
-import { RulesTestEnvironment, assertFails, assertSucceeds } from '@firebase/rules-unit-testing';
-import { logTestResults, prepareTestEnvironment } from 'utility/test/testEnvironmentUtility';
-import { createTestFriendRequest } from 'features/friend/utility/test/createTestFriendRequest';
-import { acceptFriendRequest, removeFriend } from '..';
-import { USER_ALICE, USER_BOB, USER_CHARLIE } from 'utility/test/testConstants';
-import { createTestFriend } from 'features/friend/utility/test/createTestFriend';
-
-let testEnv: RulesTestEnvironment;
-
-beforeAll(async () => {
-  testEnv = await prepareTestEnvironment(USER_ALICE.id); 
-});
-
-afterAll(async () => {
-  logTestResults();
-});
-
-beforeEach(async () => {
-  await testEnv.clearFirestore();
-});
+import { test } from 'vitest';
 
 test('can remove own friends', async () => {
   // await createTestFriend(testEnv, USER_BOB, USER_ALICE);

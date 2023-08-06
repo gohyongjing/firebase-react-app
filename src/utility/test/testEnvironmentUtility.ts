@@ -8,7 +8,11 @@ import { prepareTestEnvironment as _prepareTestEnvironment } from './prepareTest
 
 export async function prepareTestEnvironment(userId?: string) {
   console.log(userId + '')
-  return _prepareTestEnvironment();
+  return _prepareTestEnvironment(
+    [],
+    '',
+    {},
+  );
 }
 
 export async function logTestResults() {
