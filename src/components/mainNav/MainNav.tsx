@@ -22,7 +22,7 @@ export function MainNav() {
 
   return (
     <NavigationMenu.Root
-      className='bg-slate-50 dark:bg-primary-1 sticky top-0 shadow-sm'
+      className='bg-background-50 dark:bg-primary-1 sticky top-0 shadow-sm'
     >
       <NavigationMenu.List
         className='flex p-2 justify-between'
@@ -35,12 +35,12 @@ export function MainNav() {
         <div
           className='flex items-center gap-2'
         >
-          <NavMenuItem>
+          <NavMenuItem className='p-0'>
             <StyleThemeToggle />
           </NavMenuItem>
           {
             user && (
-              <NavMenuItem>
+              <NavMenuItem className='p-0'>
                 <NotificationsPopover />
               </NavMenuItem>
             )
@@ -53,7 +53,7 @@ export function MainNav() {
                 <HamburgerMenuIcon />
               </AccessibleIcon.Root>
             </NavigationMenu.Trigger>
-            <NavigationMenu.Content className='absolute top-12 right-2 border-2 rounded border-primary-1 bg-slate-50 dark:border-primary-3 dark:bg-primary-1'>
+            <NavigationMenu.Content className='absolute top-12 right-2 border-2 rounded border-primary-1 bg-background-50 dark:border-primary-3 dark:bg-primary-1'>
               <ul>
                 {
                   navMenuItems.map((navMenuItem, index) => (

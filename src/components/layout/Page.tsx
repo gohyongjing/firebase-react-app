@@ -1,4 +1,4 @@
-import { MainNav } from "components/nav";
+import { MainNav } from "components/mainNav";
 import { ReactNode } from "react";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 export function Page({ children }: Props) {
   return (
     <div
-      className="bg-slate-50 text-primary-1 dark:bg-slate-900 dark:text-slate-200 min-h-screen flex flex-col"
+      className="bg-background-50 text-primary-1 dark:bg-background-900 dark:text-background-200 min-h-screen flex flex-col"
     >
       <MainNav />
       <div

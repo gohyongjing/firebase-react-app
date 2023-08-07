@@ -9,7 +9,7 @@ type Props = {
 
 const defaultClassName = 'hover:cursor-pointer';
 
-export function FirebaseReactAppLogo({ className = ''}: Props) {
+export function FirebaseReactAppLogo({ className = '' }: Props) {
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
     navigate(PATH_HOME);

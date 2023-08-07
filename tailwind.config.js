@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import colors from 'tailwindcss/colors';
+
 export default {
   content: ["./src/**/*.{html,js,ts,tsx}"],
   theme: {
@@ -9,6 +12,9 @@ export default {
         'primary-3': '#88dded',
         'secondary-1': '#f6820d',
         'secondary-2': '#ffcb2b',
+        'background': colors.slate,
+        'danger': colors.rose,
+        'cancel': colors.slate
       }
     },
   },

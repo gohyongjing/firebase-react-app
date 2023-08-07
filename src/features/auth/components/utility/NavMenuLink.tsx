@@ -2,7 +2,7 @@ import { NavigationMenu } from "lib/radixUi";
 import { ReactNode, useCallback } from "react";
 import { useNavigate } from "lib/reactRouterDom";
 
-interface Props {
+type Props = {
   href?: string,
   children:  ReactNode
 }

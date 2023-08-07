@@ -2,7 +2,7 @@ import { Notification } from "../types";
 import { DismissNotificationButton } from "./DismissNotificationButton";
 import { WithId } from "utility/model";
 
-interface Props {
+type Props = {
   notification: WithId<Notification>
 }
 

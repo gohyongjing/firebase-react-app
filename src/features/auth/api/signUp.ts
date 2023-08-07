@@ -11,7 +11,7 @@ export function signUp(email: string, password: string) {
       return;
     }
     await Promise.all([
-      processUserSignUp(userCredential),
+      processUserSignUp(userCredential.user.uid),
       sendWelcomeNotification(userCredential.user.uid)
     ]);
     return userCredential;

@@ -1,25 +1,10 @@
-import { useSyncCachedExternalStore } from "hooks";
-import { ReactNode, createContext, useCallback, useContext, useEffect } from "react";
-import { StyleTheme } from "../types";
+import { ReactNode, useCallback, useEffect } from "react";
+import { StyleTheme } from "..";
 import { DEFAULT_STYLE_THEME, getStyleTheme, setStyleTheme } from "../utility";
+import { useSyncCachedExternalStore } from "hooks";
+import { StyleThemeContext } from "../contexts/StyleThemeContext";
 
-interface StyleThemeContext {
-  styleTheme: StyleTheme
-  setStyleTheme: (newStyleTheme: StyleTheme) => void
-}
-
-const DEFAULT_STYLE_THEME_CONTEXT: StyleThemeContext = {
-  styleTheme: DEFAULT_STYLE_THEME,
-  setStyleTheme: () => {}
-}
-
-const StyleThemeContextComponent = createContext(DEFAULT_STYLE_THEME_CONTEXT);
-
-export function useStyleThemeContext() {
-  return useContext(StyleThemeContextComponent);
-}
-
-interface Props {
+type Props = {
   children?: ReactNode
 }
 
@@ -49,13 +34,13 @@ export function StyleThemeContextProvider({ children }: Props) {
   }, [styleTheme])
 
   return (
-    <StyleThemeContextComponent.Provider
+    <StyleThemeContext.Provider
       value={{
         styleTheme: styleTheme,
         setStyleTheme: setStyleThemeWrapped
       }}
     >
         { children }
-    </StyleThemeContextComponent.Provider>
+    </StyleThemeContext.Provider>
   );
 }

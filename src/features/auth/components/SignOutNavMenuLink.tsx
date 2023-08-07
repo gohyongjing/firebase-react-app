@@ -1,26 +1,19 @@
-import { Button } from 'components/form';
-import { usePromise } from 'hooks';
 import { signOut } from '../api';
 import { NavMenuLink } from './utility';
 import { PATH_HOME } from 'routes';
+import { AsyncButton } from 'components/form';
 
 export function SignOutNavMenuLink() {
-  const { resolve, isLoading } = usePromise();
-
-  function handleClick() {
-    resolve(signOut);
-  }
-
   return (
     <NavMenuLink
       href={PATH_HOME}
     >
-      <Button
-        onClick={handleClick}
-        disabled={isLoading}
+      <AsyncButton
+      className='border-none bg-inherit text-inherit'
+        onClick={signOut}
       >
         Sign Out
-      </Button>
+      </AsyncButton>
     </NavMenuLink>
   );
 }

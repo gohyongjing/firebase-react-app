@@ -10,7 +10,7 @@ export async function signIn(email: string, password: string) {
     return;
   }
   await Promise.all([
-    processUserSignIn(userCredential),
+    processUserSignIn(userCredential.user.uid),
   ]);
   return userCredential;
 }

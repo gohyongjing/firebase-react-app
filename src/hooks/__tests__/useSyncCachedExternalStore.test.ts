@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { expect, test } from 'vitest';
 import { useSyncCachedExternalStore } from "../useSyncCachedExternalStore";
-import { ERR_ASYNC_REJECT_MESSAGE } from "utility/testConstants";
+import { ERR_ASYNC_REJECT_MESSAGE } from "utility/test";
 
 test('hook fetches, updates and returns correct data', async () => {
   let externalStoreValue = 14;

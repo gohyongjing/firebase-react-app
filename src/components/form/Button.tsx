@@ -1,18 +1,23 @@
-import { ButtonHTMLAttributes } from "react";
+import {  ButtonHTMLAttributes, forwardRef } from "react";
 import { mergeClassNameIntoProps } from "utility/mergeClassNameIntoProps";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement>
+const defaultClassName = 'border-primary-1 bg-background-200 text-primary-1 dark:bg-primary-1 dark:text-primary-3 dark:border-primary-3 border-2 rounded-lg px-2 py-1';
 
-const defaultClassName = 'bg-primary-1 border-primary-1 text-slate-50 dark:bg-primary-1 dark:text-primary-3 dark:border-primary-3 border-2 rounded-lg px-2 py-1';
-export function Button(props: Props) {
-  
+export const Button = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>((
+  {
+    children,
+    ...props
+  },
+  forwardedRef
+) => {
   return (
     <button
       { ...mergeClassNameIntoProps(props, defaultClassName) }
+      ref={forwardedRef}
     >
       <b>
-        {props.children}
+        {children}
       </b>
     </button>
   );
-}
+});

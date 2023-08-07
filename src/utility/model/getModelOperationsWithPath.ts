@@ -1,22 +1,30 @@
 import {
   DocumentData,
   DocumentReference,
+  Firestore,
+  QueryCompositeFilterConstraint,
   QueryConstraint,
   SetOptions,
   Unsubscribe,
   UpdateData,
-  WithFieldValue
+  WithFieldValue,
+  appFirestore
 } from "lib/firebase/firestore";
 import { WithId, getModelOperations } from "./getModelOperations";
+import { isQueryCompositeFilterConstraint } from "utility/typePredicates/isQueryCompositeFilterConstraint";
 
-interface ModelOperationsWithPath<T> {
-  addModel: (newData: WithFieldValue<T>) => Promise<DocumentReference<DocumentData> | undefined>,
-  setModel: (docId: string, newData: WithFieldValue<T>, setOptions?: SetOptions) => Promise<void>,
-  getModel: (docId: string) => Promise<WithId<T> | undefined>,
-  getModels: (...queryConstraints: QueryConstraint[]) => Promise<WithId<T>[]>
-  getModelWhere: (...queryConstraints: QueryConstraint[]) => Promise<WithId<T> | undefined>
-  updateModel: (docId: string, dataUpdates: UpdateData<T>) => Promise<void>,
-  deleteModel: (docId: string) => Promise<void>,
+export type ModelOperationsWithPath<T> = {
+  addModel: (newData: WithFieldValue<T>) => Promise<DocumentReference<DocumentData> | undefined>
+  setModel: (docId: string, newData: WithFieldValue<T>, setOptions?: SetOptions) => Promise<void>
+  getModel: (docId: string) => Promise<WithId<T> | undefined>
+  getModels: 
+    ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<T>[]>)
+  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<T>[]>)
+  getModelWhere:
+    ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<T> | undefined>)
+  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<T> | undefined>)
+  updateModel: (docId: string, dataUpdates: UpdateData<T>) => Promise<void>
+  deleteModel: (docId: string) => Promise<void>
   subscribeModel: (
     docId: string,
     onNext: (data: WithId<T> | undefined) => void
@@ -36,9 +44,10 @@ interface ModelOperationsWithPath<T> {
  */
 export function getModelOperationsWithPath<T extends DocumentData>(
   path: string,
-  defaultModel: T
+  defaultModel: T,
+  firestore: Firestore = appFirestore
 ): ModelOperationsWithPath<T> {
-  const ops = getModelOperations(defaultModel);
+  const ops = getModelOperations(defaultModel, firestore);
 
   function setModel(
     docId: string,
@@ -46,30 +55,51 @@ export function getModelOperationsWithPath<T extends DocumentData>(
     setOptions?: SetOptions
   ) {
     return ops.setModel(`${path}/${docId}`, newData, setOptions)
-  };
+  }
 
   function addModel(newData: WithFieldValue<T>) {
     return ops.addModel(path, newData);
-  };
+  }
 
   function getModel(docId: string) {
     return ops.getModel(`${path}/${docId}`);
-  };
+  }
 
   function updateModel(docId: string, dataUpdates: UpdateData<T>) {
     return ops.updateModel(`${path}/${docId}`, dataUpdates);
-  };
+  }
 
   function deleteModel(docId: string) {
     return ops.deleteModel(`${path}/${docId}`);
-  };
+  }
 
-  function getModels(...queryConstraints: QueryConstraint[]) {
-    return ops.getModels(path, ...queryConstraints);
-  };
+  function getModels(queryCompositeFilterConstraint: QueryCompositeFilterConstraint): Promise<WithId<T>[]>
+  function getModels(...queryConstraints: QueryConstraint[]): Promise<WithId<T>[]>
+  function getModels(
+    constraint?: QueryConstraint | QueryCompositeFilterConstraint,
+    ...queryConstraints: QueryConstraint[]
+  ) {
+    if (!constraint) {
+      return ops.getModels(path)
+    }
+    return isQueryCompositeFilterConstraint(constraint)
+      ? ops.getModels(path, constraint)
+      : ops.getModels(path, constraint, ...queryConstraints)
+  }
 
-  function getModelWhere(...queryConstraints: QueryConstraint[]) {
-    return ops.getModelWhere(path, ...queryConstraints);
+  function getModelWhere(queryCompositeFilterConstraint: QueryCompositeFilterConstraint): Promise<WithId<T> | undefined>
+  function getModelWhere(...queryConstraints: QueryConstraint[]): Promise<WithId<T> | undefined>
+  function getModelWhere(  
+    constraint?: QueryConstraint | QueryCompositeFilterConstraint,
+    ...queryConstraints: QueryConstraint[]
+  ) {
+    if (!constraint) {
+      return ops.getModelWhere(path);
+    }
+    if (isQueryCompositeFilterConstraint(constraint)) {
+      return ops.getModelWhere(path, constraint);
+    }
+    return ops.getModelWhere(path, constraint, ...queryConstraints);
   }
 
   function subscribeModel(
@@ -77,7 +107,7 @@ export function getModelOperationsWithPath<T extends DocumentData>(
     onNext: (data: WithId<T> | undefined) => void
   ) {
     return ops.subscribeModel(`${path}/${docId}`, onNext);
-  };
+  }
 
   function subscribeModels(
     onNext: (data: WithId<T>[]) => void,

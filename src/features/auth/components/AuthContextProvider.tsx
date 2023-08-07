@@ -1,15 +1,8 @@
-import { User } from "firebase/auth";
 import { useClientSyncExternalStore } from "hooks";
-import { ReactNode, createContext, useContext } from "react";
-import { subscribeAuth } from "../api";
+import { AuthContext, subscribeAuth } from "..";
+import { ReactNode } from "react";
 
-const AuthContext = createContext<User | null | undefined>(null);
-
-export function useAuthContext() {
-  return useContext(AuthContext);
-}
-
-interface Props {
+type Props = {
   children?: ReactNode
 }
 

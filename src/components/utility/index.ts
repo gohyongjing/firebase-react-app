@@ -1,3 +1,2 @@
-export * from '../layout/Page';
-
+export * from './BackToDashboardButton';
 export * from './FirebaseReactAppLogo';

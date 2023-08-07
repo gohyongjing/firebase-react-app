@@ -1,28 +1,18 @@
 import { useAuthContext } from "features/auth";
-import { getUserById } from "features/user";
-import { useSyncCachedExternalStore } from "hooks";
-import { useCallback } from "react";
-import { Page } from "components/utility";
-import { FriendsLink } from "features/friend/components/FriendsLink";
+import { useUser } from "features/user";
+import { Page } from "components/layout";
+import { SideNav } from "components/sideNav";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
-
-  const fetcher = useCallback(async () => {
-    if (!firebaseUser?.uid) {
-      return undefined;
-    }
-    return getUserById(firebaseUser.uid);
-  }, [firebaseUser?.uid])
-
-  const { data: user } = useSyncCachedExternalStore(fetcher);
+  const user = useUser(firebaseUser?.uid);
 
   return (
     <Page>
       <b>
         { user?.userName }
       </b>
-      <FriendsLink />
+      <SideNav />
     </Page>
   );
 }

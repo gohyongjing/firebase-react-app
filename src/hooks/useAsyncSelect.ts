@@ -17,7 +17,6 @@ export function useAsyncSelect<T>(
         newOptions 
       })
     })
-    console.log('rerender')
   }, [fetchOptions, dispatch])
 
   const refetchOptions = useCallback(async (
