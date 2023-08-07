@@ -10,9 +10,9 @@ import {
   WithFieldValue
 } from "lib/firebase/firestore";
 import { WithId, getModelOperationsWithPath } from "utility/model";
-import { Friendship } from "../types";
+import { Friendship } from "..";
 
-const FIRESTORE_PATH_FRIENDSHIPS = 'friendships';
+export const FIRESTORE_PATH_FRIENDSHIPS = 'friendships';
 
 export const defaultFriendshipModel: Friendship = {
   requesterId: '',

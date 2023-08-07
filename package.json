@@ -9,9 +9,9 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "test-firebase": "firebase emulators:exec --only firestore vitest",
     "coverage": "vitest run --coverage",
-    "firebase": "firebase"
+    "firebase": "firebase",
+    "firebase-emulator": "firebase emulators:start"
   },
   "dependencies": {
     "@radix-ui/react-accessible-icon": "^1.0.3",

@@ -1,11 +1,7 @@
-import { User } from "features/user";
-import { Timestamp } from "firebase/firestore";
-import { WithId } from "utility/model";
+import { User } from "features/user"
+import { Timestamp } from "firebase/firestore"
+import { WithId } from "utility/model"
 
-export const ASYNC_DELAY_DURATION = 100;
-export const ERR_ASYNC_REJECT_MESSAGE = 'Error message for testing purposes';
-
-// Users
 export const USER_ALICE: WithId<User> = {
   id: 'alice',
   userName: 'Wonderland Explorer',

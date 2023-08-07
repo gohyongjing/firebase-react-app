@@ -11,7 +11,7 @@ import {
 import { WithId, getModelOperationsWithPath } from "utility/model";
 import { User } from "../types";
 
-const FIRESTORE_PATH_USERS = 'users';
+export const FIRESTORE_PATH_USERS = 'users';
 
 export const defaultUserModel: User = {
   userName: '',

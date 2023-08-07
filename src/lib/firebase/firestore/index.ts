@@ -1,27 +1,38 @@
+import { getFirestore } from 'firebase/firestore';
+import firebaseApp from '../app';
+
 export type {
   DocumentData,
-  DocumentSnapshot,
-  QuerySnapshot,
   SetOptions,
   Unsubscribe,
   UpdateData,
-  WithFieldValue
+  WithFieldValue,
 } from 'firebase/firestore';
 
 export {
   DocumentReference,
+  DocumentSnapshot,
+  Firestore,
   QueryCompositeFilterConstraint,
   QueryConstraint,
+  QuerySnapshot,
   Timestamp,
+  addDoc,
   and,
   collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
   limit,
+  onSnapshot,
   or,
   orderBy,
   query,
+  setDoc,
   startAt,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 
-export * from './collection';
-export * from './document';
+export const appFirestore = getFirestore(firebaseApp);
