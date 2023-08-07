@@ -24,6 +24,7 @@ export function AcceptRequestButton({
   return (
     <AsyncButton
       onClick={handleClick}
+      className='w-40'
     >
       Accept Request
     </AsyncButton>

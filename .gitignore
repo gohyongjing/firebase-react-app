@@ -27,3 +27,6 @@ dist-ssr
 # secrets
 .env
 firestore.rules
+
+# temps and caches
+.firebase/*
