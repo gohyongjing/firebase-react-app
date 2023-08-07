@@ -9,11 +9,12 @@ function parseHostAndPort(hostAndPort: string | undefined): { host: string; port
   };
 }
 
-export function getFirestoreCoverageMeta(projectId: string, firebaseJsonPath: string) {
-  /* eslint-disable @typescript-eslint/no-var-requires */
-  const { emulators } = require(firebaseJsonPath);
+export async function getFirestoreCoverageMeta(projectId: string, firebaseJsonPath: string) {
+  const { emulators } = await import(firebaseJsonPath);
   const hostAndPort = parseHostAndPort(process.env.FIRESTORE_EMULATOR_HOST);
-  const { host, port } = hostAndPort != undefined ? hostAndPort : emulators.firestore!;
+  const { host, port } = hostAndPort != undefined
+    ? hostAndPort
+    : ( emulators?.firestore ?? { host: '127.0.0.1', port: 8080 } );
   const coverageUrl = `http://${host}:${port}/emulator/v1/projects/${projectId}:ruleCoverage.html`;
   return {
     host,

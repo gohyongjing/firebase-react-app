@@ -5,7 +5,7 @@ import { FIREBASE_JSON, PROJECT_ID } from ".";
 
 
 export async function saveCoverageReport() {
-  const { coverageUrl } = getFirestoreCoverageMeta(PROJECT_ID, FIREBASE_JSON);
+  const { coverageUrl } = await getFirestoreCoverageMeta(PROJECT_ID, FIREBASE_JSON);
   const coverageFile = './firestore-coverage.html';
   const fstream = createWriteStream(coverageFile);
   await new Promise((resolve, reject) => {

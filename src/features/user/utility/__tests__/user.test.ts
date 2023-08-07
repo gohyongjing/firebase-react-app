@@ -1,8 +1,8 @@
-import { beforeEach, afterAll, test, beforeAll, describe } from 'vitest';
+import { beforeEach, test, beforeAll, describe } from 'vitest';
 import { RulesTestEnvironment, assertFails, assertSucceeds } from '@firebase/rules-unit-testing';
 import { FIRESTORE_PATH_USERS, defaultUserModel } from '..';
 import { ModelOperationsWithPath, WithId } from 'utility/model';
-import { prepareTestEnvironment, saveCoverageReport } from 'utility/test';
+import { prepareTestEnvironment } from 'utility/test';
 import { limit, orderBy, where } from 'firebase/firestore';
 import { User } from 'features/user';
 import { USER_ALICE, USER_BOB } from '../test';
@@ -18,17 +18,14 @@ beforeAll(async () => {
   const testEnvironment = await prepareTestEnvironment(
     [undefined, USER_ALICE.id],
     FIRESTORE_PATH_USERS,
-    defaultUserModel
+    defaultUserModel,
+    'user'
   );
   testEnv = testEnvironment.testEnv;
   [unauthenticatedOps, aliceOps] = testEnvironment.modelOperations;
   createTestUser = (user: WithId<User>) => {
     return testEnvironment.withSecurityRulesDisabled((ops) => ops.setModel(user.id, user))
   }
-});
-
-afterAll(async () => {
-  await saveCoverageReport();
 });
 
 beforeEach(async () => {

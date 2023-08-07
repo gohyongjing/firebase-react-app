@@ -32,7 +32,6 @@ export function UserSettings() {
     setUserName(user.userName);
   }, [user?.userName, setUserName])
 
-  console.log('user settings rerender')
 
   return (
     <Page>

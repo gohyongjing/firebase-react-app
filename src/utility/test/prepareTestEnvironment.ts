@@ -1,7 +1,7 @@
 import { RulesTestContext, RulesTestEnvironment, initializeTestEnvironment } from "@firebase/rules-unit-testing";
 import { readFileSync } from "node:fs";
 import { DocumentData, Firestore, setLogLevel } from "firebase/firestore";
-import { FIREBASE_JSON, PROJECT_ID } from ".";
+import { FIREBASE_JSON } from ".";
 import { getFirestoreCoverageMeta } from "./getFirestoreCoverageMeta";
 import { ModelOperationsWithPath, getModelOperationsWithPath } from "utility/model";
 import { getTestContext } from ".";
@@ -21,13 +21,14 @@ export async function prepareTestEnvironment<T extends DocumentData>(
   userIds: (string | undefined)[],
   firestorePath: string,
   defaultModel: T,
+  projectId: string
 ): Promise<TestEnvironment<T>> {
   // Silence expected rules rejections from Firestore SDK. Unexpected rejections
   // will still bubble up and will be thrown as an error (failing the tests).
   setLogLevel('error');
-  const { host, port } = getFirestoreCoverageMeta(PROJECT_ID, FIREBASE_JSON);
+  const { host, port } = await getFirestoreCoverageMeta(projectId, FIREBASE_JSON);
   const testEnv = await initializeTestEnvironment({
-    projectId: PROJECT_ID,
+    projectId,
     firestore: {
       host,
       port,
