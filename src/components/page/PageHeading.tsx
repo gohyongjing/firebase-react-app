@@ -1,22 +1,20 @@
-import { BackToDashboardButton } from "components/utility";
+import { BackToDashboardButton, Heading } from "components/utility";
 import { Separator } from "lib/radixUi";
 
 type Props = {
-  heading: string
+  children: string
 }
 
 export function PageHeading({
-  heading
+  children
 }: Props) {
   return (
     <>
       <div className="m-2 flex gap-2">
         <BackToDashboardButton />
-        <h1 className="text-xl">
-          <b>
-            { heading }
-          </b>
-        </h1>
+        <Heading>
+          { children }
+        </Heading>
       </div>
       <Separator.Root
         className="h-px m-2 bg-background-200 dark:bg-background-700"

@@ -2,6 +2,8 @@ import { useAuthContext } from "features/auth";
 import { useUser } from "features/user";
 import { Page } from "components/layout";
 import { SideNav } from "components/sideNav";
+import { GameBarWidget } from "features/games";
+import { Heading } from "components/utility";
 
 export function Dashboard() {
   const firebaseUser = useAuthContext();
@@ -9,10 +11,11 @@ export function Dashboard() {
 
   return (
     <Page>
-      <b>
+      <Heading>
         { user?.userName }
-      </b>
+      </Heading>
       <SideNav />
+      <GameBarWidget />
     </Page>
   );
 }

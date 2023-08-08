@@ -5,8 +5,8 @@ export function RockPaperScissorsIcon() {
     <AccessibleIcon.Root
       label='Rock Paper Scissors'
     >
-      <div className="flex flex-col">
-        <div className="flex">
+      <div className="w-full h-full flex flex-col items-center gap-1">
+        <div className="flex gap-1">
           <ScissorsIcon/>
           <FileIcon />
         </div>

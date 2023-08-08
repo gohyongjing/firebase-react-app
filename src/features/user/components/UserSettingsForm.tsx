@@ -25,7 +25,6 @@ export function UserSettingsForm() {
       ).finally(() => setToastIsOpen(true));
     })
   }, [firebaseUser, resolve, userNameInputHandler.value]);
-  console.log('user settings rerender')
 
   const setUserName = userNameInputHandler.setValue;
   useEffect(() => {
