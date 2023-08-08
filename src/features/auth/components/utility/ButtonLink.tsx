@@ -1,6 +1,7 @@
-import { LongButton } from "components/form";
+import { Button } from "components/form";
 import { useNavigate } from "lib/reactRouterDom";
 import { ButtonHTMLAttributes, useCallback } from "react";
+import { mergeClassNameIntoProps } from "utility/mergeClassNameIntoProps";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & { href: string };
 
@@ -11,11 +12,11 @@ export function ButtonLink({ href, ...props }: Props) {
   }, [href, navigate]);
 
    return (
-    <LongButton
-      { ...props }
+    <Button
+      { ...mergeClassNameIntoProps(props, 'wide') }
       onClick={handleClick}
     >
       { props.children }
-    </LongButton>
+    </Button>
   ); 
 }

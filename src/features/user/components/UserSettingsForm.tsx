@@ -1,4 +1,4 @@
-import { Form, LabelledInput, LongButton } from "components/form";
+import { Button, Form, LabelledInput } from "components/form";
 import { Center } from "components/layout";
 import { useInputHandler, usePromise } from "hooks";
 import { FormEvent, useCallback, useEffect, useState } from "react";
@@ -48,9 +48,12 @@ export function UserSettingsForm() {
           labelText="UserName"
           id='user-name'
         />
-        <LongButton disabled={isLoading}>
+        <Button
+          disabled={isLoading}
+          className='wide' 
+        >
           Save
-        </LongButton>
+        </Button>
       </Center>
       <SaveUserSettingsToast
         isOpen={toastIsOpen}

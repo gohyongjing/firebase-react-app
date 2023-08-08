@@ -26,7 +26,7 @@ export function SaveUserSettingsToast({
           Your profile settings have been saved.
         </Toast.Description>
       </Toast.Root>
-      <Toast.Viewport className="fixed bottom-0 right-0 flex flex-col p-2 w-full sm:w-1/2 md:w-1/4"/>
+      <Toast.Viewport className="fixed bottom-0 right-0 flex flex-col p-2 wide"/>
     </Toast.Provider>
   )
 }
