@@ -1,3 +1,4 @@
+import { PATH_FRIENDS } from "routes";
 import { NOTIFICATION_TYPE_FRIEND_REQUEST } from "..";
 import { addNotification, getNotificationWhere } from "../utility";
 import { Timestamp, where } from "firebase/firestore";
@@ -16,7 +17,8 @@ export async function sendFriendRequestNotification(recipientId: string) {
       recipientId,
       title: NOTIFICATION_TITLE_FRIEND_REQUEST,
       message: NOTIFICATION_MSG_FRIEND_REQUEST,
-      timestamp: Timestamp.now()
+      timestamp: Timestamp.now(),
+      redirectLink: PATH_FRIENDS
     })
   }
 }

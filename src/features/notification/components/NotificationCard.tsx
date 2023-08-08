@@ -1,3 +1,4 @@
+import { Link } from "lib/reactRouterDom";
 import { Notification } from "../types";
 import { DismissNotificationButton } from "./DismissNotificationButton";
 import { WithId } from "utility/model";
@@ -21,6 +22,15 @@ export function NotificationCard({ notification }: Props) {
       <div className="text-sm p-2">
         { notification.message }
       </div>
+      {
+        notification.redirectLink &&
+          <Link
+            to={notification.redirectLink}
+            className="self-center text-clickable"
+          >
+            View
+          </Link>
+      }
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import { ReactNode, useCallback } from "react";
-import { useNavigate } from "lib/reactRouterDom";
+import { ReactNode } from "react";
+import { Link } from "lib/reactRouterDom";
 import { NavigationMenu } from "lib/radixUi";
 
 type Props = {
@@ -13,22 +13,18 @@ export function NavMenuItemLink({
   icon,
   label
 }: Props) {
-  const navigate = useNavigate();
-
-  const handleClick = useCallback(() => {
-    navigate(to);
-  }, [navigate, to]);
 
   return (
     <NavigationMenu.Item
-      className="flex items-center gap-1 hover:cursor-pointer text-sm text-primary-2 dark:text-primary-3 hover hover:underline"
-      onClick={handleClick}
+      className="flex items-center gap-1 hover:cursor-pointer text-sm text-clickable"
     >
       { icon }
       <NavigationMenu.Link asChild>
-        <a>
+        <Link
+          to={to}
+        >
           { label }
-        </a>
+        </Link>
       </NavigationMenu.Link>
     </NavigationMenu.Item>
   );

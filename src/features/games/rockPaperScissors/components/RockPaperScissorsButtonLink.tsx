@@ -13,9 +13,9 @@ export function RockPaperScissorsButtonLink() {
       </ButtonLink>
       <Link
         to=""
-        className="hover:underline"
+        className="text-clickable"
       >
-        <b>
+        <b className="text-background-50">
           Rock Paper Scissors
         </b>
       </Link>

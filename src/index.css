@@ -6,4 +6,7 @@
   .wide {
     @apply w-full sm:w-1/2 lg:w-1/4
   }
+  .text-clickable {
+    @apply text-primary-2 dark:text-primary-3 hover:underline
+  }
 }
