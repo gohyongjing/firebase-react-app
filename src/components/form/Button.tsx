@@ -1,7 +1,7 @@
 import {  ButtonHTMLAttributes, forwardRef } from "react";
 import { mergeClassNameIntoProps } from "utility/mergeClassNameIntoProps";
 
-const defaultClassName = 'border-primary-1 bg-background-200 text-primary-1 dark:bg-primary-1 dark:text-primary-3 dark:border-primary-3 border-2 rounded-lg px-2 py-1';
+const defaultClassName = 'border-primary-1 bg-background-200 text-primary-1 dark:bg-primary-1 dark:text-primary-3 dark:border-primary-3 border-2 rounded-lg px-2 py-1 active:bg-background-400 dark:active:bg-background-900';
 
 export const Button = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement>>((
   {

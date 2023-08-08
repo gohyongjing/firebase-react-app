@@ -11,11 +11,13 @@ export function Dashboard() {
 
   return (
     <Page>
-      <Heading>
-        { user?.userName }
-      </Heading>
-      <SideNav />
-      <GameBarWidget />
+      <div className="flex flex-col gap-4">
+        <Heading>
+          { user?.userName }
+        </Heading>
+        <SideNav />
+        <GameBarWidget />
+      </div>
     </Page>
   );
 }
