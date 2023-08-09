@@ -1,9 +1,9 @@
-import { Settings, State } from "../types";
+import { GameSettings, State } from "..";
 import { MOVE_NONE } from "./reduceState";
 
 export function getInitialState(
   playerIds: string[],
-  settings: Settings
+  settings: GameSettings
 ): State {
   return {
     players: playerIds.map(id => {

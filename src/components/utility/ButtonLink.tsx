@@ -3,13 +3,13 @@ import { useNavigate } from "lib/reactRouterDom";
 import { ButtonHTMLAttributes, useCallback } from "react";
 import { mergeClassNameIntoProps } from "utility/mergeClassNameIntoProps";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & { href: string };
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & { to: string };
 
-export function ButtonLink({ href, ...props }: Props) {
+export function ButtonLink({ to, ...props }: Props) {
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
-    navigate(href);
-  }, [href, navigate]);
+    navigate(to);
+  }, [to, navigate]);
 
    return (
     <Button
