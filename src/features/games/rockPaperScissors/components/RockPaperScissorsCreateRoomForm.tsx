@@ -1,30 +1,57 @@
 import { Button, Form, LabelledInput, Labelledselect } from "components/form";
-import { useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect } from "react";
 import { Settings } from "..";
 import { defaultSettingsModel } from "../utility/settings";
 import { getSettingsMeta } from "../utility/getSettingsMeta";
 import { Center } from "components/layout";
+import { getSettingsByHostId, saveSetting } from "../api";
+import { useAuthContext } from "features/auth";
+import { useInputsHandler } from "hooks";
+import { useUser } from "features/user";
 
 const settingsMeta = getSettingsMeta();
 
 export function RockPaperScissorsCreateRoomForm() {
-  const [settings, setSettings] = useState<Settings>(
+  const firebaseUser = useAuthContext();
+  const user = useUser(firebaseUser?.uid);
+
+  const {values: settings, setValue: setSetting, setValues: setSettings} = useInputsHandler<Settings & { id?: string}>(
     defaultSettingsModel
   );
 
   const getSettings = useCallback(async() => {
-    return defaultSettingsModel;
-  }, [])
+    if (firebaseUser?.uid) {
+      return getSettingsByHostId(firebaseUser.uid);
+    }
+  }, [firebaseUser?.uid])
 
-  const handleSubmit = useCallback(() => {
-    return;
-  }, [])
+  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(settings)
+    if (!settings.id) {
+      return saveSetting(settings);
+    }
+    return saveSetting(settings.id, settings);
+  }, [settings])
 
   useEffect(() => {
-    getSettings().then(setSettings)
-  }, [getSettings])
+    getSettings().then(settings => {
+      if (!settings) {
+        if (!user) {
+          return;
+        }
+        setSettings({
+          ...defaultSettingsModel,
+          roomName: `${user.userName}'s Rock Paper Scissors room`,
+          hostId: user.id
+        })
+        return;
+      } 
+      setSettings(settings);
+    })
+  }, [user, getSettings, setSettings])
 
-  console.log('creat room form rerender')
+  console.log('creat room form rerender', settings)
   return (
     <Form onSubmit={handleSubmit}>
       <Center>
@@ -45,7 +72,7 @@ export function RockPaperScissorsCreateRoomForm() {
                   <LabelledInput
                     { ...commonProps }
                     value={settings[settingsName]}
-                    onChange={() => {}}
+                    onChange={e => setSetting(settingsName, e.target.value)}
                     type={meta.inputType}
                   />
                 );
@@ -55,7 +82,7 @@ export function RockPaperScissorsCreateRoomForm() {
                   <Labelledselect
                     { ...commonProps }
                     value={settings[settingsName].toString()}
-                    onValueChange={() => {}}
+                    onValueChange={value => setSetting(settingsName, value)}
                     selectItems={meta.options.map(option => {
                       const value = option.toString();
                       const label = value.slice(0, 1).toUpperCase() + value.slice(1)

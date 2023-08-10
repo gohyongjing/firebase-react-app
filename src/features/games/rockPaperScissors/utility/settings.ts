@@ -1,61 +1,64 @@
+import { WithId, getModelOperationsWithPath } from "utility/model";
 import { Settings } from "..";
+import { DocumentData, DocumentReference, QueryCompositeFilterConstraint, QueryConstraint, SetOptions, UpdateData, WithFieldValue } from "firebase/firestore";
+import { Unsubscribe } from "hooks";
 
 export const FIRESTORE_PATH_GAMES_ROCK_PAPER_SCISSORS_SETTINGS = 'rockPaperScissorsSettings';
 
 export const defaultSettingsModel: Settings = {
   roomName: 'Rock Paper Scissors',
   visibility: 'public',
-  roundsToWin: 3
+  roundsToWin: 3,
+  hostId: ''
 }
-/*
+
 const ops = getModelOperationsWithPath(
   FIRESTORE_PATH_GAMES_ROCK_PAPER_SCISSORS_SETTINGS,
   defaultSettingsModel
 );
 
-export const addFriendship: (
-  newFriendship: WithFieldValue<Friendship>
+export const addSetting: (
+  newSetting: WithFieldValue<Settings>
 ) => Promise<DocumentReference<DocumentData> | undefined>
   = ops.addModel;
 
-export const setFriendship: (
-  friendshipId: string,
-  newFriendship: WithFieldValue<Friendship>,
+export const setSetting: (
+  settingId: string,
+  newSetting: WithFieldValue<Settings>,
   setOptions?: SetOptions
 ) => Promise<void>
   = ops.setModel;
 
-export const getFriendship: (friendshipId: string) => Promise<WithId<Friendship> | undefined>
+export const getSetting: (settingId: string) => Promise<WithId<Settings> | undefined>
   = ops.getModel;
 
-export const getFriendships: 
-  ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<Friendship>[]>)
-  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Friendship>[]>)
+export const getSettings: 
+  ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<Settings>[]>)
+  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Settings>[]>)
   = ops.getModels;
 
-export const getFriendshipWhere:
-  ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<Friendship> | undefined>)
-  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Friendship> | undefined>)
+export const getSettingWhere:
+  ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<Settings> | undefined>)
+  & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Settings> | undefined>)
   = ops.getModelWhere;
 
-export const updateFriendship: (
-  friendshipId: string,
-  friendshipUpdates: UpdateData<Friendship>
+export const updateSetting: (
+  settingId: string,
+  settingUpdates: UpdateData<Settings>
 ) => Promise<void>
   = ops.updateModel;
 
-export const deleteFriendship: (friendshipId: string) => Promise<void>
+export const deleteSetting: (settingId: string) => Promise<void>
   = ops.deleteModel;
 
-export const subscribeFriendship: (
-  friendshipId: string,
-  onNext: (friendship: WithId<Friendship> | undefined) => void
+export const subscribeSetting: (
+  settingId: string,
+  onNext: (setting: WithId<Settings> | undefined) => void
 ) => Unsubscribe
   = ops.subscribeModel;
 
-export const subscribeFriendships: (
-  onNext: (friendships: WithId<Friendship>[]) => void,
+export const subscribeSettings: (
+  onNext: (settings: WithId<Settings>[]) => void,
   ...queryConstraints: QueryConstraint[]
 ) => Unsubscribe
   = ops.subscribeModels
-*/

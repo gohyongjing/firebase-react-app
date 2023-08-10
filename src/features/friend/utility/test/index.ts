@@ -1,5 +1,5 @@
 import { Friendship } from "features/friend";
-import { USER_ALICE, USER_BOB, USER_CHARLIE } from "features/user/utility/test";
+import { USER_ALICE, USER_BOB, USER_CHARLIE } from "features/user";
 import { Timestamp } from "firebase/firestore";
 import { addToDate } from "utility/addToDate";
 

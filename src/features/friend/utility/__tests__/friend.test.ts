@@ -5,7 +5,7 @@ import { ModelOperationsWithPath } from 'utility/model';
 import { prepareTestEnvironment } from 'utility/test';
 import {  Timestamp, or, where } from 'firebase/firestore';
 import { FRIENDSHIP_ALICE_WITH_BOB, FRIENDSHIP_CHARLIE_WITH_ALICE, FRIENDSHIP_REQUEST_ALICE_TO_BOB, FRIENDSHIP_REQUEST_BOB_TO_CHARLIE, FRIENDSHIP_REQUEST_CHARLIE_TO_ALICE } from '../test';
-import { USER_ALICE, USER_BOB } from 'features/user/utility/test';
+import { USER_ALICE, USER_BOB } from 'features/user';
 import { Friendship } from 'features/friend';
 import { addToDate } from 'utility/addToDate';
 

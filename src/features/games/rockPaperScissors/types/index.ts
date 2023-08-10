@@ -1,6 +1,7 @@
 export type RoomSettings = {
   roomName: string
   visibility: 'public' | 'friends' | 'private'
+  hostId: string
 }
 
 export type GameSettings = {

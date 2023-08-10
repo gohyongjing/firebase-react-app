@@ -5,7 +5,7 @@ import { ModelOperationsWithPath, WithId } from 'utility/model';
 import { prepareTestEnvironment } from 'utility/test';
 import { limit, orderBy, where } from 'firebase/firestore';
 import { User } from 'features/user';
-import { USER_ALICE, USER_BOB } from '../test';
+import { USER_ALICE, USER_BOB } from '..';
 
 let testEnv: RulesTestEnvironment;
 

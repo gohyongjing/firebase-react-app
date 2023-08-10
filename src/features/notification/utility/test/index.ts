@@ -1,6 +1,5 @@
-import { NOTIFICATION_MSG_WELCOME, NOTIFICATION_TITLE_WELCOME, NOTIFICATION_TYPE_ANNOUNCEMENT, NOTIFICATION_TYPE_FRIEND_REQUEST, Notification } from "features/notification";
-import { NOTIFICATION_MSG_FRIEND_REQUEST, NOTIFICATION_TITLE_FRIEND_REQUEST } from "features/notification/api/sendFriendRequestNotification";
-import { USER_ALICE, USER_BOB } from "features/user/utility/test";
+import { NOTIFICATION_MSG_FRIEND_REQUEST, NOTIFICATION_MSG_WELCOME, NOTIFICATION_TITLE_FRIEND_REQUEST, NOTIFICATION_TITLE_WELCOME, NOTIFICATION_TYPE_ANNOUNCEMENT, NOTIFICATION_TYPE_FRIEND_REQUEST, Notification } from "features/notification";
+import { USER_ALICE, USER_BOB } from "features/user";
 import { Timestamp } from "firebase/firestore";
 import { addToDate } from "utility/addToDate";
 

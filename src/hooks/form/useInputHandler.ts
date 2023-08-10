@@ -9,7 +9,7 @@ type InputChangeHandler = (e: ChangeEvent<HTMLInputElement>, oldValue: string) =
  * @param onChange Handler for the event  where the input field changes.
  * @returns InputHandlerHook.
  */
-export function useInputHandler (
+export function useInputHandler(
   initialValue: string,
   onChange: InputChangeHandler = (e => e.target.value)
 ) {

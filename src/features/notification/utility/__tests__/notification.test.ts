@@ -6,7 +6,7 @@ import { prepareTestEnvironment } from 'utility/test';
 import { limit, where } from 'firebase/firestore';
 import { Notification } from 'features/notification';
 import { NOTIFICATION_FRIEND_REQUEST_ALICE_TO_BOB, NOTIFICATION_WELCOME_ALICE, NOTIFICATION_WELCOME_BOB } from '../test';
-import { USER_ALICE, USER_BOB } from 'features/user/utility/test';
+import { USER_ALICE, USER_BOB } from 'features/user';
 
 let testEnv: RulesTestEnvironment;
 
