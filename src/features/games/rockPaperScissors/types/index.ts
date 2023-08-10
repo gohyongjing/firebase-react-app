@@ -14,8 +14,14 @@ export type SettingsMeta<T> = {
     label: string
     description?: string
     category: 'room' | 'game'
-    inputType: 'text' | 'number' | 'select'
-  }
+  } & (
+    {
+      inputType: 'text' | 'number'
+    } | {
+      inputType: 'select'
+      options: (T[k])[]
+    }
+  )
 }
 
 export type Player = {

@@ -1,8 +1,9 @@
-import { Button, Form, LabelledInput } from "components/form";
+import { Button, Form, LabelledInput, Labelledselect } from "components/form";
 import { useCallback, useEffect, useState } from "react";
 import { Settings } from "..";
 import { defaultSettingsModel } from "../utility/settings";
 import { getSettingsMeta } from "../utility/getSettingsMeta";
+import { Center } from "components/layout";
 
 const settingsMeta = getSettingsMeta();
 
@@ -26,45 +27,58 @@ export function RockPaperScissorsCreateRoomForm() {
   console.log('creat room form rerender')
   return (
     <Form onSubmit={handleSubmit}>
-      {
-        Object.keys(settingsMeta).map(key => {
-          const settingsName = key as keyof typeof settingsMeta;
-          const meta = settingsMeta[settingsName];
-          const commonProps = {
-            key: settingsName,
-            id: settingsName,
-          }
-          switch (meta.inputType) {
-            case 'text':
-              // fallthrough
-            case 'number': {
-              return (
-                <LabelledInput
-                  { ...commonProps }
-                  labelText={meta.label}
-                  value={settings[settingsName]}
-                  onChange={() => {}}
-                  type={meta.inputType}
-                >
-                </LabelledInput>
-              );
+      <Center>
+        {
+          Object.keys(settingsMeta).map(key => {
+            const settingsName = key as keyof typeof settingsMeta;
+            const meta = settingsMeta[settingsName];
+            const commonProps = {
+              key: settingsName,
+              id: settingsName,
+              label: meta.label
             }
-            case 'select': {
-              return (
-                <div {...commonProps}></div>
-              );
-            }
-            default: {
-              return (
-                <div {...commonProps}></div>
-              );
-            }         
-          } 
-        })
-      }
-      <Button>
-        Create Room
-      </Button>
+            switch (meta.inputType) {
+              case 'text':
+                // fallthrough
+              case 'number': {
+                return (
+                  <LabelledInput
+                    { ...commonProps }
+                    value={settings[settingsName]}
+                    onChange={() => {}}
+                    type={meta.inputType}
+                  />
+                );
+              }
+              case 'select': {
+                return (
+                  <Labelledselect
+                    { ...commonProps }
+                    value={settings[settingsName].toString()}
+                    onValueChange={() => {}}
+                    selectItems={meta.options.map(option => {
+                      const value = option.toString();
+                      const label = value.slice(0, 1).toUpperCase() + value.slice(1)
+                      return {
+                        value,
+                        label
+                      }
+                    })}
+                  />
+                );
+              }
+              default: {
+                return (
+                  <></>
+                );
+              }         
+            } 
+          })
+        }
+        <Button className="wide mt-4">
+          Create Room
+        </Button>
+      </Center>
     </Form>
   );
 }

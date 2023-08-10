@@ -33,14 +33,14 @@ export function SignUp() {
             type='email'
             value={emailInputHandler.value}
             onChange={emailInputHandler.onChange}
-            labelText="Email"
+            label="Email"
             id='email'
           />
           <LabelledInput
             type="password"
             value={passwordInputHandler.value}
             onChange={passwordInputHandler.onChange}
-            labelText="Password"
+            label="Password"
             id='password'
           />
           <div>{errorMessage}</div>

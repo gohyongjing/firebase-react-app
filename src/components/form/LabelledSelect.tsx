@@ -1,14 +1,13 @@
-import { InputHTMLAttributes } from "react";
-import { Input } from "./Input";
 import { Label } from "./Label";
+import { Select, SelectProps } from "./Select";
 
-type Props = InputHTMLAttributes<HTMLInputElement>
+type Props = SelectProps
   & { 
     id: string,
     label: string
   } 
 
-export function LabelledInput({
+export function Labelledselect({
   label,
   ...props
 }: Props) {
@@ -17,7 +16,7 @@ export function LabelledInput({
       htmlFor={props.id}
       label={label}
     >
-      <Input
+      <Select
         { ...props }
       />
     </Label>

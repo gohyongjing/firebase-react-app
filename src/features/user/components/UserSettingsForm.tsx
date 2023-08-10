@@ -44,7 +44,7 @@ export function UserSettingsForm() {
           type='text'
           value={userNameInputHandler.value}
           onChange={userNameInputHandler.onChange}
-          labelText="UserName"
+          label="UserName"
           id='user-name'
         />
         <Button

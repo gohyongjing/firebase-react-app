@@ -12,6 +12,7 @@ export function getSettingsMeta(): SettingsMeta<Settings> {
       description: 'Visibility of the room to other players.\nPublic: everyone can be join\nFriends: Only friends or invited players ccan join\nPrivate: Only invited players can join',
       category: 'room',
       inputType: 'select',
+      options: ['public', 'friends', 'private']
     },
     roundsToWin: {
       label: 'Rounds to Win',
