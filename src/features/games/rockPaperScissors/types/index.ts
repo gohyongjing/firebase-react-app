@@ -25,6 +25,10 @@ export type SettingsMeta<T> = {
   )
 }
 
+export type Room = Settings & {
+  status: 'WAITING' | 'IN_PROGRESS' | 'ENDED'
+}
+
 export type Player = {
   id: string
   wins: number

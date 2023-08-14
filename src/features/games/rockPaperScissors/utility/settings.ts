@@ -1,6 +1,14 @@
 import { WithId, getModelOperationsWithPath } from "utility/model";
 import { Settings } from "..";
-import { DocumentData, DocumentReference, QueryCompositeFilterConstraint, QueryConstraint, SetOptions, UpdateData, WithFieldValue } from "firebase/firestore";
+import {
+  DocumentData,
+  DocumentReference,
+  QueryCompositeFilterConstraint,
+  QueryConstraint,
+  SetOptions,
+  UpdateData,
+  WithFieldValue
+} from "lib/firebase/firestore";
 import { Unsubscribe } from "hooks";
 
 export const FIRESTORE_PATH_GAMES_ROCK_PAPER_SCISSORS_SETTINGS = 'rockPaperScissorsSettings';
