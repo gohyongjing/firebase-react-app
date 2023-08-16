@@ -62,11 +62,11 @@ describe('authenticated users', () => {
     await assertSucceeds(aliceOps.getModels(where('visibility', '!=', 'private')));
   });
 
-  /*test('can only update own settings', async () => {
-    const settingIdA = await createTestSetting(SETTINGS_ALICE);
-    const settingIdB = await createTestSetting(SETTINGS_BOB);
+  test('can only update own rooms', async () => {
+    const roomIdA = await createTestRoom(ROOM_ALICE);
+    const roomIdB = await createTestRoom(ROOM_BOB);
 
-    await assertSucceeds(aliceOps.updateModel(settingIdA, { roomName: 'updated alice room name' }));
-    await assertFails(aliceOps.updateModel(settingIdB, { roomName: 'failed room name update' }));
-  });*/
+    await assertSucceeds(aliceOps.updateModel(roomIdA, { roomName: 'updated alice room name' }));
+    await assertFails(aliceOps.updateModel(roomIdB, { roomName: 'failed room name update' }));
+  });
 })
