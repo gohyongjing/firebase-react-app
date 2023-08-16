@@ -50,22 +50,22 @@ export const getSettingWhere:
   = ops.getModelWhere;
 
 export const updateRoom: (
-  settingId: string,
-  settingUpdates: UpdateData<Room>
+  roomId: string,
+  roomUpdates: UpdateData<Room>
 ) => Promise<void>
   = ops.updateModel;
 
-export const deleteRoom: (settingId: string) => Promise<void>
+export const deleteRoom: (roomId: string) => Promise<void>
   = ops.deleteModel;
 
 export const subscribeRoom: (
-  settingId: string,
-  onNext: (setting: WithId<Room> | undefined) => void
+  roomId: string,
+  onNext: (room: WithId<Room> | undefined) => void
 ) => Unsubscribe
   = ops.subscribeModel;
 
 export const subscribeRooms: (
-  onNext: (settings: WithId<Room>[]) => void,
+  onNext: (rooms: WithId<Room>[]) => void,
   ...queryConstraints: QueryConstraint[]
 ) => Unsubscribe
   = ops.subscribeModels
