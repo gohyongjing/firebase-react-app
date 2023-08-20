@@ -24,19 +24,19 @@ const ops = getModelOperationsWithPath(
   defaultRoomModel
 );
 
-export const addSetting: (
+export const addRoom: (
   newRoom: WithFieldValue<Room>
 ) => Promise<DocumentReference<DocumentData> | undefined>
   = ops.addModel;
 
 export const setRoom: (
-  settingId: string,
+  roomId: string,
   newRoom: WithFieldValue<Room>,
   setOptions?: SetOptions
 ) => Promise<void>
   = ops.setModel;
 
-export const getRoom: (settingId: string) => Promise<WithId<Room> | undefined>
+export const getRoom: (roomId: string) => Promise<WithId<Room> | undefined>
   = ops.getModel;
 
 export const getRooms: 
@@ -44,7 +44,7 @@ export const getRooms:
   & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Room>[]>)
   = ops.getModels;
 
-export const getSettingWhere:
+export const getRoomWhere:
   ((queryCompositeFilterConstraint: QueryCompositeFilterConstraint) => Promise<WithId<Room> | undefined>)
   & ((...queryConstraints: QueryConstraint[]) => Promise<WithId<Room> | undefined>)
   = ops.getModelWhere;

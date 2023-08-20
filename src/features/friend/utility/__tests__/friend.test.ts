@@ -21,7 +21,7 @@ beforeAll(async () => {
     [undefined, USER_ALICE.id],
     FIRESTORE_PATH_FRIENDSHIPS,
     defaultFriendshipModel,
-    'friend'
+    import.meta.env.VITE_PROJECT_ID
   );
   testEnv = testEnvironment.testEnv;
   [unauthenticatedOps, aliceOps] = testEnvironment.modelOperations;
@@ -37,7 +37,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await testEnv.clearFirestore();
-});
+}); 
 
 describe('unauthenticated users', () => {
   test('cannot create, get, update or delete friendships', async () => {

@@ -21,7 +21,7 @@ beforeAll(async () => {
     [undefined, USER_ALICE.id, USER_BOB.id],
     FIRESTORE_PATH_NOTIFICATIONS,
     defaultNotificationModel,
-    'notification'
+    import.meta.env.VITE_PROJECT_ID
   );
   testEnv = testEnvironment.testEnv;
   [unauthenticatedOps, aliceOps, bobOps] = testEnvironment.modelOperations;

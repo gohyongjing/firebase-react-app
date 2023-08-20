@@ -27,7 +27,6 @@ export function RockPaperScissorsCreateRoomForm() {
 
   const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(settings)
     if (!settings.id) {
       return saveSetting(settings);
     }
@@ -51,7 +50,6 @@ export function RockPaperScissorsCreateRoomForm() {
     })
   }, [user, getSettings, setSettings])
 
-  console.log('creat room form rerender', settings)
   return (
     <Form onSubmit={handleSubmit}>
       <Center>

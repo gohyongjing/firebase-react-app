@@ -1,11 +1,10 @@
 import { beforeEach, test, beforeAll, describe } from 'vitest';
 import { RulesTestEnvironment, assertFails, assertSucceeds } from '@firebase/rules-unit-testing';
-import { FIRESTORE_PATH_USERS, defaultUserModel } from '..';
+import { FIRESTORE_PATH_USERS, defaultUserModel, USER_ALICE, USER_BOB } from '..';
 import { ModelOperationsWithPath, WithId } from 'utility/model';
 import { prepareTestEnvironment } from 'utility/test';
 import { limit, orderBy, where } from 'firebase/firestore';
 import { User } from 'features/user';
-import { USER_ALICE, USER_BOB } from '..';
 
 let testEnv: RulesTestEnvironment;
 
@@ -19,7 +18,7 @@ beforeAll(async () => {
     [undefined, USER_ALICE.id],
     FIRESTORE_PATH_USERS,
     defaultUserModel,
-    'user'
+    import.meta.env.VITE_PROJECT_ID
   );
   testEnv = testEnvironment.testEnv;
   [unauthenticatedOps, aliceOps] = testEnvironment.modelOperations;

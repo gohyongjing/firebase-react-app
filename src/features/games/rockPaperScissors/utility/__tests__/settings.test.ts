@@ -20,7 +20,7 @@ beforeAll(async () => {
     [undefined, USER_ALICE.id],
     FIRESTORE_PATH_GAMES_ROCK_PAPER_SCISSORS_SETTINGS,
     defaultSettingsModel,
-    'settings'
+    import.meta.env.VITE_PROJECT_ID
   );
   testEnv = testEnvironment.testEnv;
   [unauthenticatedOps, aliceOps] = testEnvironment.modelOperations;

@@ -20,7 +20,7 @@ beforeAll(async () => {
     [undefined, USER_ALICE.id],
     FIRESTORE_PATH_GAMES_ROCK_PAPER_SCISSORS_ROOMS,
     defaultRoomModel,
-    'settings'
+    import.meta.env.VITE_PROJECT_ID
   );
   testEnv = testEnvironment.testEnv;
   [unauthenticatedOps, aliceOps] = testEnvironment.modelOperations;
@@ -50,10 +50,10 @@ describe('unauthenticated users', () => {
 });
 
 describe('authenticated users', () => {
-  /*test('can only create settings with own id as hostId', async () => {
-    await assertSucceeds(aliceOps.addModel(SETTINGS_ALICE));
-    await assertFails(aliceOps.addModel(SETTINGS_BOB));
-  });*/
+  test('can only create rooms with own id as hostId', async () => {
+    await assertSucceeds(aliceOps.addModel(ROOM_ALICE));
+    await assertFails(aliceOps.addModel(ROOM_BOB));
+  });
 
   test('can get non-private rooms', async () => {
     await createTestRoom(ROOM_ALICE);
