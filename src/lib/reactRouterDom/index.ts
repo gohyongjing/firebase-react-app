@@ -1,1 +1,9 @@
-export { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+export {
+  BrowserRouter,
+  Link,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useParams
+} from 'react-router-dom';

@@ -4,18 +4,25 @@ import { Settings } from "..";
 import { defaultSettingsModel } from "../utility/settings";
 import { getSettingsMeta } from "../utility/getSettingsMeta";
 import { Center } from "components/layout";
-import { getSettingsByHostId, saveSetting } from "../api";
+import { createRoom, getSettingsByHostId, saveSetting } from "..";
 import { useAuthContext } from "features/auth";
 import { useInputsHandler } from "hooks";
 import { useUser } from "features/user";
+import { useNavigate } from "lib/reactRouterDom";
+import { PATH_GAMES_ROCK_PAPER_SCISSORS_ROOM } from "routes";
 
 const settingsMeta = getSettingsMeta();
 
 export function RockPaperScissorsCreateRoomForm() {
+  const navigate = useNavigate();
   const firebaseUser = useAuthContext();
   const user = useUser(firebaseUser?.uid);
 
-  const {values: settings, setValue: setSetting, setValues: setSettings} = useInputsHandler<Settings & { id?: string}>(
+  const {
+    values: settings,
+    setValue: setSetting,
+    setValues: setSettings
+  } = useInputsHandler<Settings & { id?: string}>(
     defaultSettingsModel
   );
 
@@ -25,13 +32,19 @@ export function RockPaperScissorsCreateRoomForm() {
     }
   }, [firebaseUser?.uid])
 
-  const handleSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!settings.id) {
-      return saveSetting(settings);
+      saveSetting(settings);
+    } else {
+      saveSetting(settings.id, settings);
     }
-    return saveSetting(settings.id, settings);
-  }, [settings])
+    const roomRef = await createRoom(settings);
+    if (!roomRef) {
+      return;
+    }
+    navigate(`${PATH_GAMES_ROCK_PAPER_SCISSORS_ROOM}/${roomRef.id}`);
+  }, [settings, navigate])
 
   useEffect(() => {
     getSettings().then(settings => {

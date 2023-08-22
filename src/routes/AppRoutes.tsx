@@ -3,7 +3,7 @@ import { Friends } from "features/friend";
 import { Dashboard, Home } from "pages";
 import { Route, Routes } from "lib/reactRouterDom";
 import { UserSettings } from "features/user";
-import { RockPaperScissors, RockPaperScissorsCreateRoom, RockPaperScissorsLobby } from "features/games";
+import { RockPaperScissors, RockPaperScissorsCreateRoom, RockPaperScissorsLobby, RockPaperScissorsRoom } from "features/games";
 
 export const PATH_HOME = '/';
 export const PATH_SIGN_UP = '/sign-up';
@@ -15,6 +15,7 @@ export const PATH_FRIENDS = '/friends'
 export const PATH_GAMES_ROCK_PAPER_SCISSORS = '/games/rock-paper-scissors';
 export const PATH_GAMES_ROCK_PAPER_SCISSORS_LOBBY = '/games/rock-paper-scissors/lobby';
 export const PATH_GAMES_ROCK_PAPER_SCISSORS_LOBBY_CREATE = '/games/rock-paper-scissors/lobby/create';
+export const PATH_GAMES_ROCK_PAPER_SCISSORS_ROOM = '/games/rock-paper-scissors/room';
 
 interface Props {
   children?: JSX.Element | null;
@@ -61,6 +62,9 @@ export function AppRoutes() {
       }/>
       <Route path={PATH_GAMES_ROCK_PAPER_SCISSORS_LOBBY_CREATE} element={
         <RequireAuth><RockPaperScissorsCreateRoom/></RequireAuth>
+      }/>
+      <Route path={PATH_GAMES_ROCK_PAPER_SCISSORS_ROOM + '/:roomId'} element={
+        <RequireAuth><RockPaperScissorsRoom/></RequireAuth>
       }/>
     </Routes>
   );
